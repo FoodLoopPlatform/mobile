@@ -1,0 +1,45 @@
+import 'package:equatable/equatable.dart';
+import 'package:foodloop/core/enums/account_type_enum.dart';
+
+abstract class AuthState extends Equatable {
+  const AuthState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class AuthInitial extends AuthState {
+  const AuthInitial();
+}
+
+class AuthLoading extends AuthState {
+  const AuthLoading();
+}
+
+class AuthSuccess extends AuthState {
+  final String email;
+  const AuthSuccess({required this.email});
+
+  @override
+  List<Object?> get props => [email];
+}
+
+class AuthSellerSuccess extends AuthState {
+  const AuthSellerSuccess();
+}
+
+class AuthFail extends AuthState {
+  final String message;
+  const AuthFail({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class AuthAccountTypeChanged extends AuthState {
+  final AccountType accountType;
+  const AuthAccountTypeChanged({required this.accountType});
+
+  @override
+  List<Object?> get props => [accountType];
+}
