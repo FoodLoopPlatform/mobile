@@ -51,6 +51,7 @@ lib/
 │   ├── utils/
 │   │   ├── app_colors.dart          ← All color tokens
 │   │   ├── app_strings.dart         ← All localized strings
+│   │   ├── app_assets.dart          ← All images and icons paths
 │   │   ├── constants.dart           ← General app constants (padding, durations)
 │   │   ├── api_constants.dart       ← API URLs and endpoint constants
 │   │   └── validation.dart          ← Form validation helpers
@@ -65,6 +66,13 @@ lib/
     │       └── views/
     │           └── welcome_view.dart
     └── auth/
+        ├── data/
+        │   ├── data_sources/
+        │   │   └── auth_remote_data_source.dart
+        │   ├── models/
+        │   │   └── auth_model.dart
+        │   └── repositories/
+        │       └── auth_repository.dart
         └── presentation/
             ├── manager/
             │   └── auth_cubit/
