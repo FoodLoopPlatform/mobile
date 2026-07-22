@@ -89,27 +89,12 @@ class _ProfileAvatar extends StatelessWidget {
         ),
       ),
       clipBehavior: Clip.antiAlias,
-      child: Image.network(
+      child: Image.asset(
         AppAssets.profileAvatarPlaceholder,
+
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => Icon(
-          Icons.person_rounded,
-          size: 40.r,
-          color: AppColors.primary,
-        ),
-        loadingBuilder: (context, child, progress) {
-          if (progress == null) return child;
-          return Center(
-            child: SizedBox(
-              width: 20.r,
-              height: 20.r,
-              child: const CircularProgressIndicator(
-                strokeWidth: 2,
-                color: AppColors.primary,
-              ),
-            ),
-          );
-        },
+        errorBuilder: (context, error, stackTrace) =>
+            Icon(Icons.person_rounded, size: 40.r, color: AppColors.primary),
       ),
     );
   }
