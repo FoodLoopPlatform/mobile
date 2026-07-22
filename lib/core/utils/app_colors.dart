@@ -22,6 +22,16 @@ abstract class AppColors {
   static const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceVariant = Color(0xFFEEEEE6);
 
+  // --- Surface Containers (Material 3 tonal steps) ---
+  static const Color surfaceContainerLow = Color(0xFFF2F5EE);
+  static const Color surfaceContainer = Color(0xFFECEFE8);
+  static const Color surfaceContainerHigh = Color(0xFFE6E9E3);
+  static const Color surfaceContainerHighest = Color(0xFFE0E3DD);
+
+  // --- Secondary Container ---
+  static const Color secondaryContainer = Color(0xFF98F3B0);
+  static const Color onSecondaryContainer = Color(0xFF0B723C);
+
   // --- Text ---
   static const Color textPrimary = Color(0xFF1A1A1A);
   static const Color textSecondary = Color(0xFF4A4A4A);
@@ -39,4 +49,8 @@ abstract class AppColors {
   // --- Border ---
   static const Color border = Color(0xFFD9D9D0);
   static const Color borderFocused = Color(0xFF005129);
+
+  // --- Outline ---
+  static const Color outline = Color(0xFF707A70);
+  static const Color outlineVariant = Color(0xFFBFC9BE);
 }

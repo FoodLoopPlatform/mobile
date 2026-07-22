@@ -81,6 +81,41 @@ abstract class AppStrings {
   static const String invalidEmail = 'Please enter a valid email address.';
   static const String mustAgreeToTerms = 'You must agree to the terms to continue.';
 
+  // --- Profile ---
+  static const String profileTitle = 'Profile';
+  static const String profileEdit = 'EDIT';
+  static const String profileName = 'Ahmed Mansour';
+  static const String profileEmail = 'ahmed@foodloop.com';
+  static const String profilePhone = '+20 100 123 4567';
+
+  // --- Preferences ---
+  static const String preferencesTitle = 'Preferences';
+  static const String languageLabel = 'Language';
+  static const String languageEn = 'EN';
+  static const String languageAr = 'AR';
+  static const String notificationsLabel = 'Notifications';
+  static const String orderUpdatesLabel = 'Order Updates';
+  static const String latestOffersLabel = 'Latest Offers';
+
+  // --- Saved Addresses ---
+  static const String savedAddressesTitle = 'Saved Addresses';
+  static const String addNew = 'ADD NEW';
+  static const String addressDefaultBadge = 'DEFAULT';
+  static const String addressHomeTitle = 'Home';
+  static const String addressHomeLine1 = 'Maadi, Road 9, Bldg 12';
+  static const String addressHomeLine2 = 'Cairo, Egypt';
+  static const String addressOfficeTitle = 'Office';
+  static const String addressOfficeLine1 = 'New Cairo, Sector 1';
+  static const String addressOfficeLine2 = 'Industrial Zone';
+  static const String addressEmptyHint =
+      'Add locations to speed up your local food delivery.';
+
+  // --- Bottom Navigation ---
+  static const String navMarket = 'Market';
+  static const String navOrders = 'Orders';
+  static const String navCart = 'Cart';
+  static const String navProfile = 'Profile';
+
   // --- Generic ---
   static const String back = 'Back';
   static const String loading = 'Loading...';

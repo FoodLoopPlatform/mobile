@@ -4,6 +4,7 @@ import 'package:foodloop/features/auth/presentation/views/business_details_view.
 import 'package:foodloop/features/auth/presentation/views/create_account_view.dart';
 import 'package:foodloop/features/auth/presentation/views/email_verification_view.dart';
 import 'package:foodloop/features/onboarding/presentation/views/welcome_view.dart';
+import 'package:foodloop/features/profile/presentation/views/profile_view.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
@@ -22,6 +23,9 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => EmailVerificationView(email: email),
         );
+
+      case RoutesNames.profileView:
+        return MaterialPageRoute(builder: (_) => const ProfileView());
 
       default:
         return MaterialPageRoute(
