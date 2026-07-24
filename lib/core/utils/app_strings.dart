@@ -37,6 +37,42 @@ abstract class AppStrings {
   static const String alreadyHaveAccount = 'Already have an account? ';
   static const String logIn = 'Log In';
 
+  // --- Login ---
+  static const String loginTitle = 'Welcome Back';
+  static const String loginSubtitle =
+      'Log in to manage your surplus and help make fresh food accessible across Egypt.';
+  static const String loginEmailHint = 'logistics@foodloop.com';
+  static const String passwordHint = '••••••••';
+  static const String forgotPassword = 'FORGOT PASSWORD';
+  static const String loginButton = 'LOGIN';
+  static const String noAccountPrefix = "Don't have an account? ";
+  static const String joinFoodloop = 'Join the Foodloop.';
+  static const String accountPendingBanner =
+      'PENDING: Account is currently under verification';
+
+  // --- Forgot Password ---
+  static const String forgotPasswordTitle = 'Forgot Password?';
+  static const String forgotPasswordSubtitle =
+      "Enter the email address associated with your account and we'll send you a secure link to reset your password.";
+  static const String forgotPasswordEmailHint = 'name@example.com';
+  static const String sendResetLink = 'Send Reset Link';
+  static const String backToLogin = 'Back to Login';
+
+  // --- Reset Password ---
+  static const String resetPasswordTitle = 'Reset Password';
+  static const String resetPasswordSubtitle =
+      'Choose a strong new password to keep your Foodloop account secure.';
+  static const String newPasswordLabel = 'NEW PASSWORD';
+  static const String newPasswordHint = 'Enter at least 8 characters';
+  static const String confirmNewPasswordLabel = 'CONFIRM NEW PASSWORD';
+  static const String confirmNewPasswordHint = 'Repeat your new password';
+  static const String passwordStrengthLabel = 'PASSWORD STRENGTH';
+  static const String passwordStrengthEmpty = '--';
+  static const String passwordStrengthMedium = 'Medium';
+  static const String updatePassword = 'Update Password';
+  static const String needHelpPrefix = 'Need help? ';
+  static const String contactSupport = 'Contact Support';
+
   // --- Business Details ---
   static const String businessDetailsTitle = 'Business Details';
   static const String businessDetailsSubtitle =

@@ -11,6 +11,9 @@ abstract class AppColors {
   static const Color tertiary = Color(0xFF643E00);
   static const Color tertiaryLight = Color(0xFF8A5E1A);
   static const Color tertiarySurface = Color(0xFFF3E5CC);
+  static const Color tertiaryFixed = Color(0xFFFFDDB7);
+  static const Color tertiaryFixedDim = Color(0xFFF5BC76);
+  static const Color onTertiaryFixed = Color(0xFF2A1700);
 
   // --- Neutral ---
   static const Color neutral = Color(0xFF747873);
