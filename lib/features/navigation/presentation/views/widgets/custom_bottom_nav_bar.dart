@@ -4,8 +4,15 @@ import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
 
-class ProfileBottomNavBar extends StatelessWidget {
-  const ProfileBottomNavBar({super.key});
+class CustomBottomNavBar extends StatelessWidget {
+  const CustomBottomNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  final int currentIndex;
+  final ValueChanged<int> onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +33,31 @@ class ProfileBottomNavBar extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
+            children: [
               _NavItem(
                 icon: Icons.storefront_outlined,
                 label: AppStrings.navMarket,
+                isActive: currentIndex == 0,
+                onTap: () => onTap(0),
               ),
               _NavItem(
                 icon: Icons.receipt_long_outlined,
                 label: AppStrings.navOrders,
+                isActive: currentIndex == 1,
+                onTap: () => onTap(1),
               ),
               _NavItem(
                 icon: Icons.shopping_cart_outlined,
                 label: AppStrings.navCart,
-                badgeCount: 3,
+                isActive: currentIndex == 2,
+                badgeCount: 3, // Placeholder badge
+                onTap: () => onTap(2),
               ),
               _NavItem(
                 icon: Icons.person_rounded,
                 label: AppStrings.navProfile,
-                isActive: true,
+                isActive: currentIndex == 3,
+                onTap: () => onTap(3),
               ),
             ],
           ),
@@ -57,13 +71,15 @@ class _NavItem extends StatelessWidget {
   const _NavItem({
     required this.icon,
     required this.label,
-    this.isActive = false,
+    required this.isActive,
+    required this.onTap,
     this.badgeCount,
   });
 
   final IconData icon;
   final String label;
   final bool isActive;
+  final VoidCallback onTap;
   final int? badgeCount;
 
   @override
@@ -90,7 +106,7 @@ class _NavItem extends StatelessWidget {
     );
 
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),

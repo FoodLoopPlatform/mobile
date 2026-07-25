@@ -61,6 +61,24 @@ lib/
 │       ├── custom_text_field.dart
 │       └── custom_dropdown_field.dart
 └── features/
+    ├── navigation/
+    │   └── presentation/
+    │       └── views/
+    │           ├── main_navigation_view.dart
+    │           └── widgets/
+    │               └── custom_bottom_nav_bar.dart
+    ├── market/
+    │   └── presentation/
+    │       └── views/
+    │           └── market_view.dart
+    ├── orders/
+    │   └── presentation/
+    │       └── views/
+    │           └── orders_view.dart
+    ├── cart/
+    │   └── presentation/
+    │       └── views/
+    │           └── cart_view.dart
     ├── onboarding/
     │   └── presentation/
     │       └── views/
@@ -101,6 +119,15 @@ lib/
    - If **User** → navigate to `EmailVerificationView` after Continue.
 3. **BusinessDetailsView** (`auth`) – Location + Legal Documents upload. Only for Sellers.
 4. **EmailVerificationView** (`auth`) – Verification pending screen with countdown.
+
+---
+
+## Screens to Build (Main App Flow)
+1. **MainNavigationView** (`navigation`) – The shell screen managing the bottom navigation bar and tabs.
+2. **MarketView** (`market`) – Main market feed (placeholder).
+3. **OrdersView** (`orders`) – User/Seller orders list (placeholder).
+4. **CartView** (`cart`) – User shopping cart (placeholder).
+5. **ProfileView** (`profile`) – User profile and settings.
 
 ---
 

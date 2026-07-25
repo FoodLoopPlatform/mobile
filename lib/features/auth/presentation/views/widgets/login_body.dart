@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodloop/core/routes_manager/routes_names.dart';
 import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/features/auth/presentation/views/widgets/auth_brand_footer.dart';
 import 'package:foodloop/features/auth/presentation/views/widgets/auth_dotted_background.dart';
@@ -53,7 +54,15 @@ class _LoginBodyState extends State<LoginBody> {
                       LoginFormCard(
                         emailController: _emailController,
                         passwordController: _passwordController,
-                        onLogin: () => _formKey.currentState?.validate(),
+                        onLogin: () {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            // Navigate to main navigation view
+                            Navigator.pushReplacementNamed(
+                              context,
+                              RoutesNames.mainNav,
+                            );
+                          }
+                        },
                       ),
                       SizedBox(height: AppConstants.paddingXL.h),
                       const AuthBrandFooter(),
