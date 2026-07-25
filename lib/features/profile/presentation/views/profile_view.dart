@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_body.dart';
-import 'package:foodloop/features/profile/presentation/views/widgets/profile_bottom_nav_bar.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -36,7 +35,6 @@ class ProfileView extends StatelessWidget {
         ],
       ),
       body: const ProfileBody(),
-      bottomNavigationBar: const ProfileBottomNavBar(),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:foodloop/features/auth/presentation/views/email_verification_vie
 import 'package:foodloop/features/auth/presentation/views/forgot_password_view.dart';
 import 'package:foodloop/features/auth/presentation/views/login_view.dart';
 import 'package:foodloop/features/auth/presentation/views/reset_password_view.dart';
+import 'package:foodloop/features/navigation/presentation/views/main_navigation_view.dart';
 import 'package:foodloop/features/onboarding/presentation/views/welcome_view.dart';
 import 'package:foodloop/features/profile/presentation/views/profile_view.dart';
 
@@ -38,13 +39,12 @@ class RouteGenerator {
 
       case RoutesNames.profileView:
         return MaterialPageRoute(builder: (_) => const ProfileView());
-
+      case RoutesNames.mainNav:
+        return MaterialPageRoute(builder: (_) => const MainNavigationView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
+            body: Center(child: Text('No route defined for ${settings.name}')),
           ),
         );
     }
