@@ -18,10 +18,13 @@ class CustomTextField extends StatefulWidget {
     this.enabled = true,
     this.maxLines = 1,
     this.suffixWidget,
+    this.labelIcon,
   });
 
   final String label;
   final String hint;
+  /// Optional icon shown at the trailing edge of the label row.
+  final IconData? labelIcon;
   final IconData? prefixIcon;
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -45,15 +48,24 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.label,
-          style: TextStyle(
-            fontFamily: 'DmSans',
-            fontSize: 11.sp,
-            fontWeight: FontWeight.w700,
-            color: AppColors.textSecondary,
-            letterSpacing: 1.0,
-          ),
+        Row(
+          children: [
+            Text(
+              widget.label,
+              style: TextStyle(
+                fontFamily: 'DmSans',
+                fontSize: 11.sp,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textSecondary,
+                letterSpacing: 1.0,
+              ),
+            ),
+            if (widget.labelIcon != null) ...[
+              const Spacer(),
+              Icon(widget.labelIcon,
+                  size: 14.r, color: AppColors.textSecondary),
+            ],
+          ],
         ),
         SizedBox(height: 6.h),
         TextFormField(

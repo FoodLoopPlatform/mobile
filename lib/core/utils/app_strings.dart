@@ -37,6 +37,42 @@ abstract class AppStrings {
   static const String alreadyHaveAccount = 'Already have an account? ';
   static const String logIn = 'Log In';
 
+  // --- Login ---
+  static const String loginTitle = 'Welcome Back';
+  static const String loginSubtitle =
+      'Log in to manage your surplus and help make fresh food accessible across Egypt.';
+  static const String loginEmailHint = 'logistics@foodloop.com';
+  static const String passwordHint = '••••••••';
+  static const String forgotPassword = 'FORGOT PASSWORD';
+  static const String loginButton = 'LOGIN';
+  static const String noAccountPrefix = "Don't have an account? ";
+  static const String joinFoodloop = 'Join the Foodloop.';
+  static const String accountPendingBanner =
+      'PENDING: Account is currently under verification';
+
+  // --- Forgot Password ---
+  static const String forgotPasswordTitle = 'Forgot Password?';
+  static const String forgotPasswordSubtitle =
+      "Enter the email address associated with your account and we'll send you a secure link to reset your password.";
+  static const String forgotPasswordEmailHint = 'name@example.com';
+  static const String sendResetLink = 'Send Reset Link';
+  static const String backToLogin = 'Back to Login';
+
+  // --- Reset Password ---
+  static const String resetPasswordTitle = 'Reset Password';
+  static const String resetPasswordSubtitle =
+      'Choose a strong new password to keep your Foodloop account secure.';
+  static const String newPasswordLabel = 'NEW PASSWORD';
+  static const String newPasswordHint = 'Enter at least 8 characters';
+  static const String confirmNewPasswordLabel = 'CONFIRM NEW PASSWORD';
+  static const String confirmNewPasswordHint = 'Repeat your new password';
+  static const String passwordStrengthLabel = 'PASSWORD STRENGTH';
+  static const String passwordStrengthEmpty = '--';
+  static const String passwordStrengthMedium = 'Medium';
+  static const String updatePassword = 'Update Password';
+  static const String needHelpPrefix = 'Need help? ';
+  static const String contactSupport = 'Contact Support';
+
   // --- Business Details ---
   static const String businessDetailsTitle = 'Business Details';
   static const String businessDetailsSubtitle =
@@ -80,6 +116,41 @@ abstract class AppStrings {
   static const String fieldRequired = 'This field is required.';
   static const String invalidEmail = 'Please enter a valid email address.';
   static const String mustAgreeToTerms = 'You must agree to the terms to continue.';
+
+  // --- Profile ---
+  static const String profileTitle = 'Profile';
+  static const String profileEdit = 'EDIT';
+  static const String profileName = 'Ahmed Mansour';
+  static const String profileEmail = 'ahmed@foodloop.com';
+  static const String profilePhone = '+20 100 123 4567';
+
+  // --- Preferences ---
+  static const String preferencesTitle = 'Preferences';
+  static const String languageLabel = 'Language';
+  static const String languageEn = 'EN';
+  static const String languageAr = 'AR';
+  static const String notificationsLabel = 'Notifications';
+  static const String orderUpdatesLabel = 'Order Updates';
+  static const String latestOffersLabel = 'Latest Offers';
+
+  // --- Saved Addresses ---
+  static const String savedAddressesTitle = 'Saved Addresses';
+  static const String addNew = 'ADD NEW';
+  static const String addressDefaultBadge = 'DEFAULT';
+  static const String addressHomeTitle = 'Home';
+  static const String addressHomeLine1 = 'Maadi, Road 9, Bldg 12';
+  static const String addressHomeLine2 = 'Cairo, Egypt';
+  static const String addressOfficeTitle = 'Office';
+  static const String addressOfficeLine1 = 'New Cairo, Sector 1';
+  static const String addressOfficeLine2 = 'Industrial Zone';
+  static const String addressEmptyHint =
+      'Add locations to speed up your local food delivery.';
+
+  // --- Bottom Navigation ---
+  static const String navMarket = 'Market';
+  static const String navOrders = 'Orders';
+  static const String navCart = 'Cart';
+  static const String navProfile = 'Profile';
 
   // --- Generic ---
   static const String back = 'Back';
