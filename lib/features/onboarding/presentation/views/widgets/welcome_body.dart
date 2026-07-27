@@ -129,20 +129,17 @@ class WelcomeBody extends StatelessWidget {
                       height: 1.5,
                     ),
                     children: const [
-                      TextSpan(text: 'Turning '),
+                      TextSpan(text: AppStrings.welcomeSubtitle1),
                       TextSpan(
-                        text: 'surplus',
+                        text: AppStrings.welcomeSubtitle2,
                         style: TextStyle(color: AppColors.primary),
                       ),
+                      TextSpan(text: AppStrings.welcomeSubtitle3),
                       TextSpan(
-                        text:
-                            ' into opportunity. We connect businesses with excess food to consumers looking for ',
-                      ),
-                      TextSpan(
-                        text: 'affordable, fresh',
+                        text: AppStrings.welcomeSubtitle4,
                         style: TextStyle(color: AppColors.tertiary),
                       ),
-                      TextSpan(text: ' options in real-time.'),
+                      TextSpan(text: AppStrings.welcomeSubtitle5),
                     ],
                   ),
                 ),

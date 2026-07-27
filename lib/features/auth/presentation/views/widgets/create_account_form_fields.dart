@@ -10,6 +10,7 @@ class CreateAccountFormFields extends StatelessWidget {
     super.key,
     required this.fullNameController,
     required this.emailController,
+    required this.phoneController,
     required this.passwordController,
     required this.confirmPasswordController,
     required this.passwordStrength,
@@ -19,6 +20,7 @@ class CreateAccountFormFields extends StatelessWidget {
 
   final TextEditingController fullNameController;
   final TextEditingController emailController;
+  final TextEditingController phoneController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
   final String passwordStrength;
@@ -44,6 +46,14 @@ class CreateAccountFormFields extends StatelessWidget {
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           validator: Validation.validateEmail,
+        ),
+        SizedBox(height: 20.h),
+        CustomTextField(
+          label: AppStrings.phoneNumberLabel,
+          hint: '01xxxxxxxxx',
+          controller: phoneController,
+          keyboardType: TextInputType.phone,
+          validator: Validation.validateRequiredField,
         ),
         SizedBox(height: 20.h),
         CustomTextField(
@@ -75,8 +85,11 @@ class CreateAccountFormFields extends StatelessWidget {
           SizedBox(height: 4.h),
           Row(
             children: [
-              Icon(Icons.info_outline_rounded,
-                  size: 12.r, color: AppColors.error),
+              Icon(
+                Icons.info_outline_rounded,
+                size: 12.r,
+                color: AppColors.error,
+              ),
               SizedBox(width: 4.w),
               Text(
                 AppStrings.passwordMinLength,
@@ -95,7 +108,9 @@ class CreateAccountFormFields extends StatelessWidget {
           hint: '••••••',
           controller: confirmPasswordController,
           isPassword: true,
-          validator: Validation.validateConfirmPassword(passwordController.text),
+          validator: Validation.validateConfirmPassword(
+            passwordController.text,
+          ),
         ),
       ],
     );

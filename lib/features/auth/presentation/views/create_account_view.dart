@@ -11,24 +11,21 @@ class CreateAccountView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AuthCubit(),
-      child: Scaffold(
-        appBar: AppBar(
-          leading: const BackButton(),
-          title: Text(
-            AppStrings.appName,
-            style: TextStyle(
-              fontFamily: 'DmSans',
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w700,
-              color: AppColors.primary,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: const BackButton(),
+        title: Text(
+          AppStrings.appName,
+          style: TextStyle(
+            fontFamily: 'DmSans',
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w700,
+            color: AppColors.primary,
           ),
-          centerTitle: false,
         ),
-        body: const CreateAccountBody(),
+        centerTitle: false,
       ),
+      body: const CreateAccountBody(),
     );
   }
 }

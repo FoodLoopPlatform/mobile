@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/routes_manager/routes_names.dart';
 import 'package:foodloop/core/utils/constants.dart';
+import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_state.dart';
 import 'package:foodloop/features/auth/presentation/views/widgets/auth_brand_footer.dart';
 import 'package:foodloop/features/auth/presentation/views/widgets/auth_dotted_background.dart';
 import 'package:foodloop/features/auth/presentation/views/widgets/login_form_card.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/login_pending_banner.dart';
+import 'package:foodloop/features/auth/presentation/views/widgets/auth_error_banner.dart';
 
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
@@ -18,7 +21,8 @@ class _LoginBodyState extends State<LoginBody> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _showPendingBanner = true;
+  
+  String? _errorMessage;
 
   @override
   void dispose() {
@@ -27,53 +31,83 @@ class _LoginBodyState extends State<LoginBody> {
     super.dispose();
   }
 
+  void _showError(String message) {
+    setState(() {
+      _errorMessage = message;
+    });
+    Future.delayed(const Duration(seconds: 4), () {
+      if (mounted && _errorMessage == message) {
+        setState(() {
+          _errorMessage = null;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // --- Pending verification banner ---
-        if (_showPendingBanner)
-          LoginPendingBanner(
-            onClose: () => setState(() => _showPendingBanner = false),
-          ),
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSuccess) {
+          Navigator.pushReplacementNamed(
+            context,
+            RoutesNames.mainNav,
+          );
+        } else if (state is AuthFail) {
+          _showError(state.message);
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state is AuthLoading;
 
-        // --- Form over the dotted texture ---
-        Expanded(
-          child: Stack(
-            children: [
-              const Positioned.fill(child: AuthDottedBackground()),
-              SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppConstants.screenHorizontalPadding.w,
-                  vertical: AppConstants.paddingL.h,
-                ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      LoginFormCard(
-                        emailController: _emailController,
-                        passwordController: _passwordController,
-                        onLogin: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            // Navigate to main navigation view
-                            Navigator.pushReplacementNamed(
-                              context,
-                              RoutesNames.mainNav,
-                            );
-                          }
-                        },
-                      ),
-                      SizedBox(height: AppConstants.paddingXL.h),
-                      const AuthBrandFooter(),
-                    ],
-                  ),
-                ),
+        return Column(
+          children: [
+            // --- Error banner ---
+            if (_errorMessage != null)
+              AuthErrorBanner(
+                message: _errorMessage!,
+                onClose: () => setState(() => _errorMessage = null),
               ),
-            ],
-          ),
-        ),
-      ],
+
+            // --- Form over the dotted texture ---
+            Expanded(
+              child: Stack(
+                children: [
+                  const Positioned.fill(child: AuthDottedBackground()),
+                  SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppConstants.screenHorizontalPadding.w,
+                      vertical: AppConstants.paddingL.h,
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          LoginFormCard(
+                            emailController: _emailController,
+                            passwordController: _passwordController,
+                            isLoading: isLoading,
+                            onLogin: () {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                context.read<AuthCubit>().login(
+                                  _emailController.text.trim(),
+                                  _passwordController.text,
+                                );
+                              }
+                            },
+                          ),
+                          SizedBox(height: AppConstants.paddingXL.h),
+                          const AuthBrandFooter(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

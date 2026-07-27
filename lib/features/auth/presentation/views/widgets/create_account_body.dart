@@ -10,6 +10,7 @@ import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/core/widgets/custom_dropdown_field.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_state.dart';
+import 'package:foodloop/features/auth/presentation/views/widgets/auth_error_banner.dart';
 import 'package:foodloop/features/auth/presentation/views/widgets/create_account_footer.dart';
 import 'package:foodloop/features/auth/presentation/views/widgets/create_account_form_fields.dart';
 import 'package:foodloop/features/auth/presentation/views/widgets/create_account_header.dart';
@@ -26,18 +27,34 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
   final _formKey = GlobalKey<FormState>();
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _agreedToTerms = false;
   AccountType _selectedAccountType = AccountType.user;
+  String? _errorMessage;
 
   @override
   void dispose() {
     _fullNameController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  void _showError(String message) {
+    setState(() {
+      _errorMessage = message;
+    });
+    Future.delayed(const Duration(seconds: 4), () {
+      if (mounted && _errorMessage == message) {
+        setState(() {
+          _errorMessage = null;
+        });
+      }
+    });
   }
 
   String _getPasswordStrength(String password) {
@@ -73,12 +90,7 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
         } else if (state is AuthSellerSuccess) {
           Navigator.pushNamed(context, RoutesNames.businessDetailsView);
         } else if (state is AuthFail) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          _showError(state.message);
         }
       },
       builder: (context, state) {
@@ -86,19 +98,27 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
         final passwordStrength =
             _getPasswordStrength(_passwordController.text);
 
-        return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppConstants.screenHorizontalPadding.w,
-            vertical: AppConstants.paddingL.h,
-          ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // --- Header ---
-                const CreateAccountHeader(),
-                SizedBox(height: 28.h),
+        return Column(
+          children: [
+            if (_errorMessage != null)
+              AuthErrorBanner(
+                message: _errorMessage!,
+                onClose: () => setState(() => _errorMessage = null),
+              ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppConstants.screenHorizontalPadding.w,
+                  vertical: AppConstants.paddingL.h,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // --- Header ---
+                      const CreateAccountHeader(),
+                      SizedBox(height: 28.h),
 
                 // --- Account Type Dropdown ---
                 CustomDropdownField<AccountType>(
@@ -113,6 +133,10 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
                     DropdownMenuItem(
                       value: AccountType.seller,
                       child: Text(AppStrings.accountTypeSeller),
+                    ),
+                    DropdownMenuItem(
+                      value: AccountType.charity,
+                      child: Text(AppStrings.accountTypeCharity),
                     ),
                   ],
                   onChanged: (value) {
@@ -130,6 +154,7 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
                 CreateAccountFormFields(
                   fullNameController: _fullNameController,
                   emailController: _emailController,
+                  phoneController: _phoneController,
                   passwordController: _passwordController,
                   confirmPasswordController: _confirmPasswordController,
                   passwordStrength: passwordStrength,
@@ -161,11 +186,11 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
                         );
                         return;
                       }
-                      context.read<AuthCubit>().register(
+                      context.read<AuthCubit>().proceedToBusinessDetails(
                             fullName: _fullNameController.text.trim(),
                             email: _emailController.text.trim(),
                             password: _passwordController.text,
-                            accountType: _selectedAccountType,
+                            phoneNumber: _phoneController.text.trim(),
                           );
                     }
                   },
@@ -175,9 +200,12 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
                 // --- Footer ---
                 const CreateAccountFooter(),
                 SizedBox(height: 20.h),
-              ],
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         );
       },
     );

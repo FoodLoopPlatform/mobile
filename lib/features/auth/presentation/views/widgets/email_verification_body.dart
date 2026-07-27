@@ -7,6 +7,7 @@ import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/core/widgets/custom_outlined_button.dart';
 import 'package:foodloop/features/auth/presentation/views/widgets/info_row.dart';
+import 'package:foodloop/core/routes_manager/routes_names.dart';
 
 class EmailVerificationBody extends StatefulWidget {
   const EmailVerificationBody({super.key, required this.email});
@@ -167,6 +168,19 @@ class _EmailVerificationBodyState extends State<EmailVerificationBody> {
                   ? AppStrings.resendEmail
                   : '${AppStrings.resendEmail} (${_formatTime(_remainingSeconds)})',
               onTap: _canResend ? _resend : () {},
+            ),
+            SizedBox(height: 12.h),
+
+            // --- Back to Login Button ---
+            CustomOutlinedButton(
+              label: AppStrings.backToLogin,
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  RoutesNames.loginView,
+                  (route) => false,
+                );
+              },
             ),
             SizedBox(height: 40.h),
 
