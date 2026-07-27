@@ -1,10 +1,21 @@
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodloop/core/enums/account_type_enum.dart';
+import 'package:foodloop/core/errors/errors.dart';
+import 'package:foodloop/features/auth/data/repositories/auth_repository.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(const AuthInitial());
+  final AuthRepository _authRepository;
+  
+  AuthCubit(this._authRepository) : super(const AuthInitial());
 
+  // Cached registration fields
+  String _registerFullName = '';
+  String _registerEmail = '';
+  String _registerPassword = '';
+  String _registerPhone = '';
+  
   AccountType selectedAccountType = AccountType.user;
 
   void changeAccountType(AccountType type) {
@@ -12,28 +23,62 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthAccountTypeChanged(accountType: type));
   }
 
-  /// Simulates registration. Replace with real API call later.
-  Future<void> register({
-    required String fullName,
-    required String email,
-    required String password,
-    required AccountType accountType,
-  }) async {
+  Future<void> login(String email, String password) async {
     emit(const AuthLoading());
-    await Future.delayed(const Duration(seconds: 1)); // TODO: replace with API
-
-    if (accountType == AccountType.seller) {
-      emit(const AuthSellerSuccess());
-    } else {
+    try {
+      await _authRepository.login(email, password);
       emit(AuthSuccess(email: email));
+    } on Errors catch (e) {
+      emit(AuthFail(message: e.errMessage));
+    } catch (e) {
+      emit(AuthFail(message: e.toString()));
     }
   }
 
-  /// Simulates business details submission. Replace with real API call later.
-  Future<void> submitBusinessDetails() async {
+  void proceedToBusinessDetails({
+    required String fullName,
+    required String email,
+    required String password,
+    required String phoneNumber,
+  }) {
+    _registerFullName = fullName;
+    _registerEmail = email;
+    _registerPassword = password;
+    _registerPhone = phoneNumber;
+    
+    // For Sellers and Charities, we just navigate to the next screen.
+    if (selectedAccountType == AccountType.seller || selectedAccountType == AccountType.charity) {
+      emit(const AuthSellerSuccess());
+    } else {
+      // For Users, register directly
+      register(role: selectedAccountType.toBackendRole());
+    }
+  }
+
+  Future<void> register({
+    required String role,
+    String? businessName,
+    String? businessCategory,
+    File? documentFile,
+  }) async {
     emit(const AuthLoading());
-    await Future.delayed(const Duration(seconds: 1)); // TODO: replace with API
-    emit(const AuthSuccess(email: ''));
+    try {
+      await _authRepository.register(
+        name: _registerFullName,
+        email: _registerEmail,
+        password: _registerPassword,
+        phoneNumber: _registerPhone,
+        role: role,
+        businessName: businessName,
+        businessCategory: businessCategory,
+        documentFile: documentFile,
+      );
+      emit(AuthSuccess(email: _registerEmail));
+    } on Errors catch (e) {
+      emit(AuthFail(message: e.errMessage));
+    } catch (e) {
+      emit(AuthFail(message: e.toString()));
+    }
   }
 
   /// Simulates resending verification email.

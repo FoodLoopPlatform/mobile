@@ -1,158 +1,165 @@
 abstract class AppStrings {
   // --- App Name ---
-  static const String appName = 'Foodloop';
+  static const String appName = 'FoodLoop';
 
   // --- Welcome / Onboarding ---
-  static const String welcomeHeadline = 'Closing the loop on food waste in Egypt.';
-  static const String welcomeSubtitle =
-      'Turning surplus into opportunity. We connect businesses with excess food to consumers looking for affordable, fresh options in real-time.';
-  static const String createAccount = 'Create Account';
-  static const String login = 'Login';
+  static const String welcomeHeadline = 'نقضي على هدر الطعام في مصر.';
+  static const String welcomeSubtitle1 = 'نحول ';
+  static const String welcomeSubtitle2 = 'الفائض';
+  static const String welcomeSubtitle3 =
+      ' إلى فرصة. نربط الشركات التي لديها فائض من الطعام بالمستهلكين الباحثين عن ';
+  static const String welcomeSubtitle4 = 'خيارات طازجة وبأسعار معقولة';
+  static const String welcomeSubtitle5 = ' في الوقت الفعلي.';
+  static const String createAccount = 'إنشاء حساب';
+  static const String login = 'تسجيل الدخول';
   static const String english = 'English';
 
   // --- Create Account ---
-  static const String createAccountTitle = 'Create Account';
+  static const String createAccountTitle = 'إنشاء حساب';
   static const String createAccountSubtitle =
-      'Join our network to reduce economic loss and make fresh food affordable for everyone in Egypt.';
-  static const String accountTypeLabel = 'ACCOUNT TYPE';
-  static const String accountTypeUser = 'User';
-  static const String accountTypeSeller = 'Seller';
-  static const String fullNameLabel = 'FULL NAME';
-  static const String fullNameHint = 'John Doe';
-  static const String emailLabel = 'EMAIL ADDRESS';
-  static const String emailHint = 'j.doe@logistics.com';
-  static const String passwordLabel = 'PASSWORD';
-  static const String confirmPasswordLabel = 'CONFIRM PASSWORD';
-  static const String passwordStrengthWeak = 'Weak';
-  static const String passwordStrengthFair = 'Fair';
-  static const String passwordStrengthStrong = 'Strong';
-  static const String passwordMinLength = 'Password must be at least 8 characters long.';
-  static const String passwordsDoNotMatch = 'Passwords do not match.';
-  static const String termsPrefix = 'I agree to the ';
-  static const String termsOfService = 'Terms of Service';
-  static const String termsAnd = ' and ';
-  static const String privacyPolicy = 'Privacy Policy';
+      'انضم إلى شبكتنا لتقليل الخسائر الاقتصادية وجعل الطعام الطازج في متناول الجميع في مصر.';
+  static const String accountTypeLabel = 'نوع الحساب';
+  static const String accountTypeUser = 'مستخدم';
+  static const String accountTypeSeller = 'بائع';
+  static const String accountTypeCharity = 'جمعية خيرية';
+  static const String fullNameLabel = 'الاسم الكامل';
+  static const String fullNameHint = 'أحمد محمود';
+  static const String emailLabel = 'البريد الإلكتروني';
+  static const String emailHint = 'a.mahmoud@example.com';
+  static const String passwordLabel = 'كلمة المرور';
+  static const String confirmPasswordLabel = 'تأكيد كلمة المرور';
+  static const String passwordStrengthWeak = 'ضعيفة';
+  static const String passwordStrengthFair = 'مقبولة';
+  static const String passwordStrengthStrong = 'قوية';
+  static const String passwordMinLength =
+      'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.';
+  static const String passwordsDoNotMatch = 'كلمات المرور غير متطابقة.';
+  static const String termsPrefix = 'أوافق على ';
+  static const String termsOfService = 'شروط الخدمة';
+  static const String termsAnd = ' و ';
+  static const String privacyPolicy = 'سياسة الخصوصية';
   static const String termsSuffix = '.';
-  static const String continueButton = 'Continue';
-  static const String alreadyHaveAccount = 'Already have an account? ';
-  static const String logIn = 'Log In';
-
+  static const String continueButton = 'متابعة';
+  static const String alreadyHaveAccount = 'لديك حساب بالفعل؟ ';
+  static const String logIn = 'تسجيل الدخول';
+  static const String phoneNumberLabel = 'رقم الهاتف';
   // --- Login ---
-  static const String loginTitle = 'Welcome Back';
+  static const String loginTitle = 'مرحباً بعودتك';
   static const String loginSubtitle =
-      'Log in to manage your surplus and help make fresh food accessible across Egypt.';
+      'سجل دخولك لإدارة الفائض والمساعدة في جعل الطعام الطازج متاحاً في جميع أنحاء مصر.';
   static const String loginEmailHint = 'logistics@foodloop.com';
   static const String passwordHint = '••••••••';
-  static const String forgotPassword = 'FORGOT PASSWORD';
-  static const String loginButton = 'LOGIN';
-  static const String noAccountPrefix = "Don't have an account? ";
-  static const String joinFoodloop = 'Join the Foodloop.';
+  static const String forgotPassword = 'نسيت كلمة المرور؟';
+  static const String loginButton = 'تسجيل الدخول';
+  static const String noAccountPrefix = "ليس لديك حساب؟ ";
+  static const String joinFoodloop = 'انضم إلى فودلوب.';
   static const String accountPendingBanner =
-      'PENDING: Account is currently under verification';
+      'قيد الانتظار: الحساب قيد المراجعة حالياً';
 
   // --- Forgot Password ---
-  static const String forgotPasswordTitle = 'Forgot Password?';
+  static const String forgotPasswordTitle = 'نسيت كلمة المرور؟';
   static const String forgotPasswordSubtitle =
-      "Enter the email address associated with your account and we'll send you a secure link to reset your password.";
+      "أدخل البريد الإلكتروني المرتبط بحسابك وسنرسل لك رابطاً آمناً لإعادة تعيين كلمة المرور.";
   static const String forgotPasswordEmailHint = 'name@example.com';
-  static const String sendResetLink = 'Send Reset Link';
-  static const String backToLogin = 'Back to Login';
+  static const String sendResetLink = 'إرسال رابط إعادة التعيين';
+  static const String backToLogin = 'العودة لتسجيل الدخول';
 
   // --- Reset Password ---
-  static const String resetPasswordTitle = 'Reset Password';
+  static const String resetPasswordTitle = 'إعادة تعيين كلمة المرور';
   static const String resetPasswordSubtitle =
-      'Choose a strong new password to keep your Foodloop account secure.';
-  static const String newPasswordLabel = 'NEW PASSWORD';
-  static const String newPasswordHint = 'Enter at least 8 characters';
-  static const String confirmNewPasswordLabel = 'CONFIRM NEW PASSWORD';
-  static const String confirmNewPasswordHint = 'Repeat your new password';
-  static const String passwordStrengthLabel = 'PASSWORD STRENGTH';
+      'اختر كلمة مرور قوية وجديدة للحفاظ على أمان حساب فودلوب الخاص بك.';
+  static const String newPasswordLabel = 'كلمة المرور الجديدة';
+  static const String newPasswordHint = 'أدخل 8 أحرف على الأقل';
+  static const String confirmNewPasswordLabel = 'تأكيد كلمة المرور الجديدة';
+  static const String confirmNewPasswordHint = 'أعد إدخال كلمة المرور الجديدة';
+  static const String passwordStrengthLabel = 'قوة كلمة المرور';
   static const String passwordStrengthEmpty = '--';
-  static const String passwordStrengthMedium = 'Medium';
-  static const String updatePassword = 'Update Password';
-  static const String needHelpPrefix = 'Need help? ';
-  static const String contactSupport = 'Contact Support';
+  static const String passwordStrengthMedium = 'متوسطة';
+  static const String updatePassword = 'تحديث كلمة المرور';
+  static const String needHelpPrefix = 'تحتاج مساعدة؟ ';
+  static const String contactSupport = 'اتصل بالدعم';
 
   // --- Business Details ---
-  static const String businessDetailsTitle = 'Business Details';
+  static const String businessDetailsTitle = 'تفاصيل العمل';
   static const String businessDetailsSubtitle =
-      'Help us verify your organization to start reducing food waste. We ensure all partners meet local safety and legal standards.';
-  static const String locationSectionTitle = 'Location';
-  static const String governorateLabel = 'GOVERNORATE';
-  static const String governorateHint = 'Select Governorate';
-  static const String cityLabel = 'CITY';
-  static const String cityHint = 'Select City';
-  static const String neighborhoodLabel = 'NEIGHBORHOOD';
-  static const String neighborhoodHint = 'e.g. Al-Haseiba';
-  static const String streetLabel = 'STREET';
-  static const String streetHint = 'e.g. King Fahd Rd.';
-  static const String pinOnMap = 'Pin on Map';
+      'ساعدنا في التحقق من مؤسستك لبدء تقليل هدر الطعام. نحن نضمن أن جميع شركائنا يستوفون معايير السلامة والمعايير القانونية المحلية.';
+  static const String locationSectionTitle = 'الموقع';
+  static const String governorateLabel = 'المحافظة';
+  static const String governorateHint = 'اختر المحافظة';
+  static const String cityLabel = 'المدينة';
+  static const String cityHint = 'اختر المدينة';
+  static const String neighborhoodLabel = 'الحي';
+  static const String neighborhoodHint = 'مثال: المعادي';
+  static const String streetLabel = 'الشارع';
+  static const String streetHint = 'مثال: شارع 9';
+  static const String pinOnMap = 'تحديد على الخريطة';
   static const String mapHint =
-      'High precision coordinates help logistics teams find you faster.';
-  static const String legalDocumentsSectionTitle = 'Legal Documents';
-  static const String taxIdLabel = 'Tax ID';
-  static const String taxIdSubtitle = 'e.g. Abu Dhabi (466)';
-  static const String commercialRegLabel = 'Commercial Reg.';
-  static const String commercialRegSubtitle = 'Active registration file';
-  static const String healthCertLabel = 'Health Certificate';
-  static const String healthCertSubtitle = 'Required for food handling';
-  static const String statusPending = 'Pending';
+      'الإحداثيات عالية الدقة تساعد فرق الخدمات اللوجستية في العثور عليك بشكل أسرع.';
+  static const String legalDocumentsSectionTitle = 'المستندات القانونية';
+  static const String taxIdLabel = 'البطاقة الضريبية';
+  static const String taxIdSubtitle = 'مثال: 466-XXX-XXX';
+  static const String commercialRegLabel = 'السجل التجاري';
+  static const String commercialRegSubtitle = 'ملف تسجيل نشط';
+  static const String healthCertLabel = 'الشهادة الصحية';
+  static const String healthCertSubtitle = 'مطلوبة للتعامل مع الأطعمة';
+  static const String statusPending = 'قيد الانتظار';
   static const String verificationTimeNote =
-      'Verification typically takes 24–48 hours. You will be notified via email once approved.';
-  static const String submitForVerification = 'Submit for Verification';
-  static const String dataSecurityNote = 'Your data is encrypted and handled securely.';
+      'تستغرق عملية التحقق عادةً من 24 إلى 48 ساعة. سيتم إعلامك عبر البريد الإلكتروني بمجرد الموافقة.';
+  static const String submitForVerification = 'إرسال للتحقق';
+  static const String dataSecurityNote =
+      'بياناتك مشفرة ويتم التعامل معها بأمان تام.';
 
   // --- Email Verification ---
-  static const String emailVerificationTitle = 'Email Verification';
-  static const String verificationPendingTitle = 'Verification Pending';
+  static const String emailVerificationTitle = 'التحقق من البريد الإلكتروني';
+  static const String verificationPendingTitle = 'التحقق قيد الانتظار';
   static const String verificationPendingSubtitle =
-      "We've sent a secure link to verify your account. You're one step away from helping us reduce food waste and improve affordability.";
-  static const String sentToLabel = 'SENT TO';
-  static const String expiresInLabel = 'EXPIRES IN';
-  static const String checkMailbox = 'Check Mailbox';
-  static const String resendEmail = 'Resend Email';
+      "لقد أرسلنا رابطاً آمناً للتحقق من حسابك. أنت على بعد خطوة واحدة من مساعدتنا في تقليل هدر الطعام وتحسين القدرة على تحمل التكاليف.";
+  static const String sentToLabel = 'أُرسل إلى';
+  static const String expiresInLabel = 'تنتهي الصلاحية في';
+  static const String checkMailbox = 'تحقق من صندوق الوارد';
+  static const String resendEmail = 'إعادة إرسال البريد';
 
   // --- Validation ---
-  static const String fieldRequired = 'This field is required.';
-  static const String invalidEmail = 'Please enter a valid email address.';
-  static const String mustAgreeToTerms = 'You must agree to the terms to continue.';
+  static const String fieldRequired = 'هذا الحقل مطلوب.';
+  static const String invalidEmail = 'الرجاء إدخال بريد إلكتروني صحيح.';
+  static const String mustAgreeToTerms = 'يجب الموافقة على الشروط للمتابعة.';
 
   // --- Profile ---
-  static const String profileTitle = 'Profile';
-  static const String profileEdit = 'EDIT';
-  static const String profileName = 'Ahmed Mansour';
+  static const String profileTitle = 'الملف الشخصي';
+  static const String profileEdit = 'تعديل';
+  static const String profileName = 'أحمد منصور';
   static const String profileEmail = 'ahmed@foodloop.com';
   static const String profilePhone = '+20 100 123 4567';
 
   // --- Preferences ---
-  static const String preferencesTitle = 'Preferences';
-  static const String languageLabel = 'Language';
+  static const String preferencesTitle = 'التفضيلات';
+  static const String languageLabel = 'اللغة';
   static const String languageEn = 'EN';
   static const String languageAr = 'AR';
-  static const String notificationsLabel = 'Notifications';
-  static const String orderUpdatesLabel = 'Order Updates';
-  static const String latestOffersLabel = 'Latest Offers';
+  static const String notificationsLabel = 'الإشعارات';
+  static const String orderUpdatesLabel = 'تحديثات الطلبات';
+  static const String latestOffersLabel = 'أحدث العروض';
 
   // --- Saved Addresses ---
-  static const String savedAddressesTitle = 'Saved Addresses';
-  static const String addNew = 'ADD NEW';
-  static const String addressDefaultBadge = 'DEFAULT';
-  static const String addressHomeTitle = 'Home';
-  static const String addressHomeLine1 = 'Maadi, Road 9, Bldg 12';
-  static const String addressHomeLine2 = 'Cairo, Egypt';
-  static const String addressOfficeTitle = 'Office';
-  static const String addressOfficeLine1 = 'New Cairo, Sector 1';
-  static const String addressOfficeLine2 = 'Industrial Zone';
+  static const String savedAddressesTitle = 'العناوين المحفوظة';
+  static const String addNew = 'إضافة جديد';
+  static const String addressDefaultBadge = 'الافتراضي';
+  static const String addressHomeTitle = 'المنزل';
+  static const String addressHomeLine1 = 'المعادي، شارع 9، عمارة 12';
+  static const String addressHomeLine2 = 'القاهرة، مصر';
+  static const String addressOfficeTitle = 'العمل';
+  static const String addressOfficeLine1 = 'القاهرة الجديدة، التجمع الخامس';
+  static const String addressOfficeLine2 = 'المنطقة الصناعية';
   static const String addressEmptyHint =
-      'Add locations to speed up your local food delivery.';
+      'أضف مواقع لتسريع عملية توصيل طعامك المحلي.';
 
   // --- Bottom Navigation ---
-  static const String navMarket = 'Market';
-  static const String navOrders = 'Orders';
-  static const String navCart = 'Cart';
-  static const String navProfile = 'Profile';
+  static const String navMarket = 'السوق';
+  static const String navOrders = 'الطلبات';
+  static const String navCart = 'العربة';
+  static const String navProfile = 'الملف الشخصي';
 
   // --- Generic ---
-  static const String back = 'Back';
-  static const String loading = 'Loading...';
+  static const String back = 'رجوع';
+  static const String loading = 'جاري التحميل...';
 }

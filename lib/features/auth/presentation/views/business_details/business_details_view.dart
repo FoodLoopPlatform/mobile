@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/email_verification_body.dart';
+import 'package:foodloop/features/auth/presentation/views/business_details/widgets/business_details_body.dart';
 
-class EmailVerificationView extends StatelessWidget {
-  const EmailVerificationView({super.key, required this.email});
-
-  final String email;
+class BusinessDetailsView extends StatelessWidget {
+  const BusinessDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +13,17 @@ class EmailVerificationView extends StatelessWidget {
       appBar: AppBar(
         leading: const BackButton(),
         title: Text(
-          AppStrings.appName,
+          AppStrings.businessDetailsTitle,
           style: TextStyle(
             fontFamily: 'DmSans',
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w700,
-            color: AppColors.primary,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
           ),
         ),
         centerTitle: false,
       ),
-      body: EmailVerificationBody(email: email),
+      body: const BusinessDetailsBody(),
     );
   }
 }

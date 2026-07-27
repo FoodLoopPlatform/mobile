@@ -22,8 +22,11 @@ class LoginPendingBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.lock_person_rounded,
-              size: 18.r, color: AppColors.onTertiaryFixed),
+          Icon(
+            Icons.lock_person_rounded,
+            size: 18.r,
+            color: AppColors.onTertiaryFixed,
+          ),
           SizedBox(width: 8.w),
           Expanded(
             child: Text(
@@ -40,8 +43,11 @@ class LoginPendingBanner extends StatelessWidget {
           SizedBox(width: 8.w),
           GestureDetector(
             onTap: onClose,
-            child: Icon(Icons.close_rounded,
-                size: 18.r, color: AppColors.onTertiaryFixed),
+            child: Icon(
+              Icons.close_rounded,
+              size: 18.r,
+              color: AppColors.onTertiaryFixed,
+            ),
           ),
         ],
       ),

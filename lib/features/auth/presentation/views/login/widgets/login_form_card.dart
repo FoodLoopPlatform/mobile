@@ -13,11 +13,13 @@ class LoginFormCard extends StatelessWidget {
     super.key,
     required this.emailController,
     required this.passwordController,
+    this.isLoading = false,
     required this.onLogin,
   });
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final bool isLoading;
   final VoidCallback onLogin;
 
   @override
@@ -113,6 +115,7 @@ class LoginFormCard extends StatelessWidget {
           CustomButton(
             label: AppStrings.loginButton,
             suffixIcon: Icons.arrow_forward_rounded,
+            isLoading: isLoading,
             onTap: onLogin,
           ),
           SizedBox(height: AppConstants.paddingL.h),

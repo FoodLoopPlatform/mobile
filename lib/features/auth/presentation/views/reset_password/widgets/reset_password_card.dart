@@ -7,8 +7,8 @@ import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/core/utils/validation.dart';
 import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/core/widgets/custom_text_field.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_dotted_background.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/password_strength_indicator.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_dotted_background.dart';
+import 'package:foodloop/features/auth/presentation/widgets/password_strength_indicator.dart';
 
 class ResetPasswordCard extends StatelessWidget {
   const ResetPasswordCard({

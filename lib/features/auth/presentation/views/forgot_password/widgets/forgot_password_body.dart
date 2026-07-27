@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/utils/constants.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_brand_footer.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_glow_background.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/forgot_password_card.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_brand_footer.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_glow_background.dart';
+import 'package:foodloop/features/auth/presentation/views/forgot_password/widgets/forgot_password_card.dart';
 
 class ForgotPasswordBody extends StatefulWidget {
   const ForgotPasswordBody({super.key});

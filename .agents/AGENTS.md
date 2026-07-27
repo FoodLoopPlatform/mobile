@@ -104,21 +104,22 @@ lib/
                     └── (screen-specific sub-widgets)
 ```
 
-### State Management
+### State Management & API Integration
 - **flutter_bloc (Cubit)** for state management — same pattern as mini_InstaPay.
 - `AuthCubit` manages: account type selection, form validation, navigation triggers.
 - The `CreateAccountView` uses a **StatefulWidget** body (via a `_CreateAccountBodyState`) so the account type dropdown can reactively show/hide the business details flow.
-- Navigation to `BusinessDetailsView` is triggered when the user selects "Seller" as the account type and taps Continue. This is handled inside the Cubit or locally in the view using `setState` for the dropdown, and Navigator push for the screen transition.
+- Navigation to `BusinessDetailsView` is triggered when the user selects "Seller" or "Charity" as the account type and taps Continue. This is handled inside the Cubit or locally in the view using `setState` for the dropdown, and Navigator push for the screen transition.
+- **Dio Interceptors**: We use an `AuthInterceptor` to inject the Bearer token into headers. It intercepts `401 Unauthorized` responses and automatically calls the `/auth/refresh` endpoint with the stored `refreshToken`. If successful, it updates the stored tokens and retries the failed request.
 
 ---
 
 ## Screens to Build (Auth Flow)
 1. **WelcomeView** (`onboarding`) – Landing screen with Create Account / Log In.
-2. **CreateAccountView** (`auth`) – Registration form. Account Type dropdown: `User` | `Seller`.
-   - If **Seller** → navigate to `BusinessDetailsView` after Continue.
+2. **CreateAccountView** (`auth`) – Registration form. Account Type dropdown: `User` | `Seller` | `Charity`.
+   - If **Seller** or **Charity** → navigate to `BusinessDetailsView` after Continue.
    - If **User** → navigate to `EmailVerificationView` after Continue.
-3. **BusinessDetailsView** (`auth`) – Location + Legal Documents upload. Only for Sellers.
-4. **EmailVerificationView** (`auth`) – Verification pending screen with countdown.
+3. **BusinessDetailsView** (`auth`) – Location + Legal Documents upload. Only for Sellers and Charities.
+4. **EmailVerificationView** (`auth`) – Verification pending screen with countdown and back to login option.
 
 ---
 
@@ -150,7 +151,11 @@ lib/
 dependencies:
   flutter_bloc: ^9.1.1
   flutter_screenutil: ^5.9.3
-  equatable: ^2.0.7
+  equatable: ^2.1.0
+  dio: ^5.11.0
+  flutter_secure_storage: ^10.3.1
+  flutter_localizations:
+    sdk: flutter
 ```
 > Note: The user handles font asset declarations in `pubspec.yaml` manually.
 
@@ -158,6 +163,8 @@ dependencies:
 
 ## Key Design Decisions
 - **Welcome screen** is under `features/onboarding/` (not `auth/`).
-- **Business Details** is only shown when account type is `Seller`.
+- **Business Details** is only shown when account type is `Seller` or `Charity`.
 - **`AppColors`** is a separate class from `Constants` — constants.dart holds only non-color, non-string general values.
 - **`ApiConstants`** is separate from `constants.dart` and holds all backend URLs.
+- **Remember Me Logic**: The application checks `SecureStorageHelper` for a stored `refreshToken` on startup (in `main.dart`). If found, it validates it via the `/auth/refresh` API endpoint and automatically navigates the user to `MainNavigationView` if valid, bypassing the welcome/login flow.
+- **Right-to-Left (RTL)**: The application has `flutter_localizations` configured and hardcoded to the Arabic locale (`ar`) inside `MaterialApp` to enforce an RTL layout by default.
