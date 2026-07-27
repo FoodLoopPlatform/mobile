@@ -4,9 +4,9 @@ import 'package:foodloop/core/enums/password_strength_enum.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_brand_footer.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_glow_background.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/reset_password_card.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_brand_footer.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_glow_background.dart';
+import 'package:foodloop/features/auth/presentation/views/reset_password/widgets/reset_password_card.dart';
 
 class ResetPasswordBody extends StatefulWidget {
   const ResetPasswordBody({super.key});

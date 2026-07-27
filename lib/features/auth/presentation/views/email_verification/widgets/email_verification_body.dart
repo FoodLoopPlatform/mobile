@@ -6,7 +6,7 @@ import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/core/widgets/custom_outlined_button.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/info_row.dart';
+import 'package:foodloop/features/auth/presentation/views/email_verification/widgets/info_row.dart';
 import 'package:foodloop/core/routes_manager/routes_names.dart';
 
 class EmailVerificationBody extends StatefulWidget {

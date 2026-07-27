@@ -8,9 +8,9 @@ import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_state.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_error_banner.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/business_details_legal_section.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/business_details_location_section.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_error_banner.dart';
+import 'package:foodloop/features/auth/presentation/views/business_details/widgets/business_details_legal_section.dart';
+import 'package:foodloop/features/auth/presentation/views/business_details/widgets/business_details_location_section.dart';
 
 class BusinessDetailsBody extends StatefulWidget {
   const BusinessDetailsBody({super.key});

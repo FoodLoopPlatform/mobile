@@ -10,11 +10,11 @@ import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/core/widgets/custom_dropdown_field.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_state.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_error_banner.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/create_account_footer.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/create_account_form_fields.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/create_account_header.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/create_account_terms_section.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_error_banner.dart';
+import 'package:foodloop/features/auth/presentation/views/create_account/widgets/create_account_footer.dart';
+import 'package:foodloop/features/auth/presentation/views/create_account/widgets/create_account_form_fields.dart';
+import 'package:foodloop/features/auth/presentation/views/create_account/widgets/create_account_header.dart';
+import 'package:foodloop/features/auth/presentation/views/create_account/widgets/create_account_terms_section.dart';
 
 class CreateAccountBody extends StatefulWidget {
   const CreateAccountBody({super.key});

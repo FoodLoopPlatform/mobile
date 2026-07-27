@@ -4,8 +4,8 @@ import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/widgets/custom_dropdown_field.dart';
 import 'package:foodloop/core/widgets/custom_text_field.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/map_placeholder.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/section_header.dart';
+import 'package:foodloop/features/auth/presentation/views/business_details/widgets/map_placeholder.dart';
+import 'package:foodloop/features/auth/presentation/views/business_details/widgets/section_header.dart';
 
 class BusinessDetailsLocationSection extends StatelessWidget {
   const BusinessDetailsLocationSection({

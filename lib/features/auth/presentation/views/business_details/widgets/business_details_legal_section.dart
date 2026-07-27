@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/document_tile.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/section_header.dart';
+import 'package:foodloop/features/auth/presentation/views/business_details/widgets/document_tile.dart';
+import 'package:foodloop/features/auth/presentation/views/business_details/widgets/section_header.dart';
 
 class BusinessDetailsLegalSection extends StatelessWidget {
   const BusinessDetailsLegalSection({super.key});

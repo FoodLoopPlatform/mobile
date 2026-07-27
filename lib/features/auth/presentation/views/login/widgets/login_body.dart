@@ -5,10 +5,10 @@ import 'package:foodloop/core/routes_manager/routes_names.dart';
 import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_state.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_brand_footer.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_dotted_background.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/login_form_card.dart';
-import 'package:foodloop/features/auth/presentation/views/widgets/auth_error_banner.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_brand_footer.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_dotted_background.dart';
+import 'package:foodloop/features/auth/presentation/views/login/widgets/login_form_card.dart';
+import 'package:foodloop/features/auth/presentation/widgets/auth_error_banner.dart';
 
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
@@ -21,7 +21,7 @@ class _LoginBodyState extends State<LoginBody> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   String? _errorMessage;
 
   @override
@@ -49,9 +49,10 @@ class _LoginBodyState extends State<LoginBody> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          Navigator.pushReplacementNamed(
+          Navigator.pushNamedAndRemoveUntil(
             context,
             RoutesNames.mainNav,
+            (route) => false,
           );
         } else if (state is AuthFail) {
           _showError(state.message);
