@@ -23,9 +23,9 @@ class FoodloopApp extends StatelessWidget {
           title: 'Foodloop',
           debugShowCheckedModeBanner: false,
           theme: AppThemeManager.mainTheme,
-          initialRoute: RoutesNames.welcomeView,
+          // initialRoute: RoutesNames.welcomeView,
           // initialRoute: RoutesNames.resetPasswordView,
-          // initialRoute: RoutesNames.profileView,
+          initialRoute: RoutesNames.mainNav,
           onGenerateRoute: RouteGenerator.generateRoutes,
         );
       },
