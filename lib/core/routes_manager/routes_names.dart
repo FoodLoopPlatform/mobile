@@ -8,5 +8,6 @@ abstract class RoutesNames {
   static const String resetPasswordView = 'resetPasswordView';
   static const String homeView = 'homeView';
   static const String profileView = 'profileView';
+  static const String addAddressView = 'addAddressView';
   static const String mainNav = 'mainNav';
 }

@@ -6,7 +6,7 @@ import '../utils/app_colors.dart';
 class CustomTextField extends StatefulWidget {
   CustomTextField({
     super.key,
-    required this.label,
+    this.label,
     required this.hint,
     this.prefixIcon,
     this.controller,
@@ -21,7 +21,9 @@ class CustomTextField extends StatefulWidget {
     this.labelIcon,
   });
 
-  final String label;
+  /// Caps label above the field. When null, no label row is rendered — useful
+  /// for placeholder-only fields grouped under a shared section caption.
+  final String? label;
   final String hint;
   /// Optional icon shown at the trailing edge of the label row.
   final IconData? labelIcon;
@@ -48,26 +50,28 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              widget.label,
-              style: TextStyle(
-                fontFamily: 'DmSans',
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textSecondary,
-                letterSpacing: 1.0,
+        if (widget.label != null) ...[
+          Row(
+            children: [
+              Text(
+                widget.label!,
+                style: TextStyle(
+                  fontFamily: 'DmSans',
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textSecondary,
+                  letterSpacing: 1.0,
+                ),
               ),
-            ),
-            if (widget.labelIcon != null) ...[
-              const Spacer(),
-              Icon(widget.labelIcon,
-                  size: 14.r, color: AppColors.textSecondary),
+              if (widget.labelIcon != null) ...[
+                const Spacer(),
+                Icon(widget.labelIcon,
+                    size: 14.r, color: AppColors.textSecondary),
+              ],
             ],
-          ],
-        ),
-        SizedBox(height: 6.h),
+          ),
+          SizedBox(height: 6.h),
+        ],
         TextFormField(
           onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
           controller: widget.controller,

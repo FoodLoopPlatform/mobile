@@ -1,16 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodloop/core/api_helper/api_manager.dart';
 import 'package:foodloop/core/app_theme/app_theme_manager.dart';
 import 'package:foodloop/core/routes_manager/route_generator.dart';
 import 'package:foodloop/core/routes_manager/routes_names.dart';
+import 'package:foodloop/features/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:foodloop/features/auth/data/repositories/auth_repository.dart';
+import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:foodloop/features/profile/data/data_sources/profile_remote_data_source.dart';
+import 'package:foodloop/features/profile/data/repositories/profile_repository.dart';
+import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
 
-void main() {
+import 'package:dio/dio.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:foodloop/core/api_helper/api_constants.dart';
+import 'package:foodloop/core/utils/secure_storage_helper.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const FoodloopApp());
+
+  String initialRoute = RoutesNames.mainNav;
+  final refreshToken = await SecureStorageHelper.getRefreshToken();
+
+  if (refreshToken != null) {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        '${ApiConstants.baseUrl}${ApiConstants.refreshEndpoint}',
+        data: {'refreshToken': refreshToken},
+      );
+
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        final newAccessToken = response.data['data']['accessToken'];
+        final newRefreshToken = response.data['data']['refreshToken'];
+
+        await SecureStorageHelper.saveTokens(newAccessToken, newRefreshToken);
+        initialRoute = RoutesNames.mainNav;
+      } else {
+        await SecureStorageHelper.clearTokens();
+      }
+    } catch (e) {
+      await SecureStorageHelper.clearTokens();
+    }
+  }
+
+  runApp(FoodloopApp(initialRoute: initialRoute, apiManager: ApiManager()));
 }
 
 class FoodloopApp extends StatelessWidget {
-  const FoodloopApp({super.key});
+  final String initialRoute;
+  final ApiManager apiManager;
+  const FoodloopApp({
+    super.key,
+    required this.initialRoute,
+    required this.apiManager,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +66,33 @@ class FoodloopApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp(
-          title: 'Foodloop',
-          debugShowCheckedModeBanner: false,
-          theme: AppThemeManager.mainTheme,
-          // initialRoute: RoutesNames.welcomeView,
-          // initialRoute: RoutesNames.resetPasswordView,
-          initialRoute: RoutesNames.mainNav,
-          onGenerateRoute: RouteGenerator.generateRoutes,
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) =>
+                  AuthCubit(AuthRepository(AuthRemoteDataSource(apiManager))),
+            ),
+            BlocProvider(
+              create: (_) => ProfileCubit(
+                ProfileRepository(ProfileRemoteDataSource(apiManager)),
+              ),
+            ),
+          ],
+          child: MaterialApp(
+            title: 'Foodloop',
+            debugShowCheckedModeBanner: false,
+            locale: const Locale('ar'),
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('ar'), Locale('en')],
+            theme: AppThemeManager.mainTheme,
+            navigatorKey: navigatorKey,
+            initialRoute: initialRoute,
+            onGenerateRoute: RouteGenerator.generateRoutes,
+          ),
         );
       },
     );

@@ -13,7 +13,8 @@ class MainNavigationView extends StatefulWidget {
 }
 
 class _MainNavigationViewState extends State<MainNavigationView> {
-  int _currentIndex = 0;
+  // int _currentIndex = 0;
+  int _currentIndex = 3;
   late final PageController _pageController;
 
   final List<Widget> _views = const [
