@@ -12,6 +12,8 @@ class ProfileAddressTile extends StatelessWidget {
     required this.line1,
     required this.line2,
     this.isDefault = false,
+    this.onEdit,
+    this.onDelete,
   });
 
   final IconData icon;
@@ -19,6 +21,8 @@ class ProfileAddressTile extends StatelessWidget {
   final String line1;
   final String line2;
   final bool isDefault;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -105,12 +109,12 @@ class ProfileAddressTile extends StatelessWidget {
           _ActionIcon(
             icon: Icons.edit_outlined,
             color: AppColors.primaryLight,
-            onTap: () {},
+            onTap: onEdit ?? () {},
           ),
           _ActionIcon(
             icon: Icons.delete_outline_rounded,
             color: AppColors.error,
-            onTap: () {},
+            onTap: onDelete ?? () {},
           ),
         ],
       ),

@@ -8,6 +8,7 @@ import 'package:foodloop/features/auth/presentation/views/login/login_view.dart'
 import 'package:foodloop/features/auth/presentation/views/reset_password/reset_password_view.dart';
 import 'package:foodloop/features/navigation/presentation/views/main_navigation_view.dart';
 import 'package:foodloop/features/onboarding/presentation/views/welcome_view.dart';
+import 'package:foodloop/features/profile/presentation/views/add_address_view.dart';
 import 'package:foodloop/features/profile/presentation/views/profile_view.dart';
 
 class RouteGenerator {
@@ -39,6 +40,9 @@ class RouteGenerator {
 
       case RoutesNames.profileView:
         return MaterialPageRoute(builder: (_) => const ProfileView());
+
+      case RoutesNames.addAddressView:
+        return MaterialPageRoute(builder: (_) => const AddAddressView());
       case RoutesNames.mainNav:
         return MaterialPageRoute(builder: (_) => const MainNavigationView());
       default:

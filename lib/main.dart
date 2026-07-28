@@ -8,6 +8,9 @@ import 'package:foodloop/core/routes_manager/routes_names.dart';
 import 'package:foodloop/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:foodloop/features/auth/data/repositories/auth_repository.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:foodloop/features/profile/data/data_sources/profile_remote_data_source.dart';
+import 'package:foodloop/features/profile/data/repositories/profile_repository.dart';
+import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,7 +22,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  String initialRoute = RoutesNames.welcomeView;
+  String initialRoute = RoutesNames.mainNav;
   final refreshToken = await SecureStorageHelper.getRefreshToken();
 
   if (refreshToken != null) {
@@ -44,12 +47,17 @@ void main() async {
     }
   }
 
-  runApp(FoodloopApp(initialRoute: initialRoute));
+  runApp(FoodloopApp(initialRoute: initialRoute, apiManager: ApiManager()));
 }
 
 class FoodloopApp extends StatelessWidget {
   final String initialRoute;
-  const FoodloopApp({super.key, required this.initialRoute});
+  final ApiManager apiManager;
+  const FoodloopApp({
+    super.key,
+    required this.initialRoute,
+    required this.apiManager,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +70,12 @@ class FoodloopApp extends StatelessWidget {
           providers: [
             BlocProvider(
               create: (_) =>
-                  AuthCubit(AuthRepository(AuthRemoteDataSource(ApiManager()))),
+                  AuthCubit(AuthRepository(AuthRemoteDataSource(apiManager))),
+            ),
+            BlocProvider(
+              create: (_) => ProfileCubit(
+                ProfileRepository(ProfileRemoteDataSource(apiManager)),
+              ),
             ),
           ],
           child: MaterialApp(

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodloop/core/routes_manager/routes_names.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
+import 'package:foodloop/features/profile/data/models/address_model.dart';
+import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_address_tile.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_section_title.dart';
 
 class ProfileSavedAddressesCard extends StatelessWidget {
-  const ProfileSavedAddressesCard({super.key});
+  const ProfileSavedAddressesCard({super.key, required this.addresses});
+
+  final List<AddressModel> addresses;
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +28,50 @@ class ProfileSavedAddressesCard extends StatelessWidget {
           ),
           SizedBox(height: AppConstants.paddingM.h),
 
-          // --- Address list ---
-          const ProfileAddressTile(
-            icon: Icons.home_rounded,
-            title: AppStrings.addressHomeTitle,
-            line1: AppStrings.addressHomeLine1,
-            line2: AppStrings.addressHomeLine2,
-            isDefault: true,
-          ),
-          SizedBox(height: AppConstants.paddingS.h),
-          const ProfileAddressTile(
-            icon: Icons.work_outline_rounded,
-            title: AppStrings.addressOfficeTitle,
-            line1: AppStrings.addressOfficeLine1,
-            line2: AppStrings.addressOfficeLine2,
-          ),
-          SizedBox(height: AppConstants.paddingL.h),
+          // --- Address list (from GET /users/me/addresses) ---
+          for (final address in addresses) ...[
+            ProfileAddressTile(
+              icon: _iconFor(address.addressType),
+              title: _titleFor(address.addressType),
+              line1: address.buildingNo != null
+                  ? '${address.street}, ${address.buildingNo}'
+                  : address.street,
+              line2: '${address.district}, ${address.city}',
+              isDefault: address.isDefault,
+              onDelete: () =>
+                  context.read<ProfileCubit>().deleteAddress(address.id),
+            ),
+            SizedBox(height: AppConstants.paddingS.h),
+          ],
+          SizedBox(height: AppConstants.paddingM.h),
 
           // --- Empty-state hint ---
           const _AddressesHint(),
         ],
       ),
     );
+  }
+
+  IconData _iconFor(AddressType type) {
+    switch (type) {
+      case AddressType.home:
+        return Icons.home_rounded;
+      case AddressType.company:
+        return Icons.work_outline_rounded;
+      case AddressType.other:
+        return Icons.place_outlined;
+    }
+  }
+
+  String _titleFor(AddressType type) {
+    switch (type) {
+      case AddressType.home:
+        return AppStrings.addressHomeTitle;
+      case AddressType.company:
+        return AppStrings.addressOfficeTitle;
+      case AddressType.other:
+        return AppStrings.addressOtherTitle;
+    }
   }
 }
 
@@ -53,7 +81,8 @@ class _AddNewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () =>
+          Navigator.pushNamed(context, RoutesNames.addAddressView),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(

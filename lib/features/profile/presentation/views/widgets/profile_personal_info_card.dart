@@ -4,10 +4,13 @@ import 'package:foodloop/core/utils/app_assets.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
+import 'package:foodloop/features/profile/data/models/profile_model.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_card.dart';
 
 class ProfilePersonalInfoCard extends StatelessWidget {
-  const ProfilePersonalInfoCard({super.key});
+  const ProfilePersonalInfoCard({super.key, required this.profile});
+
+  final ProfileModel profile;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,7 @@ class ProfilePersonalInfoCard extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const _ProfileAvatar(),
+                  _ProfileAvatar(imageUrl: profile.profileImage),
                   const Spacer(),
                   const _EditButton(),
                 ],
@@ -41,7 +44,7 @@ class ProfilePersonalInfoCard extends StatelessWidget {
 
               // --- Name ---
               Text(
-                AppStrings.profileName,
+                profile.fullName,
                 style: TextStyle(
                   fontFamily: 'PlayfairDisplay',
                   fontSize: 24.sp,
@@ -54,14 +57,14 @@ class ProfilePersonalInfoCard extends StatelessWidget {
               // --- Email ---
               _ContactRow(
                 icon: Icons.mail_outline_rounded,
-                text: AppStrings.profileEmail,
+                text: profile.email,
               ),
               SizedBox(height: 8.h),
 
               // --- Phone (monospace) ---
               _ContactRow(
                 icon: Icons.call_outlined,
-                text: AppStrings.profilePhone,
+                text: profile.phoneNumber.isNotEmpty ? profile.phoneNumber : '—',
                 isMonospace: true,
               ),
             ],
@@ -73,10 +76,13 @@ class ProfilePersonalInfoCard extends StatelessWidget {
 }
 
 class _ProfileAvatar extends StatelessWidget {
-  const _ProfileAvatar();
+  const _ProfileAvatar({this.imageUrl});
+
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
+    final hasRemoteImage = imageUrl != null && imageUrl!.isNotEmpty;
     return Container(
       width: 80.r,
       height: 80.r,
@@ -89,13 +95,25 @@ class _ProfileAvatar extends StatelessWidget {
         ),
       ),
       clipBehavior: Clip.antiAlias,
-      child: Image.asset(
-        AppAssets.profileAvatarPlaceholder,
-
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) =>
-            Icon(Icons.person_rounded, size: 40.r, color: AppColors.primary),
-      ),
+      child: hasRemoteImage
+          ? Image.network(
+              imageUrl!,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Icon(
+                Icons.person_rounded,
+                size: 40.r,
+                color: AppColors.primary,
+              ),
+            )
+          : Image.asset(
+              AppAssets.profileAvatarPlaceholder,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Icon(
+                Icons.person_rounded,
+                size: 40.r,
+                color: AppColors.primary,
+              ),
+            ),
     );
   }
 }

@@ -5,7 +5,7 @@ import '../utils/app_colors.dart';
 class CustomDropdownField<T> extends StatelessWidget {
   const CustomDropdownField({
     super.key,
-    required this.label,
+    this.label,
     required this.hint,
     required this.items,
     required this.value,
@@ -13,7 +13,8 @@ class CustomDropdownField<T> extends StatelessWidget {
     this.validator,
   });
 
-  final String label;
+  /// Caps label above the field; when null no label row is rendered.
+  final String? label;
   final String hint;
   final List<DropdownMenuItem<T>> items;
   final T? value;
@@ -25,17 +26,19 @@ class CustomDropdownField<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontFamily: 'DmSans',
-            fontSize: 11.sp,
-            fontWeight: FontWeight.w700,
-            color: AppColors.textSecondary,
-            letterSpacing: 1.0,
+        if (label != null) ...[
+          Text(
+            label!,
+            style: TextStyle(
+              fontFamily: 'DmSans',
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textSecondary,
+              letterSpacing: 1.0,
+            ),
           ),
-        ),
-        SizedBox(height: 6.h),
+          SizedBox(height: 6.h),
+        ],
         DropdownButtonFormField<T>(
           initialValue: value,
           items: items,

@@ -50,10 +50,7 @@ class ApiManager {
     return await _dio.patch(
       endPoint,
       data: data,
-      options: Options(
-        headers: headers,
-        validateStatus: (status) => true,
-      ),
+      options: Options(headers: headers),
     );
   }
 }

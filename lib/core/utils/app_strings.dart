@@ -150,8 +150,27 @@ abstract class AppStrings {
   static const String addressOfficeTitle = 'العمل';
   static const String addressOfficeLine1 = 'القاهرة الجديدة، التجمع الخامس';
   static const String addressOfficeLine2 = 'المنطقة الصناعية';
+  static const String addressOtherTitle = 'عنوان آخر';
   static const String addressEmptyHint =
       'أضف مواقع لتسريع عملية توصيل طعامك المحلي.';
+
+  // --- Add / Edit Address ---
+  static const String addAddressTitle = 'إضافة عنوان جديد';
+  static const String addressLabelSectionTitle = 'تصنيف العنوان';
+  static const String addressDetailsSectionTitle = 'تفاصيل العنوان';
+  static const String addressTypeCompany = 'شركة';
+  static const String selectCityHint = 'اختر المدينة';
+  static const String districtHint = 'الحي';
+  static const String streetNameHint = 'اسم الشارع';
+  static const String buildingNoHint = 'رقم المبنى';
+  static const String floorHint = 'الطابق';
+  static const String apartmentNoHint = 'رقم الشقة';
+  static const String addressNotesHint = 'ملاحظات / علامات مميزة (مثال: بجوار المسجد)';
+  static const String saveAddress = 'حفظ العنوان';
+  static const String mapDragHint = 'حرّك الخريطة لتحديد موقع التوصيل بدقة.';
+  static const String cityCairo = 'القاهرة';
+  static const String cityAlexandria = 'الإسكندرية';
+  static const String cityGiza = 'الجيزة';
 
   // --- Bottom Navigation ---
   static const String navMarket = 'السوق';
