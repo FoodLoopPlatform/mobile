@@ -168,6 +168,11 @@ abstract class AppStrings {
   static const String addressNotesHint = 'ملاحظات / علامات مميزة (مثال: بجوار المسجد)';
   static const String saveAddress = 'حفظ العنوان';
   static const String mapDragHint = 'حرّك الخريطة لتحديد موقع التوصيل بدقة.';
+  static const String locationServiceDisabled = 'خدمة الموقع غير مُفعّلة على جهازك.';
+  static const String locationPermissionDenied = 'تم رفض إذن الوصول إلى الموقع.';
+  static const String locationFetchFailed = 'تعذّر تحديد موقعك الحالي.';
+  static const String locatingYou = 'جارٍ تحديد موقعك...';
+  static const String resolvingAddress = 'جارٍ تحديد العنوان...';
   static const String cityCairo = 'القاهرة';
   static const String cityAlexandria = 'الإسكندرية';
   static const String cityGiza = 'الجيزة';

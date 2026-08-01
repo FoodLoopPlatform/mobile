@@ -23,8 +23,8 @@ class ProfileRemoteDataSource {
     final response = await _apiManager.patch(
       ApiConstants.profileEndpoint,
       data: {
-        if (name != null) 'name': name,
-        if (profileImage != null) 'profileImage': profileImage,
+        'name': ?name,
+        'profileImage': ?profileImage,
       },
     );
     return _unwrapOptional(response.data, (json) => ProfileModel.fromJson(json));

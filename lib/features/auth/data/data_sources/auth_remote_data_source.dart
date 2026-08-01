@@ -32,8 +32,8 @@ class AuthRemoteDataSource {
       "password": password,
       "phoneNumber": phoneNumber,
       "role": role,
-      if (businessName != null) "businessName": businessName,
-      if (businessCategory != null) "businessCategory": businessCategory,
+      "businessName": ?businessName,
+      "businessCategory": ?businessCategory,
     });
     return AuthModel.fromJson(response.data);
   }
