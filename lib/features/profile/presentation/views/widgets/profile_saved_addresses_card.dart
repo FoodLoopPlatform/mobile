@@ -38,6 +38,11 @@ class ProfileSavedAddressesCard extends StatelessWidget {
                   : address.street,
               line2: '${address.district}, ${address.city}',
               isDefault: address.isDefault,
+              onEdit: () => Navigator.pushNamed(
+                context,
+                RoutesNames.addAddressView,
+                arguments: address,
+              ),
               onDelete: () =>
                   context.read<ProfileCubit>().deleteAddress(address.id),
             ),

@@ -42,9 +42,18 @@ class PickedLocation {
 /// fixed in the centre of the viewport, and reports the address under that pin
 /// whenever the map settles.
 class AddAddressMapSection extends StatefulWidget {
-  const AddAddressMapSection({super.key, required this.onLocationPicked});
+  const AddAddressMapSection({
+    super.key,
+    required this.onLocationPicked,
+    this.initialLocation,
+  });
 
   final ValueChanged<PickedLocation> onLocationPicked;
+
+  /// When set (editing an existing address) the map opens here instead of
+  /// hunting for GPS, and the pin is left as-is so the already-filled form
+  /// fields aren't overwritten by a geocode the user didn't ask for.
+  final LatLng? initialLocation;
 
   @override
   State<AddAddressMapSection> createState() => _AddAddressMapSectionState();
@@ -66,6 +75,13 @@ class _AddAddressMapSectionState extends State<AddAddressMapSection> {
   /// flutter_map can fire this while the tree is still building, so the actual
   /// work is deferred a frame — calling setState during build throws.
   void _onMapReady() {
+    // Editing: centre on the saved pin and leave the form untouched.
+    final existing = widget.initialLocation;
+    if (existing != null) {
+      _mapController.move(existing, 16);
+      return;
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       final position = await _resolveCurrentPosition(silent: true);
@@ -191,8 +207,8 @@ class _AddAddressMapSectionState extends State<AddAddressMapSection> {
                 FlutterMap(
                   mapController: _mapController,
                   options: MapOptions(
-                    initialCenter: _defaultCenter,
-                    initialZoom: 13,
+                    initialCenter: widget.initialLocation ?? _defaultCenter,
+                    initialZoom: widget.initialLocation != null ? 16 : 13,
                     onMapReady: _onMapReady,
                     onPositionChanged: _onPositionChanged,
                   ),

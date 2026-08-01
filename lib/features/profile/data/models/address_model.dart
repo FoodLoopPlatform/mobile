@@ -75,8 +75,10 @@ class AddressModel extends Equatable {
     );
   }
 
-  /// Body for `POST /users/me/addresses` — city, district and street are required.
-  Map<String, dynamic> toCreateJson() {
+  /// Body for both `POST /users/me/addresses` and `PATCH .../{id}`. The two
+  /// request schemas take the same fields — create just makes city, district
+  /// and street mandatory. Null optionals are omitted rather than sent as null.
+  Map<String, dynamic> toRequestJson() {
     return {
       'addressType': addressType.toJson(),
       'city': city,

@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
+import 'package:foodloop/core/utils/egypt_cities.dart';
 import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/features/profile/data/models/address_model.dart';
 import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
@@ -14,7 +15,10 @@ import 'package:foodloop/features/profile/presentation/views/widgets/add_address
 import 'package:foodloop/features/profile/presentation/views/widgets/address_label_selector.dart';
 
 class AddAddressBody extends StatefulWidget {
-  const AddAddressBody({super.key});
+  const AddAddressBody({super.key, this.address});
+
+  /// Null creates a new address; otherwise the form edits [address].
+  final AddressModel? address;
 
   @override
   State<AddAddressBody> createState() => _AddAddressBodyState();
@@ -33,6 +37,28 @@ class _AddAddressBodyState extends State<AddAddressBody> {
   String? _selectedCity;
   LatLng? _pickedLocation;
   bool _isSaving = false;
+
+  bool get _isEditing => widget.address != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final address = widget.address;
+    if (address == null) return;
+
+    _addressType = address.addressType;
+    _selectedCity = EgyptCities.all.contains(address.city) ? address.city : null;
+    _districtController.text = address.district;
+    _streetController.text = address.street;
+    _buildingController.text = address.buildingNo ?? '';
+    _floorController.text = address.floor ?? '';
+    _apartmentController.text = address.apartmentNo ?? '';
+    _notesController.text = address.notes ?? '';
+
+    if (address.latitude != null && address.longitude != null) {
+      _pickedLocation = LatLng(address.latitude!, address.longitude!);
+    }
+  }
 
   @override
   void dispose() {
@@ -81,10 +107,16 @@ class _AddAddressBodyState extends State<AddAddressBody> {
       notes: _orNull(_notesController.text),
       latitude: _pickedLocation?.latitude,
       longitude: _pickedLocation?.longitude,
+      // Editing must not silently drop the default flag.
+      isDefault: widget.address?.isDefault ?? false,
     );
 
     final cubit = context.read<ProfileCubit>();
-    await cubit.addAddress(address);
+    if (_isEditing) {
+      await cubit.updateAddress(widget.address!.id, address.toRequestJson());
+    } else {
+      await cubit.addAddress(address);
+    }
     if (!mounted) return;
 
     setState(() => _isSaving = false);
@@ -118,7 +150,10 @@ class _AddAddressBodyState extends State<AddAddressBody> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // --- Map ---
-                  AddAddressMapSection(onLocationPicked: _onLocationPicked),
+                  AddAddressMapSection(
+                    onLocationPicked: _onLocationPicked,
+                    initialLocation: _pickedLocation,
+                  ),
                   SizedBox(height: AppConstants.paddingL.h),
 
                   // --- Address label ---

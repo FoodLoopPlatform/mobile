@@ -43,7 +43,7 @@ class ProfileRemoteDataSource {
   Future<AddressModel?> addAddress(AddressModel address) async {
     final response = await _apiManager.post(
       ApiConstants.addressesEndpoint,
-      address.toCreateJson(),
+      address.toRequestJson(),
     );
     return _unwrapOptional(response.data, (json) => AddressModel.fromJson(json));
   }

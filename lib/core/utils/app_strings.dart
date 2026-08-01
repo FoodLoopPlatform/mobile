@@ -167,6 +167,7 @@ abstract class AppStrings {
   static const String apartmentNoHint = 'رقم الشقة';
   static const String addressNotesHint = 'ملاحظات / علامات مميزة (مثال: بجوار المسجد)';
   static const String saveAddress = 'حفظ العنوان';
+  static const String editAddressTitle = 'تعديل العنوان';
   static const String mapDragHint = 'حرّك الخريطة لتحديد موقع التوصيل بدقة.';
   static const String locationServiceDisabled = 'خدمة الموقع غير مُفعّلة على جهازك.';
   static const String locationPermissionDenied = 'تم رفض إذن الوصول إلى الموقع.';
