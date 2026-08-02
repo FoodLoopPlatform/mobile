@@ -168,6 +168,11 @@ abstract class AppStrings {
   static const String addressNotesHint = 'ملاحظات / علامات مميزة (مثال: بجوار المسجد)';
   static const String saveAddress = 'حفظ العنوان';
   static const String editAddressTitle = 'تعديل العنوان';
+  static const String deleteAddressTitle = 'حذف العنوان';
+  static const String deleteAddressMessage =
+      'هل أنت متأكد من حذف هذا العنوان؟ لا يمكن التراجع عن هذا الإجراء.';
+  static const String cancel = 'إلغاء';
+  static const String delete = 'حذف';
   static const String mapDragHint = 'حرّك الخريطة لتحديد موقع التوصيل بدقة.';
   static const String locationServiceDisabled = 'خدمة الموقع غير مُفعّلة على جهازك.';
   static const String locationPermissionDenied = 'تم رفض إذن الوصول إلى الموقع.';
@@ -177,6 +182,47 @@ abstract class AppStrings {
   static const String cityCairo = 'القاهرة';
   static const String cityAlexandria = 'الإسكندرية';
   static const String cityGiza = 'الجيزة';
+
+  // --- Market / Home ---
+  static const String currencyEgp = 'ج.م';
+  static const String marketBrand = 'فودلوب';
+  static const String activeOrderLabel = 'طلب نشط';
+  static const String activeOrderStatus = 'يصل خلال 12 دقيقة';
+  static const String categoryBakery = 'مخبوزات';
+  static const String categoryMeals = 'وجبات';
+  static const String categoryGroceries = 'بقالة';
+  static const String categoryDesserts = 'حلويات';
+  static const String categoryBeverages = 'مشروبات';
+  static const String recommendedTitle = 'موصى به لك';
+  static const String viewAll = 'عرض الكل';
+  static const String nearbyDealsTitle = 'عروض قريبة منك';
+  static const String trendingTitle = 'الأكثر رواجاً';
+
+  // --- Product Details ---
+  static const String inStock = 'متوفر';
+  static const String currentOffer = 'العرض الحالي';
+  static const String freePickup = 'استلام مجاني';
+  static const String delivery = 'توصيل';
+  static const String deliveryFee = 'رسوم 25 ج.م';
+  static const String reviewsCount = 'تقييم';
+  static const String flashDealExpires = 'ينتهي العرض السريع خلال';
+  static const String saveBadgePrefix = 'وفّر';
+  static const String productDetailsSection = 'تفاصيل المنتج';
+  static const String productDescription =
+      'باقة الفائض المنسّقة هذه تضم مزيجاً متنوعاً من الأوراق الخضراء الموسمية المحصودة صباح اليوم من مزرعتنا المائية. تحتوي كل حقيبة على ما يقارب كيلوغرام من المنتجات المتنوعة، وعادةً ما تشمل الكرنب واللفت والخس والكزبرة أو البقدونس. باختيارك لهذه الباقة، تساعدنا على تقليل هدر الطعام مع الاستمتاع بأجود أنواع التغذية الطازجة.';
+  static const String chipCertifiedOrganic = 'عضوي معتمد';
+  static const String chipZeroPlastic = 'تغليف خالٍ من البلاستيك';
+  static const String chipWithinFiveMiles = 'ضمن 5 أميال';
+  static const String pickupLocationTitle = 'موقع الاستلام';
+  static const String pickupLocationAddress = '1242 شارع جرينواي، سبرينجفيلد';
+  static const String viewOnMap = 'عرض على الخريطة';
+  static const String whatsInTheBox = 'ماذا يوجد في الصندوق؟';
+  static const String boxItem1 = 'حزمتان من الكرنب المجعّد';
+  static const String boxItem2 = 'كيس سبانخ صغير 150 جم';
+  static const String boxItem3 = 'رأس خس أحمر';
+  static const String boxItem4 = 'حزمة أعشاب موسمية';
+  static const String quantityLabel = 'الكمية';
+  static const String addToCart = 'أضف إلى العربة';
 
   // --- Bottom Navigation ---
   static const String navMarket = 'السوق';

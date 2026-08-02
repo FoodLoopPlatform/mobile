@@ -14,6 +14,9 @@ abstract class AppColors {
   static const Color tertiaryFixed = Color(0xFFFFDDB7);
   static const Color tertiaryFixedDim = Color(0xFFF5BC76);
   static const Color onTertiaryFixed = Color(0xFF2A1700);
+  static const Color onTertiary = Color(0xFFFFFFFF);
+  static const Color tertiaryContainer = Color(0xFF633D00);
+  static const Color onTertiaryContainer = Color(0xFFDFA964);
 
   // --- Neutral ---
   static const Color neutral = Color(0xFF747873);
@@ -44,6 +47,8 @@ abstract class AppColors {
   // --- Semantic ---
   static const Color error = Color(0xFFB00020);
   static const Color errorLight = Color(0xFFFFDAD6);
+  static const Color errorContainer = Color(0xFFFFDAD6);
+  static const Color onErrorContainer = Color(0xFF93000A);
   static const Color success = Color(0xFF006D38);
   static const Color warning = Color(0xFF643E00);
   static const Color pending = Color(0xFF947400);
