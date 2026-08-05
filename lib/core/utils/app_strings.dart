@@ -224,11 +224,37 @@ abstract class AppStrings {
   static const String quantityLabel = 'الكمية';
   static const String addToCart = 'أضف إلى العربة';
 
+  // --- Search ---
+  static const String searchHint = 'ابحث عن فائض الطعام المحلي...';
+  static const String localHarvestDeals = 'عروض الحصاد المحلي';
+  static const String resultsCountSuffix = 'نتيجة';
+  static const String filterSortByPrice = 'ترتيب حسب السعر';
+  static const String filterRating = 'التقييم';
+  static const String filterNearby = 'قريب';
+  static const String filterOrganicOnly = 'عضوي فقط';
+  static const String noResultsTitlePrefix = 'لا توجد نتائج لـ';
+  static const String noResultsSubtitle =
+      'جرّب تعديل الفلاتر أو البحث عن شيء آخر قريب منك.';
+  static const String browseAllDeals = 'تصفح كل العروض';
+  static const String clearAllFilters = 'مسح كل الفلاتر';
+  static const String trendingInArea = 'الأكثر رواجاً في منطقتك';
+  static const String suggestionTomatoes = 'طماطم هيرلوم';
+  static const String suggestionTomatoesDistance = '2.4 كم';
+  static const String suggestionSourdough = 'رغيف خبز مخمّر';
+  static const String suggestionSourdoughDistance = '0.8 كم';
+
   // --- Bottom Navigation ---
   static const String navMarket = 'السوق';
   static const String navOrders = 'الطلبات';
   static const String navCart = 'العربة';
   static const String navProfile = 'الملف الشخصي';
+
+  // --- Connection / Errors ---
+  static const String systemStatusOffline = 'حالة النظام: غير متصل';
+  static const String connectionLostTitle = 'عذراً! انقطع الاتصال';
+  static const String connectionLostSubtitle =
+      'نواجه مشكلة في الوصول إلى شبكتنا. يرجى التحقق من اتصالك بالإنترنت أو حالة الشبكة اللاسلكية لمتابعة استكشاف المنتجات القريبة منك.';
+  static const String retry = 'إعادة المحاولة';
 
   // --- Generic ---
   static const String back = 'رجوع';

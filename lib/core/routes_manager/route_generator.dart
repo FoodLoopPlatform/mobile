@@ -8,6 +8,7 @@ import 'package:foodloop/features/auth/presentation/views/login/login_view.dart'
 import 'package:foodloop/features/auth/presentation/views/reset_password/reset_password_view.dart';
 import 'package:foodloop/features/market/data/models/product_model.dart';
 import 'package:foodloop/features/market/presentation/views/product_details_view.dart';
+import 'package:foodloop/features/search/presentation/views/search_view.dart';
 import 'package:foodloop/features/navigation/presentation/views/main_navigation_view.dart';
 import 'package:foodloop/features/onboarding/presentation/views/welcome_view.dart';
 import 'package:foodloop/features/profile/data/models/address_model.dart';
@@ -55,6 +56,9 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => ProductDetailsView(product: product),
         );
+
+      case RoutesNames.searchView:
+        return MaterialPageRoute(builder: (_) => const SearchView());
 
       case RoutesNames.mainNav:
         return MaterialPageRoute(builder: (_) => const MainNavigationView());
