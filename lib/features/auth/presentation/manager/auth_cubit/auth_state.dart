@@ -28,6 +28,10 @@ class AuthSellerSuccess extends AuthState {
   const AuthSellerSuccess();
 }
 
+class AuthLoggedOut extends AuthState {
+  const AuthLoggedOut();
+}
+
 class AuthFail extends AuthState {
   final String message;
   const AuthFail({required this.message});

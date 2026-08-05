@@ -95,14 +95,59 @@ abstract class AppStrings {
   static const String pinOnMap = 'تحديد على الخريطة';
   static const String mapHint =
       'الإحداثيات عالية الدقة تساعد فرق الخدمات اللوجستية في العثور عليك بشكل أسرع.';
+  // --- Business Category ---
+  static const String businessInfoSectionTitle = 'معلومات النشاط التجاري';
+  static const String businessCategoryLabel = 'نوع النشاط التجاري';
+  static const String businessCategoryHint = 'اختر نوع نشاطك';
+  static const String categoryFieldRequired = 'يرجى اختيار نوع النشاط';
+  // Category values sent to the backend (English)
+  static const String catSupermarket = 'Supermarket';
+  static const String catRestaurant = 'Restaurant';
+  static const String catBakery = 'Bakery';
+  static const String catCafe = 'Cafe';
+  static const String catHotel = 'Hotel';
+  static const String catConvenienceStore = 'ConvenienceStore';
+  static const String catGroceryChain = 'GroceryChain';
+  // Category display labels (Arabic)
+  static const String catSupermarketLabel = 'سوبر ماركت';
+  static const String catRestaurantLabel = 'مطعم';
+  static const String catBakeryLabel = 'مخبز';
+  static const String catCafeLabel = 'كافيه';
+  static const String catHotelLabel = 'فندق';
+  static const String catConvenienceStoreLabel = 'متجر قريب';
+  static const String catGroceryChainLabel = 'سلسلة بقالة';
   static const String legalDocumentsSectionTitle = 'المستندات القانونية';
-  static const String taxIdLabel = 'البطاقة الضريبية';
-  static const String taxIdSubtitle = 'مثال: 466-XXX-XXX';
+
+  // --- Document API type values (sent to backend) ---
+  static const String docTypeCommercialRegistration = 'CommercialRegistration';
+  static const String docTypeTaxIdCertificate = 'TaxIdCertificate';
+  static const String docTypeStoreFacilityPhoto = 'StoreFacilityPhoto';
+  static const String docTypeAssociationCertificate = 'AssociationCertificate';
+  static const String docTypeCharityBylaws = 'CharityBylaws';
+  static const String docTypeBoardOfDirectorsList = 'BoardOfDirectorsList';
+
+  // --- Merchant document labels (Arabic) ---
   static const String commercialRegLabel = 'السجل التجاري';
   static const String commercialRegSubtitle = 'ملف تسجيل نشط';
+  static const String taxIdLabel = 'البطاقة الضريبية';
+  static const String taxIdSubtitle = 'مثال: 466-XXX-XXX';
+  static const String storeFacilityPhotoLabel = 'صورة المنشأة';
+  static const String storeFacilityPhotoSubtitle = 'صورة واضحة لمقر النشاط التجاري';
+
+  // --- Charity document labels (Arabic) ---
+  static const String associationCertLabel = 'شهادة تأسيس الجمعية';
+  static const String associationCertSubtitle = 'وثيقة الاعتراف الرسمي بالجمعية';
+  static const String charityBylawsLabel = 'النظام الأساسي للجمعية';
+  static const String charityBylawsSubtitle = 'اللائحة الداخلية للجمعية';
+  static const String boardOfDirectorsListLabel = 'قائمة مجلس الإدارة';
+  static const String boardOfDirectorsListSubtitle = 'أسماء وتوقيعات أعضاء مجلس الإدارة';
+
+  // Kept for backward compatibility (health cert was replaced by StoreFacilityPhoto)
   static const String healthCertLabel = 'الشهادة الصحية';
   static const String healthCertSubtitle = 'مطلوبة للتعامل مع الأطعمة';
+
   static const String statusPending = 'قيد الانتظار';
+  static const String changeLabel = 'تغيير';
   static const String verificationTimeNote =
       'تستغرق عملية التحقق عادةً من 24 إلى 48 ساعة. سيتم إعلامك عبر البريد الإلكتروني بمجرد الموافقة.';
   static const String submitForVerification = 'إرسال للتحقق';
@@ -165,7 +210,8 @@ abstract class AppStrings {
   static const String buildingNoHint = 'رقم المبنى';
   static const String floorHint = 'الطابق';
   static const String apartmentNoHint = 'رقم الشقة';
-  static const String addressNotesHint = 'ملاحظات / علامات مميزة (مثال: بجوار المسجد)';
+  static const String addressNotesHint =
+      'ملاحظات / علامات مميزة (مثال: بجوار المسجد)';
   static const String saveAddress = 'حفظ العنوان';
   static const String editAddressTitle = 'تعديل العنوان';
   static const String deleteAddressTitle = 'حذف العنوان';
@@ -173,6 +219,11 @@ abstract class AppStrings {
       'هل أنت متأكد من حذف هذا العنوان؟ لا يمكن التراجع عن هذا الإجراء.';
   static const String cancel = 'إلغاء';
   static const String delete = 'حذف';
+
+  // --- Logout ---
+  static const String logout = 'تسجيل الخروج';
+  static const String logoutConfirmMessage =
+      'هل أنت متأكد من تسجيل الخروج من حسابك؟';
   static const String mapDragHint = 'حرّك الخريطة لتحديد موقع التوصيل بدقة.';
   static const String locationServiceDisabled = 'خدمة الموقع غير مُفعّلة على جهازك.';
   static const String locationPermissionDenied = 'تم رفض إذن الوصول إلى الموقع.';

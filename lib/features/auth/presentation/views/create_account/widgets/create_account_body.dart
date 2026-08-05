@@ -87,8 +87,6 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
             RoutesNames.emailVerificationView,
             arguments: _emailController.text.trim(),
           );
-        } else if (state is AuthSellerSuccess) {
-          Navigator.pushNamed(context, RoutesNames.businessDetailsView);
         } else if (state is AuthFail) {
           _showError(state.message);
         }
@@ -192,6 +190,13 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
                             password: _passwordController.text,
                             phoneNumber: _phoneController.text.trim(),
                           );
+                      // Navigate directly so back→re-tap always works,
+                      // regardless of cubit state deduplication.
+                      if (_selectedAccountType == AccountType.seller ||
+                          _selectedAccountType == AccountType.charity) {
+                        Navigator.pushNamed(
+                            context, RoutesNames.businessDetailsView);
+                      }
                     }
                   },
                 ),

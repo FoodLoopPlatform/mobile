@@ -18,6 +18,52 @@ class AuthCubit extends Cubit<AuthState> {
   
   AccountType selectedAccountType = AccountType.user;
 
+  Future<void> logout() async {
+    emit(const AuthLoading());
+    await _authRepository.logout();
+    _clearDrafts();
+    emit(const AuthLoggedOut());
+  }
+
+  /// Half-finished sign-up state must not survive into the next session.
+  void _clearDrafts() {
+    _registerFullName = '';
+    _registerEmail = '';
+    _registerPassword = '';
+    _registerPhone = '';
+    selectedAccountType = AccountType.user;
+    draftGovernorate = null;
+    draftCity = null;
+    draftNeighborhood = '';
+    draftStreet = '';
+    draftCategory = null;
+    draftDocuments = {};
+  }
+
+  // Business-details draft (persisted across back/forward navigation)
+  String? draftGovernorate;
+  String? draftCity;
+  String draftNeighborhood = '';
+  String draftStreet = '';
+  String? draftCategory;
+  Map<String, File?> draftDocuments = {};
+
+  void saveBusinessDraft({
+    String? governorate,
+    String? city,
+    String? neighborhood,
+    String? street,
+    String? category,
+    Map<String, File?>? documents,
+  }) {
+    draftGovernorate = governorate;
+    draftCity = city;
+    draftNeighborhood = neighborhood ?? '';
+    draftStreet = street ?? '';
+    draftCategory = category;
+    if (documents != null) draftDocuments = documents;
+  }
+
   void changeAccountType(AccountType type) {
     selectedAccountType = type;
     emit(AuthAccountTypeChanged(accountType: type));
@@ -59,7 +105,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String role,
     String? businessName,
     String? businessCategory,
-    File? documentFile,
+    Map<String, File?> documentFiles = const {},
   }) async {
     emit(const AuthLoading());
     try {
@@ -71,7 +117,7 @@ class AuthCubit extends Cubit<AuthState> {
         role: role,
         businessName: businessName,
         businessCategory: businessCategory,
-        documentFile: documentFile,
+        documentFiles: documentFiles,
       );
       emit(AuthSuccess(email: _registerEmail));
     } on Errors catch (e) {

@@ -13,13 +13,22 @@ class AuthRepository {
   Future<AuthModel> login(String email, String password) async {
     try {
       final authModel = await _remoteDataSource.login(email, password);
-      
+
       if (authModel.success && authModel.data != null) {
-        if (authModel.data!.accessToken != null) {
+        if (authModel.data!.user?.status == "PendingVerification") {
+          throw ServerError("Your account is not verified yet");
+        }
+        if (authModel.data!.accessToken != null &&
+            authModel.data!.accessToken != "") {
           await SecureStorageHelper.saveToken(authModel.data!.accessToken!);
         }
-        if (authModel.data!.refreshToken != null) {
-          await SecureStorageHelper.saveRefreshToken(authModel.data!.refreshToken!);
+        if (authModel.data!.refreshToken != null &&
+            authModel.data!.refreshToken != "") {
+          await SecureStorageHelper.saveRefreshToken(
+            authModel.data!.refreshToken!,
+          );
+        } else {
+          throw ServerError("Something went wrong. Please try again later.");
         }
       } else {
         String msg = authModel.message ?? "Login failed";
@@ -37,6 +46,24 @@ class AuthRepository {
     }
   }
 
+  /// Revokes the session server-side, then wipes local tokens.
+  ///
+  /// The local wipe happens even when the network call fails — otherwise a
+  /// dead connection would leave the user stuck in a logged-in state with no
+  /// way out.
+  Future<void> logout() async {
+    try {
+      final refreshToken = await SecureStorageHelper.getRefreshToken();
+      if (refreshToken != null && refreshToken.isNotEmpty) {
+        await _remoteDataSource.logout(refreshToken);
+      }
+    } catch (_) {
+      // Best-effort: revoking failed, but the user still leaves the session.
+    } finally {
+      await SecureStorageHelper.clearTokens();
+    }
+  }
+
   Future<AuthModel> register({
     required String name,
     required String email,
@@ -45,7 +72,7 @@ class AuthRepository {
     required String role,
     String? businessName,
     String? businessCategory,
-    File? documentFile,
+    Map<String, File?> documentFiles = const {},
   }) async {
     try {
       final authModel = await _remoteDataSource.register(
@@ -63,12 +90,19 @@ class AuthRepository {
           await SecureStorageHelper.saveToken(authModel.data!.accessToken!);
         }
         if (authModel.data!.refreshToken != null) {
-          await SecureStorageHelper.saveRefreshToken(authModel.data!.refreshToken!);
+          await SecureStorageHelper.saveRefreshToken(
+            authModel.data!.refreshToken!,
+          );
         }
-        
-        // If role is Merchant/Charity and we have a document, upload it using the same email
-        if ((role == 'Merchant' || role == 'Charity') && documentFile != null) {
-            await _remoteDataSource.uploadDocument(email, "Legal Document", documentFile);
+
+        // Upload each legal document individually using its title as the Type.
+        if (role == 'Merchant' || role == 'Charity') {
+          for (final entry in documentFiles.entries) {
+            final file = entry.value;
+            if (file != null) {
+              await _remoteDataSource.uploadDocument(email, entry.key, file);
+            }
+          }
         }
       } else {
         String msg = authModel.message ?? "Registration failed";
@@ -82,6 +116,7 @@ class AuthRepository {
       throw ServerError.fromDioError(e);
     } catch (e) {
       if (e is ServerError) rethrow;
+      print("Error: $e");
       throw ServerError("Unknown error occurred");
     }
   }

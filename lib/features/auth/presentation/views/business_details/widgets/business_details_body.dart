@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +10,10 @@ import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_state.dart';
 import 'package:foodloop/features/auth/presentation/widgets/auth_error_banner.dart';
+import 'package:foodloop/core/widgets/custom_dropdown_field.dart';
 import 'package:foodloop/features/auth/presentation/views/business_details/widgets/business_details_legal_section.dart';
 import 'package:foodloop/features/auth/presentation/views/business_details/widgets/business_details_location_section.dart';
+import 'package:foodloop/features/auth/presentation/views/business_details/widgets/section_header.dart';
 
 class BusinessDetailsBody extends StatefulWidget {
   const BusinessDetailsBody({super.key});
@@ -25,14 +28,67 @@ class _BusinessDetailsBodyState extends State<BusinessDetailsBody> {
   final _streetController = TextEditingController();
   String? _selectedGovernorate;
   String? _selectedCity;
+  String? _selectedCategory;
   String? _errorMessage;
+  Map<String, File?> _pickedDocuments = {};
 
   final List<String> _governorates = [
-    'Cairo', 'Giza', 'Alexandria', 'Qalyubia', 'Sharqia', 'Dakahlia', 'Beheira',
-    'Monufia', 'Gharbia', 'Kafr El Sheikh', 'Damietta', 'Port Said', 'Ismailia',
-    'Suez', 'North Sinai', 'South Sinai', 'Red Sea', 'Matrouh', 'Fayoum',
-    'Beni Suef', 'Minya', 'Assiut', 'Sohag', 'Qena', 'Luxor', 'Aswan', 'New Valley',
+    'Cairo',
+    'Giza',
+    'Alexandria',
+    'Qalyubia',
+    'Sharqia',
+    'Dakahlia',
+    'Beheira',
+    'Monufia',
+    'Gharbia',
+    'Kafr El Sheikh',
+    'Damietta',
+    'Port Said',
+    'Ismailia',
+    'Suez',
+    'North Sinai',
+    'South Sinai',
+    'Red Sea',
+    'Matrouh',
+    'Fayoum',
+    'Beni Suef',
+    'Minya',
+    'Assiut',
+    'Sohag',
+    'Qena',
+    'Luxor',
+    'Aswan',
+    'New Valley',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Restore any previously entered data from the cubit draft.
+    final cubit = context.read<AuthCubit>();
+    _selectedGovernorate = cubit.draftGovernorate;
+    _selectedCity = cubit.draftCity;
+    _neighborhoodController.text = cubit.draftNeighborhood;
+    _streetController.text = cubit.draftStreet;
+    _selectedCategory = cubit.draftCategory;
+    _pickedDocuments = Map.of(cubit.draftDocuments);
+
+    // Auto-save whenever the user types in the text fields.
+    _neighborhoodController.addListener(_saveDraft);
+    _streetController.addListener(_saveDraft);
+  }
+
+  void _saveDraft() {
+    context.read<AuthCubit>().saveBusinessDraft(
+      governorate: _selectedGovernorate,
+      city: _selectedCity,
+      neighborhood: _neighborhoodController.text,
+      street: _streetController.text,
+      category: _selectedCategory,
+      documents: _pickedDocuments,
+    );
+  }
 
   @override
   void dispose() {
@@ -100,8 +156,9 @@ class _BusinessDetailsBodyState extends State<BusinessDetailsBody> {
                           ),
                           children: [
                             const TextSpan(
-                                text:
-                                    'Help us verify your organization to start reducing food waste. We ensure all partners meet local safety and '),
+                              text:
+                                  'Help us verify your organization to start reducing food waste. We ensure all partners meet local safety and ',
+                            ),
                             TextSpan(
                               text: 'legal standards',
                               style: TextStyle(
@@ -122,17 +179,83 @@ class _BusinessDetailsBodyState extends State<BusinessDetailsBody> {
                         selectedGovernorate: _selectedGovernorate,
                         selectedCity: _selectedCity,
                         governorates: _governorates,
-                        onGovernorateChanged: (v) => setState(() => _selectedGovernorate = v),
-                        onCityChanged: (v) => setState(() => _selectedCity = v),
+                        onGovernorateChanged: (v) {
+                          setState(() => _selectedGovernorate = v);
+                          _saveDraft();
+                        },
+                        onCityChanged: (v) {
+                          setState(() => _selectedCity = v);
+                          _saveDraft();
+                        },
                         neighborhoodController: _neighborhoodController,
                         streetController: _streetController,
                       ),
                       SizedBox(height: 32.h),
 
                       // =========================================
+                      // BUSINESS INFO SECTION
+                      // =========================================
+                      SectionHeader(
+                        icon: Icons.storefront_outlined,
+                        title: AppStrings.businessInfoSectionTitle,
+                      ),
+                      SizedBox(height: 16.h),
+                      CustomDropdownField<String>(
+                        label: AppStrings.businessCategoryLabel,
+                        hint: AppStrings.businessCategoryHint,
+                        value: _selectedCategory,
+                        items: const [
+                          DropdownMenuItem(
+                            value: AppStrings.catSupermarket,
+                            child: Text(AppStrings.catSupermarketLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: AppStrings.catRestaurant,
+                            child: Text(AppStrings.catRestaurantLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: AppStrings.catBakery,
+                            child: Text(AppStrings.catBakeryLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: AppStrings.catCafe,
+                            child: Text(AppStrings.catCafeLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: AppStrings.catHotel,
+                            child: Text(AppStrings.catHotelLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: AppStrings.catConvenienceStore,
+                            child: Text(AppStrings.catConvenienceStoreLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: AppStrings.catGroceryChain,
+                            child: Text(AppStrings.catGroceryChainLabel),
+                          ),
+                        ],
+                        onChanged: (v) {
+                          setState(() => _selectedCategory = v);
+                          _saveDraft();
+                        },
+                        validator: (v) => v == null || v.isEmpty
+                            ? AppStrings.categoryFieldRequired
+                            : null,
+                      ),
+                      SizedBox(height: 32.h),
+
+                      // =========================================
                       // LEGAL DOCUMENTS SECTION
                       // =========================================
-                      const BusinessDetailsLegalSection(),
+                      BusinessDetailsLegalSection(
+                        accountType:
+                            context.read<AuthCubit>().selectedAccountType,
+                        initialDocuments: _pickedDocuments,
+                        onDocumentsChanged: (docs) {
+                          setState(() => _pickedDocuments = docs);
+                          _saveDraft();
+                        },
+                      ),
                       SizedBox(height: 24.h),
                     ],
                   ),
@@ -147,7 +270,8 @@ class _BusinessDetailsBodyState extends State<BusinessDetailsBody> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   border: Border(
-                      top: BorderSide(color: AppColors.border, width: 0.5)),
+                    top: BorderSide(color: AppColors.border, width: 0.5),
+                  ),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -159,10 +283,14 @@ class _BusinessDetailsBodyState extends State<BusinessDetailsBody> {
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           context.read<AuthCubit>().register(
-                            role: context.read<AuthCubit>().selectedAccountType.toBackendRole(),
-                            businessName: '$_selectedGovernorate - ${_streetController.text}',
-                            businessCategory: 'Store',
-                            documentFile: null, // No file picking UI yet
+                            role: context
+                                .read<AuthCubit>()
+                                .selectedAccountType
+                                .toBackendRole(),
+                            businessName:
+                                '$_selectedGovernorate - ${_streetController.text}',
+                            businessCategory: _selectedCategory,
+                            documentFiles: _pickedDocuments,
                           );
                         }
                       },
@@ -171,8 +299,11 @@ class _BusinessDetailsBodyState extends State<BusinessDetailsBody> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.lock_outline_rounded,
-                            size: 12.r, color: AppColors.neutral),
+                        Icon(
+                          Icons.lock_outline_rounded,
+                          size: 12.r,
+                          color: AppColors.neutral,
+                        ),
                         SizedBox(width: 4.w),
                         Text(
                           AppStrings.dataSecurityNote,
@@ -194,4 +325,3 @@ class _BusinessDetailsBodyState extends State<BusinessDetailsBody> {
     );
   }
 }
-
