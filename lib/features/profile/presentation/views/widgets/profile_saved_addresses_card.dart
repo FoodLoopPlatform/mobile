@@ -38,8 +38,12 @@ class ProfileSavedAddressesCard extends StatelessWidget {
                   : address.street,
               line2: '${address.district}, ${address.city}',
               isDefault: address.isDefault,
-              onDelete: () =>
-                  context.read<ProfileCubit>().deleteAddress(address.id),
+              onEdit: () => Navigator.pushNamed(
+                context,
+                RoutesNames.addAddressView,
+                arguments: address,
+              ),
+              onDelete: () => _confirmDelete(context, address),
             ),
             SizedBox(height: AppConstants.paddingS.h),
           ],
@@ -50,6 +54,62 @@ class ProfileSavedAddressesCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Deleting is irreversible, so it goes through a confirmation first.
+  Future<void> _confirmDelete(BuildContext context, AddressModel address) async {
+    // Captured before the await — `context` may be gone once the dialog closes.
+    final cubit = context.read<ProfileCubit>();
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(
+          AppStrings.deleteAddressTitle,
+          style: TextStyle(
+            fontFamily: 'DmSans',
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        content: Text(
+          AppStrings.deleteAddressMessage,
+          style: TextStyle(
+            fontFamily: 'DmSans',
+            fontSize: 14.sp,
+            color: AppColors.textSecondary,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: Text(
+              AppStrings.cancel,
+              style: TextStyle(
+                fontFamily: 'DmSans',
+                fontSize: 14.sp,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: Text(
+              AppStrings.delete,
+              style: TextStyle(
+                fontFamily: 'DmSans',
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w700,
+                color: AppColors.error,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) cubit.deleteAddress(address.id);
   }
 
   IconData _iconFor(AddressType type) {

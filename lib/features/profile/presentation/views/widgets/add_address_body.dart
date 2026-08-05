@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
+import 'package:foodloop/core/utils/egypt_cities.dart';
 import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/features/profile/data/models/address_model.dart';
+import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
+import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_state.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/add_address_form_fields.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/add_address_map_section.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/address_label_selector.dart';
 
 class AddAddressBody extends StatefulWidget {
-  const AddAddressBody({super.key});
+  const AddAddressBody({super.key, this.address});
+
+  /// Null creates a new address; otherwise the form edits [address].
+  final AddressModel? address;
 
   @override
   State<AddAddressBody> createState() => _AddAddressBodyState();
@@ -27,6 +35,30 @@ class _AddAddressBodyState extends State<AddAddressBody> {
 
   AddressType _addressType = AddressType.home;
   String? _selectedCity;
+  LatLng? _pickedLocation;
+  bool _isSaving = false;
+
+  bool get _isEditing => widget.address != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final address = widget.address;
+    if (address == null) return;
+
+    _addressType = address.addressType;
+    _selectedCity = EgyptCities.all.contains(address.city) ? address.city : null;
+    _districtController.text = address.district;
+    _streetController.text = address.street;
+    _buildingController.text = address.buildingNo ?? '';
+    _floorController.text = address.floor ?? '';
+    _apartmentController.text = address.apartmentNo ?? '';
+    _notesController.text = address.notes ?? '';
+
+    if (address.latitude != null && address.longitude != null) {
+      _pickedLocation = LatLng(address.latitude!, address.longitude!);
+    }
+  }
 
   @override
   void dispose() {
@@ -39,10 +71,64 @@ class _AddAddressBodyState extends State<AddAddressBody> {
     super.dispose();
   }
 
-  void _onSave() {
+  String? _orNull(String text) => text.trim().isEmpty ? null : text.trim();
+
+  /// Mirrors the map pin into the form. Only fields the geocoder could actually
+  /// name are overwritten, so a failed lookup never wipes what the user typed.
+  void _onLocationPicked(PickedLocation location) {
+    _pickedLocation = location.position;
+
+    final city = location.city;
+    final district = location.district;
+    final street = location.street;
+
+    if (city == null && district == null && street == null) return;
+
+    setState(() {
+      if (city != null) _selectedCity = city;
+      if (district != null) _districtController.text = district;
+      if (street != null) _streetController.text = street;
+    });
+  }
+
+  Future<void> _onSave() async {
     if (!_formKey.currentState!.validate()) return;
-    // Static screen: the AddressModel is assembled but not yet persisted.
-    // Wire `context.read<ProfileCubit>().addAddress(address)` here later.
+
+    setState(() => _isSaving = true);
+
+    final address = AddressModel(
+      addressType: _addressType,
+      city: _selectedCity!,
+      district: _districtController.text.trim(),
+      street: _streetController.text.trim(),
+      buildingNo: _orNull(_buildingController.text),
+      floor: _orNull(_floorController.text),
+      apartmentNo: _orNull(_apartmentController.text),
+      notes: _orNull(_notesController.text),
+      latitude: _pickedLocation?.latitude,
+      longitude: _pickedLocation?.longitude,
+      // Editing must not silently drop the default flag.
+      isDefault: widget.address?.isDefault ?? false,
+    );
+
+    final cubit = context.read<ProfileCubit>();
+    if (_isEditing) {
+      await cubit.updateAddress(widget.address!.id, address.toRequestJson());
+    } else {
+      await cubit.addAddress(address);
+    }
+    if (!mounted) return;
+
+    setState(() => _isSaving = false);
+
+    final state = cubit.state;
+    if (state is ProfileLoaded && state.actionError != null) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(state.actionError!)));
+      return;
+    }
+
     Navigator.pop(context);
   }
 
@@ -64,7 +150,10 @@ class _AddAddressBodyState extends State<AddAddressBody> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // --- Map ---
-                  const AddAddressMapSection(),
+                  AddAddressMapSection(
+                    onLocationPicked: _onLocationPicked,
+                    initialLocation: _pickedLocation,
+                  ),
                   SizedBox(height: AppConstants.paddingL.h),
 
                   // --- Address label ---
@@ -96,7 +185,7 @@ class _AddAddressBodyState extends State<AddAddressBody> {
         ),
 
         // --- Bottom save bar ---
-        _SaveBar(onSave: _onSave),
+        _SaveBar(onSave: _onSave, isSaving: _isSaving),
       ],
     );
   }
@@ -123,9 +212,10 @@ class _SectionCaption extends StatelessWidget {
 }
 
 class _SaveBar extends StatelessWidget {
-  const _SaveBar({required this.onSave});
+  const _SaveBar({required this.onSave, required this.isSaving});
 
   final VoidCallback onSave;
+  final bool isSaving;
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +240,7 @@ class _SaveBar extends StatelessWidget {
           child: CustomButton(
             label: AppStrings.saveAddress,
             suffixIcon: Icons.save_rounded,
+            isLoading: isSaving,
             onTap: onSave,
           ),
         ),

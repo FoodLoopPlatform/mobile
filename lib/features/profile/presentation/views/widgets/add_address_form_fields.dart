@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
+import 'package:foodloop/core/utils/egypt_cities.dart';
 import 'package:foodloop/core/utils/validation.dart';
 import 'package:foodloop/core/widgets/custom_dropdown_field.dart';
 import 'package:foodloop/core/widgets/custom_text_field.dart';
@@ -28,12 +29,6 @@ class AddAddressFormFields extends StatelessWidget {
   final TextEditingController apartmentController;
   final TextEditingController notesController;
 
-  static const List<String> _cities = [
-    AppStrings.cityCairo,
-    AppStrings.cityAlexandria,
-    AppStrings.cityGiza,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,7 +37,7 @@ class AddAddressFormFields extends StatelessWidget {
         CustomDropdownField<String>(
           hint: AppStrings.selectCityHint,
           value: selectedCity,
-          items: _cities
+          items: EgyptCities.all
               .map((c) => DropdownMenuItem(value: c, child: Text(c)))
               .toList(),
           onChanged: onCityChanged,
