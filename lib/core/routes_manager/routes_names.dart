@@ -11,5 +11,6 @@ abstract class RoutesNames {
   static const String addAddressView = 'addAddressView';
   static const String productDetailsView = 'productDetailsView';
   static const String searchView = 'searchView';
+  static const String addProductView = 'addProductView';
   static const String mainNav = 'mainNav';
 }

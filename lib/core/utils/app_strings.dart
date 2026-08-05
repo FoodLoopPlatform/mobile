@@ -220,6 +220,32 @@ abstract class AppStrings {
   static const String cancel = 'إلغاء';
   static const String delete = 'حذف';
 
+  // --- Add Product (Step 1) ---
+  static const String addProductTitle = 'إضافة منتج';
+  static const String addProductStepLabel = 'الخطوة 1 من 3';
+  static const String addProductStepName = 'تفاصيل المنتج';
+  static const String addProductHeadline = 'ما الذي تعرضه اليوم؟';
+  static const String addProductSubtitle =
+      'أدخل البيانات الأساسية لمنتجاتك الطازجة أو المصنوعة يدوياً.';
+  static const String productPhotosTitle = 'صور المنتج';
+  static const String productPhotosHint =
+      'اضغط لرفع صور عالية الجودة. الإضاءة الطبيعية هي الأفضل.';
+  static const String productPhotosSelected = 'صورة تم اختيارها';
+  static const String productPhotosTip =
+      'الأوصاف التفصيلية والصور الواضحة ترفع مبيعاتك بنسبة تصل إلى 40%.';
+  static const String productNameLabel = 'اسم المنتج';
+  static const String productNameHint = 'مثال: خبز العجين المخمر';
+  static const String productCategoryLabel = 'الفئة';
+  static const String productCategoryHint = 'اختر فئة المنتج';
+  static const String categoriesLoading = 'جارٍ تحميل الفئات...';
+  static const String productPriceLabel = 'السعر (ج.م)';
+  static const String productPriceHint = '0.00';
+  static const String productQuantityLabel = 'الكمية';
+  static const String productDescriptionLabel = 'الوصف';
+  static const String productDescriptionHint =
+      'اذكر المصدر أو المكونات أو طريقة التحضير...';
+  static const String addProductNextStep = 'التالي: تفاصيل الصلاحية';
+
   // --- Logout ---
   static const String logout = 'تسجيل الخروج';
   static const String logoutConfirmMessage =
