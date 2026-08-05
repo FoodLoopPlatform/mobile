@@ -22,7 +22,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  String initialRoute = RoutesNames.mainNav;
+  String initialRoute = RoutesNames.welcomeView;
   final refreshToken = await SecureStorageHelper.getRefreshToken();
 
   if (refreshToken != null) {
@@ -38,7 +38,7 @@ void main() async {
         final newRefreshToken = response.data['data']['refreshToken'];
 
         await SecureStorageHelper.saveTokens(newAccessToken, newRefreshToken);
-        initialRoute = RoutesNames.mainNav;
+        // initialRoute = RoutesNames.mainNav;
       } else {
         await SecureStorageHelper.clearTokens();
       }
