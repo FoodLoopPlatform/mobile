@@ -5,6 +5,7 @@ import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
 import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_state.dart';
+import 'package:foodloop/features/profile/presentation/views/widgets/profile_logout_button.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_personal_info_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_preferences_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_saved_addresses_card.dart';
@@ -63,6 +64,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                 const ProfilePreferencesCard(),
                 SizedBox(height: AppConstants.paddingM.h),
                 ProfileSavedAddressesCard(addresses: state.addresses),
+                SizedBox(height: AppConstants.paddingL.h),
+                const ProfileLogoutButton(),
               ],
             ),
           ),

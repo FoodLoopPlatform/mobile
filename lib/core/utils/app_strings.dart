@@ -219,6 +219,37 @@ abstract class AppStrings {
       'هل أنت متأكد من حذف هذا العنوان؟ لا يمكن التراجع عن هذا الإجراء.';
   static const String cancel = 'إلغاء';
   static const String delete = 'حذف';
+
+  // --- Add Product (Step 1) ---
+  static const String addProductTitle = 'إضافة منتج';
+  static const String addProductStepLabel = 'الخطوة 1 من 3';
+  static const String addProductStepName = 'تفاصيل المنتج';
+  static const String addProductHeadline = 'ما الذي تعرضه اليوم؟';
+  static const String addProductSubtitle =
+      'أدخل البيانات الأساسية لمنتجاتك الطازجة أو المصنوعة يدوياً.';
+  static const String productPhotosTitle = 'صور المنتج';
+  static const String productPhotosHint =
+      'اضغط لرفع صور عالية الجودة. الإضاءة الطبيعية هي الأفضل.';
+  static const String productPhotosSelected = 'صورة تم اختيارها';
+  static const String productPhotosTip =
+      'الأوصاف التفصيلية والصور الواضحة ترفع مبيعاتك بنسبة تصل إلى 40%.';
+  static const String productNameLabel = 'اسم المنتج';
+  static const String productNameHint = 'مثال: خبز العجين المخمر';
+  static const String productCategoryLabel = 'الفئة';
+  static const String productCategoryHint = 'اختر فئة المنتج';
+  static const String categoriesLoading = 'جارٍ تحميل الفئات...';
+  static const String productPriceLabel = 'السعر (ج.م)';
+  static const String productPriceHint = '0.00';
+  static const String productQuantityLabel = 'الكمية';
+  static const String productDescriptionLabel = 'الوصف';
+  static const String productDescriptionHint =
+      'اذكر المصدر أو المكونات أو طريقة التحضير...';
+  static const String addProductNextStep = 'التالي: تفاصيل الصلاحية';
+
+  // --- Logout ---
+  static const String logout = 'تسجيل الخروج';
+  static const String logoutConfirmMessage =
+      'هل أنت متأكد من تسجيل الخروج من حسابك؟';
   static const String mapDragHint = 'حرّك الخريطة لتحديد موقع التوصيل بدقة.';
   static const String locationServiceDisabled = 'خدمة الموقع غير مُفعّلة على جهازك.';
   static const String locationPermissionDenied = 'تم رفض إذن الوصول إلى الموقع.';
@@ -270,6 +301,25 @@ abstract class AppStrings {
   static const String quantityLabel = 'الكمية';
   static const String addToCart = 'أضف إلى العربة';
 
+  // --- Search ---
+  static const String searchHint = 'ابحث عن فائض الطعام المحلي...';
+  static const String localHarvestDeals = 'عروض الحصاد المحلي';
+  static const String resultsCountSuffix = 'نتيجة';
+  static const String filterSortByPrice = 'ترتيب حسب السعر';
+  static const String filterRating = 'التقييم';
+  static const String filterNearby = 'قريب';
+  static const String filterOrganicOnly = 'عضوي فقط';
+  static const String noResultsTitlePrefix = 'لا توجد نتائج لـ';
+  static const String noResultsSubtitle =
+      'جرّب تعديل الفلاتر أو البحث عن شيء آخر قريب منك.';
+  static const String browseAllDeals = 'تصفح كل العروض';
+  static const String clearAllFilters = 'مسح كل الفلاتر';
+  static const String trendingInArea = 'الأكثر رواجاً في منطقتك';
+  static const String suggestionTomatoes = 'طماطم هيرلوم';
+  static const String suggestionTomatoesDistance = '2.4 كم';
+  static const String suggestionSourdough = 'رغيف خبز مخمّر';
+  static const String suggestionSourdoughDistance = '0.8 كم';
+
   // --- Bottom Navigation ---
   static const String navMarket = 'السوق';
   static const String navOrders = 'الطلبات';
@@ -277,6 +327,13 @@ abstract class AppStrings {
   static const String navCart = 'العربة';
   static const String navAddListing = 'إضافة';
   static const String navProfile = 'الملف الشخصي';
+
+  // --- Connection / Errors ---
+  static const String systemStatusOffline = 'حالة النظام: غير متصل';
+  static const String connectionLostTitle = 'عذراً! انقطع الاتصال';
+  static const String connectionLostSubtitle =
+      'نواجه مشكلة في الوصول إلى شبكتنا. يرجى التحقق من اتصالك بالإنترنت أو حالة الشبكة اللاسلكية لمتابعة استكشاف المنتجات القريبة منك.';
+  static const String retry = 'إعادة المحاولة';
 
   // --- Generic ---
   static const String back = 'رجوع';

@@ -24,6 +24,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  /// Drops the cached profile/addresses on logout. Both this cubit and the
+  /// repository outlive the session (they're provided at app root), so without
+  /// this the next user to sign in briefly sees the previous user's data.
+  void reset() {
+    _profileRepository.clearCache();
+    emit(const ProfileInitial());
+  }
+
   Future<void> updateProfile({String? name, String? profileImage}) async {
     final current = state;
     if (current is! ProfileLoaded) return;

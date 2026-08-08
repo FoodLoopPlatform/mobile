@@ -38,6 +38,13 @@ class AuthRemoteDataSource {
     return AuthModel.fromJson(response.data);
   }
 
+  /// Revokes [refreshToken] server-side so it can't be used again.
+  Future<void> logout(String refreshToken) async {
+    await _apiManager.post(ApiConstants.logoutEndpoint, {
+      "refreshToken": refreshToken,
+    });
+  }
+
   Future<void> uploadDocument(String email, String type, File file) async {
     String fileName = file.path.split('/').last;
     FormData formData = FormData.fromMap({

@@ -68,6 +68,13 @@ abstract class SampleProducts {
     ),
   ];
 
+  /// Everything searchable, flattened across the home sections.
+  static const List<ProductModel> all = [
+    ...recommended,
+    ...nearbyDeals,
+    ...trending,
+  ];
+
   static const List<ProductModel> trending = [
     ProductModel(
       id: 'trend-1',

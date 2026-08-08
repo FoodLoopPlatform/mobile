@@ -18,6 +18,28 @@ class AuthCubit extends Cubit<AuthState> {
   
   AccountType selectedAccountType = AccountType.user;
 
+  Future<void> logout() async {
+    emit(const AuthLoading());
+    await _authRepository.logout();
+    _clearDrafts();
+    emit(const AuthLoggedOut());
+  }
+
+  /// Half-finished sign-up state must not survive into the next session.
+  void _clearDrafts() {
+    _registerFullName = '';
+    _registerEmail = '';
+    _registerPassword = '';
+    _registerPhone = '';
+    selectedAccountType = AccountType.user;
+    draftGovernorate = null;
+    draftCity = null;
+    draftNeighborhood = '';
+    draftStreet = '';
+    draftCategory = null;
+    draftDocuments = {};
+  }
+
   // Business-details draft (persisted across back/forward navigation)
   String? draftGovernorate;
   String? draftCity;
