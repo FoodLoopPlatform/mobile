@@ -6,6 +6,7 @@ class SecureStorageHelper {
   static const String _tokenKey = 'accessToken';
   static const String _refreshTokenKey = 'refreshToken';
   static const String _userRoleKey = 'userRole';
+  static const String _languageKey = 'appLanguage';
 
   static Future<void> saveToken(String token) async {
     await _storage.write(key: _tokenKey, value: token);
@@ -58,5 +59,19 @@ class SecureStorageHelper {
 
   static Future<void> clearAll() async {
     await _storage.deleteAll();
+  }
+
+  // --- Language Preference ---
+
+  static Future<void> saveLanguage(String langCode) async {
+    await _storage.write(key: _languageKey, value: langCode);
+  }
+
+  static Future<String?> getLanguage() async {
+    return await _storage.read(key: _languageKey);
+  }
+
+  static Future<void> clearLanguage() async {
+    await _storage.delete(key: _languageKey);
   }
 }

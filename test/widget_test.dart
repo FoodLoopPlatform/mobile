@@ -14,7 +14,11 @@ void main() {
   testWidgets('Smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(
-      FoodloopApp(initialRoute: '/', apiManager: ApiManager()),
+      FoodloopApp(
+        initialRoute: '/',
+        apiManager: ApiManager(),
+        initialLanguage: 'en',
+      ),
     );
   });
 }

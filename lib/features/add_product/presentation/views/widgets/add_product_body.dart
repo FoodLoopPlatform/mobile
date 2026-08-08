@@ -86,7 +86,7 @@ class _AddProductBodyState extends State<AddProductBody> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AddProductStepIndicator(
+                  AddProductStepIndicator(
                     step: 1,
                     stepName: AppStrings.addProductStepName,
                   ),

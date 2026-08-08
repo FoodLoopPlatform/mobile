@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
@@ -6,6 +7,8 @@ import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/core/widgets/custom_switch.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_section_title.dart';
+import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_cubit.dart';
+import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_state.dart';
 
 class ProfilePreferencesCard extends StatelessWidget {
   const ProfilePreferencesCard({super.key});
@@ -16,7 +19,7 @@ class ProfilePreferencesCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const ProfileSectionTitle(title: AppStrings.preferencesTitle),
+          ProfileSectionTitle(title: AppStrings.preferencesTitle),
           SizedBox(height: AppConstants.paddingM.h),
 
           // --- Language ---
@@ -38,14 +41,8 @@ class ProfilePreferencesCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4.h),
-          const _NotificationRow(
-            label: AppStrings.orderUpdatesLabel,
-            enabled: true,
-          ),
-          const _NotificationRow(
-            label: AppStrings.latestOffersLabel,
-            enabled: false,
-          ),
+          _NotificationRow(label: AppStrings.orderUpdatesLabel, enabled: true),
+          _NotificationRow(label: AppStrings.latestOffersLabel, enabled: false),
         ],
       ),
     );
@@ -65,8 +62,11 @@ class _LanguageRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.language_rounded,
-              size: 22.r, color: AppColors.primaryLight),
+          Icon(
+            Icons.language_rounded,
+            size: 22.r,
+            color: AppColors.primaryLight,
+          ),
           SizedBox(width: 12.w),
           Text(
             AppStrings.languageLabel,
@@ -90,18 +90,36 @@ class _LanguageSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(4.r),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(AppConstants.radiusS.r),
-      ),
-      child: Row(
-        children: const [
-          _LanguageChip(label: AppStrings.languageEn, selected: true),
-          _LanguageChip(label: AppStrings.languageAr, selected: false),
-        ],
-      ),
+    return BlocBuilder<LocalizationCubit, LocalizationState>(
+      builder: (context, state) {
+        return Container(
+          padding: EdgeInsets.all(4.r),
+          decoration: BoxDecoration(
+            color: AppColors.surfaceContainerHigh,
+            borderRadius: BorderRadius.circular(AppConstants.radiusS.r),
+          ),
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: () =>
+                    context.read<LocalizationCubit>().changeLanguage('en'),
+                child: _LanguageChip(
+                  label: AppStrings.languageEn,
+                  selected: state.locale == 'en',
+                ),
+              ),
+              GestureDetector(
+                onTap: () =>
+                    context.read<LocalizationCubit>().changeLanguage('ar'),
+                child: _LanguageChip(
+                  label: AppStrings.languageAr,
+                  selected: state.locale == 'ar',
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -13,7 +13,7 @@ class MarketCategoryChips extends StatefulWidget {
 }
 
 class _MarketCategoryChipsState extends State<MarketCategoryChips> {
-  static const List<String> _categories = [
+  static final List<String> _categories = [
     AppStrings.categoryBakery,
     AppStrings.categoryMeals,
     AppStrings.categoryGroceries,

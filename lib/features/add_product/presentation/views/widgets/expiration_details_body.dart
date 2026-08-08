@@ -25,7 +25,7 @@ class _DateBatch {
   final TextEditingController quantity;
 
   _DateBatch({String initialQuantity = '1'})
-      : quantity = TextEditingController(text: initialQuantity);
+    : quantity = TextEditingController(text: initialQuantity);
 
   void dispose() => quantity.dispose();
 }
@@ -73,8 +73,7 @@ class _ExpirationDetailsBodyState extends State<ExpirationDetailsBody> {
 
   bool get _canVerify {
     if (_sameDateForAll) return _primaryDate != null;
-    return _batches.isNotEmpty &&
-        _batches.every((batch) => batch.date != null);
+    return _batches.isNotEmpty && _batches.every((batch) => batch.date != null);
   }
 
   Future<void> _pickDate({
@@ -168,7 +167,7 @@ class _ExpirationDetailsBodyState extends State<ExpirationDetailsBody> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AddProductStepIndicator(
+                AddProductStepIndicator(
                   step: 2,
                   stepName: AppStrings.expirationStepName,
                 ),
@@ -200,8 +199,7 @@ class _ExpirationDetailsBodyState extends State<ExpirationDetailsBody> {
                   date: _primaryDate,
                   onPickDate: () => _pickDate(
                     current: _primaryDate,
-                    onPicked: (picked) =>
-                        setState(() => _primaryDate = picked),
+                    onPicked: (picked) => setState(() => _primaryDate = picked),
                   ),
                   onVerifyViaCamera: _verifyViaCamera,
                 ),
@@ -211,8 +209,7 @@ class _ExpirationDetailsBodyState extends State<ExpirationDetailsBody> {
                 _SameDateToggle(
                   value: _sameDateForAll,
                   quantity: widget.draft.quantity,
-                  onChanged: (value) =>
-                      setState(() => _sameDateForAll = value),
+                  onChanged: (value) => setState(() => _sameDateForAll = value),
                 ),
 
                 // --- Per-batch list ---
@@ -405,10 +402,7 @@ class _AddBatchButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: AppConstants.paddingM.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConstants.radiusL.r),
-          border: Border.all(
-            color: AppColors.outlineVariant,
-            width: 2,
-          ),
+          border: Border.all(color: AppColors.outlineVariant, width: 2),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

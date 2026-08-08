@@ -14,6 +14,8 @@ import 'package:foodloop/features/add_product/presentation/manager/category_cubi
 import 'package:foodloop/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:foodloop/features/profile/data/repositories/profile_repository.dart';
 import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
+import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_cubit.dart';
+import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_state.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -61,16 +63,24 @@ void main() async {
     }
   }
 
-  runApp(FoodloopApp(initialRoute: initialRoute, apiManager: ApiManager()));
+  final initialLanguage = await SecureStorageHelper.getLanguage() ?? 'ar';
+
+  runApp(FoodloopApp(
+    initialRoute: initialRoute, 
+    apiManager: ApiManager(),
+    initialLanguage: initialLanguage,
+  ));
 }
 
 class FoodloopApp extends StatelessWidget {
   final String initialRoute;
   final ApiManager apiManager;
+  final String initialLanguage;
   const FoodloopApp({
     super.key,
     required this.initialRoute,
     required this.apiManager,
+    required this.initialLanguage,
   });
 
   @override
@@ -84,6 +94,9 @@ class FoodloopApp extends StatelessWidget {
           value: apiManager,
           child: MultiBlocProvider(
             providers: [
+              BlocProvider(
+                create: (_) => LocalizationCubit(initialLanguage),
+              ),
               BlocProvider(
                 create: (_) => AuthCubit(
                   AuthRepository(AuthRemoteDataSource(apiManager)),
@@ -100,20 +113,24 @@ class FoodloopApp extends StatelessWidget {
                 ),
               ),
             ],
-            child: MaterialApp(
-              title: 'Foodloop',
-              debugShowCheckedModeBanner: false,
-              locale: const Locale('ar'),
-              localizationsDelegates: const [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: const [Locale('ar'), Locale('en')],
-              theme: AppThemeManager.mainTheme,
-              navigatorKey: navigatorKey,
-              initialRoute: initialRoute,
-              onGenerateRoute: RouteGenerator.generateRoutes,
+            child: BlocBuilder<LocalizationCubit, LocalizationState>(
+              builder: (context, state) {
+                return MaterialApp(
+                  title: 'Foodloop',
+                  debugShowCheckedModeBanner: false,
+                  locale: Locale(state.locale),
+                  localizationsDelegates: const [
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: const [Locale('ar'), Locale('en')],
+                  theme: AppThemeManager.mainTheme,
+                  navigatorKey: navigatorKey,
+                  initialRoute: initialRoute,
+                  onGenerateRoute: RouteGenerator.generateRoutes,
+                );
+              },
             ),
           ),
         );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/routes_manager/routes_names.dart';
 import 'package:foodloop/core/utils/app_assets.dart';
@@ -6,6 +7,8 @@ import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/core/widgets/custom_outlined_button.dart';
+import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_cubit.dart';
+import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_state.dart';
 
 class WelcomeBody extends StatelessWidget {
   const WelcomeBody({super.key});
@@ -50,41 +53,47 @@ class WelcomeBody extends StatelessWidget {
                   ],
                 ),
                 // Language selector
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 6.h,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.border),
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: AppColors.surface,
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.language_rounded,
-                        size: 14.r,
-                        color: AppColors.textSecondary,
-                      ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        AppStrings.english,
-                        style: TextStyle(
-                          fontFamily: 'DmSans',
-                          fontSize: 12.sp,
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.w500,
+                BlocBuilder<LocalizationCubit, LocalizationState>(
+                  builder: (context, state) {
+                    return GestureDetector(
+                      onTap: () {
+                        final newLang = state.locale == 'ar' ? 'en' : 'ar';
+                        context.read<LocalizationCubit>().changeLanguage(
+                          newLang,
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.border),
+                          borderRadius: BorderRadius.circular(20.r),
+                          color: AppColors.surface,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.language_rounded,
+                              size: 14.r,
+                              color: AppColors.textSecondary,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              state.locale == 'ar' ? 'English' : 'العربية',
+                              style: TextStyle(
+                                fontFamily: 'DmSans',
+                                fontSize: 12.sp,
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(width: 2.w),
-                      Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        size: 14.r,
-                        color: AppColors.textSecondary,
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -128,7 +137,7 @@ class WelcomeBody extends StatelessWidget {
                       color: AppColors.textSecondary,
                       height: 1.5,
                     ),
-                    children: const [
+                    children: [
                       TextSpan(text: AppStrings.welcomeSubtitle1),
                       TextSpan(
                         text: AppStrings.welcomeSubtitle2,

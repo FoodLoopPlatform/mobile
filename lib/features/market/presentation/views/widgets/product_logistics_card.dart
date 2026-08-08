@@ -8,7 +8,7 @@ import 'package:foodloop/core/utils/constants.dart';
 class ProductLogisticsCard extends StatelessWidget {
   const ProductLogisticsCard({super.key});
 
-  static const List<String> _boxItems = [
+  static final List<String> _boxItems = [
     AppStrings.boxItem1,
     AppStrings.boxItem2,
     AppStrings.boxItem3,

@@ -27,7 +27,7 @@ class ScanningBody extends StatefulWidget {
 
 class _ScanningBodyState extends State<ScanningBody>
     with TickerProviderStateMixin {
-  static const List<String> _messages = [
+  static final List<String> _messages = [
     AppStrings.scanningMessage1,
     AppStrings.scanningMessage2,
     AppStrings.scanningMessage3,
@@ -168,15 +168,17 @@ class _ScanningBodyState extends State<ScanningBody>
               ),
               decoration: BoxDecoration(
                 color: AppColors.surfaceContainerHigh,
-                borderRadius:
-                    BorderRadius.circular(AppConstants.radiusFull.r),
+                borderRadius: BorderRadius.circular(AppConstants.radiusFull.r),
                 border: Border.all(color: AppColors.outlineVariant),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.shield_rounded,
-                      size: 16.r, color: AppColors.primary),
+                  Icon(
+                    Icons.shield_rounded,
+                    size: 16.r,
+                    color: AppColors.primary,
+                  ),
                   SizedBox(width: 8.w),
                   Text(
                     AppStrings.scanSecureFooter,

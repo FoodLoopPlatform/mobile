@@ -47,7 +47,9 @@ class _AddAddressBodyState extends State<AddAddressBody> {
     if (address == null) return;
 
     _addressType = address.addressType;
-    _selectedCity = EgyptCities.all.contains(address.city) ? address.city : null;
+    _selectedCity = EgyptCities.all.contains(address.city)
+        ? address.city
+        : null;
     _districtController.text = address.district;
     _streetController.text = address.street;
     _buildingController.text = address.buildingNo ?? '';
@@ -157,7 +159,7 @@ class _AddAddressBodyState extends State<AddAddressBody> {
                   SizedBox(height: AppConstants.paddingL.h),
 
                   // --- Address label ---
-                  const _SectionCaption(AppStrings.addressLabelSectionTitle),
+                  _SectionCaption(AppStrings.addressLabelSectionTitle),
                   SizedBox(height: AppConstants.paddingS.h),
                   AddressLabelSelector(
                     selected: _addressType,
@@ -166,7 +168,7 @@ class _AddAddressBodyState extends State<AddAddressBody> {
                   SizedBox(height: AppConstants.paddingL.h),
 
                   // --- Address details ---
-                  const _SectionCaption(AppStrings.addressDetailsSectionTitle),
+                  _SectionCaption(AppStrings.addressDetailsSectionTitle),
                   SizedBox(height: AppConstants.paddingS.h),
                   AddAddressFormFields(
                     selectedCity: _selectedCity,

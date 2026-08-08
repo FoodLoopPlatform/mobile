@@ -96,7 +96,7 @@ class _MarketBodyState extends State<MarketBody> {
 
             // --- Recommended ---
             if (sections.recommended.isNotEmpty) ...[
-              const MarketSectionHeader(
+              MarketSectionHeader(
                 title: AppStrings.recommendedTitle,
                 showViewAll: true,
               ),
@@ -117,7 +117,7 @@ class _MarketBodyState extends State<MarketBody> {
 
             // --- Nearby deals ---
             if (sections.deals.isNotEmpty) ...[
-              const MarketSectionHeader(
+              MarketSectionHeader(
                 title: AppStrings.nearbyDealsTitle,
                 trailingIcon: Icons.bolt_rounded,
               ),
@@ -138,7 +138,7 @@ class _MarketBodyState extends State<MarketBody> {
 
             // --- Trending grid ---
             if (sections.trending.isNotEmpty) ...[
-              const MarketSectionHeader(title: AppStrings.trendingTitle),
+              MarketSectionHeader(title: AppStrings.trendingTitle),
               SizedBox(height: AppConstants.paddingS.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontal),
@@ -194,8 +194,7 @@ class _MarketSections {
     if (deals.isEmpty) {
       deals = remainder.take(4).toList();
     }
-    final trending =
-        remainder.where((p) => !deals.contains(p)).toList();
+    final trending = remainder.where((p) => !deals.contains(p)).toList();
 
     return _MarketSections(
       recommended: recommended,

@@ -204,7 +204,7 @@ class _BusinessDetailsBodyState extends State<BusinessDetailsBody> {
                         label: AppStrings.businessCategoryLabel,
                         hint: AppStrings.businessCategoryHint,
                         value: _selectedCategory,
-                        items: const [
+                        items: [
                           DropdownMenuItem(
                             value: AppStrings.catSupermarket,
                             child: Text(AppStrings.catSupermarketLabel),
@@ -248,8 +248,9 @@ class _BusinessDetailsBodyState extends State<BusinessDetailsBody> {
                       // LEGAL DOCUMENTS SECTION
                       // =========================================
                       BusinessDetailsLegalSection(
-                        accountType:
-                            context.read<AuthCubit>().selectedAccountType,
+                        accountType: context
+                            .read<AuthCubit>()
+                            .selectedAccountType,
                         initialDocuments: _pickedDocuments,
                         onDocumentsChanged: (docs) {
                           setState(() => _pickedDocuments = docs);

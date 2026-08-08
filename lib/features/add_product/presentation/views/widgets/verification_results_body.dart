@@ -53,7 +53,7 @@ class VerificationResultsBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AddProductStepIndicator(
+                AddProductStepIndicator(
                   step: 3,
                   stepName: AppStrings.resultsStepName,
                 ),
@@ -193,8 +193,11 @@ class _TotalVerifiedCard extends StatelessWidget {
               shape: BoxShape.circle,
               color: AppColors.secondaryContainer,
             ),
-            child: Icon(Icons.verified_rounded,
-                size: 24.r, color: AppColors.onSecondaryContainer),
+            child: Icon(
+              Icons.verified_rounded,
+              size: 24.r,
+              color: AppColors.onSecondaryContainer,
+            ),
           ),
         ],
       ),
@@ -227,8 +230,11 @@ class _IssueCard extends StatelessWidget {
               shape: BoxShape.circle,
               color: AppColors.error,
             ),
-            child: Icon(Icons.no_photography_outlined,
-                size: 20.r, color: AppColors.textOnPrimary),
+            child: Icon(
+              Icons.no_photography_outlined,
+              size: 20.r,
+              color: AppColors.textOnPrimary,
+            ),
           ),
           SizedBox(width: AppConstants.paddingS.w),
           Expanded(
@@ -264,14 +270,18 @@ class _IssueCard extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: AppColors.error,
-                      borderRadius:
-                          BorderRadius.circular(AppConstants.radiusM.r),
+                      borderRadius: BorderRadius.circular(
+                        AppConstants.radiusM.r,
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.photo_camera_outlined,
-                            size: 16.r, color: AppColors.textOnPrimary),
+                        Icon(
+                          Icons.photo_camera_outlined,
+                          size: 16.r,
+                          color: AppColors.textOnPrimary,
+                        ),
                         SizedBox(width: 6.w),
                         Text(
                           AppStrings.retakeImage,

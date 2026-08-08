@@ -132,8 +132,11 @@ class _SellerRow extends StatelessWidget {
             SizedBox(height: 2.h),
             Row(
               children: [
-                Icon(Icons.star_rounded,
-                    size: 14.r, color: AppColors.onTertiaryContainer),
+                Icon(
+                  Icons.star_rounded,
+                  size: 14.r,
+                  color: AppColors.onTertiaryContainer,
+                ),
                 SizedBox(width: 2.w),
                 Text(
                   product.rating.toStringAsFixed(1),
@@ -196,7 +199,7 @@ class _DescriptionSection extends StatelessWidget {
 class _NutritionChips extends StatelessWidget {
   const _NutritionChips();
 
-  static const List<(IconData, String)> _chips = [
+  static final List<(IconData, String)> _chips = [
     (Icons.verified_rounded, AppStrings.chipCertifiedOrganic),
     (Icons.energy_savings_leaf_rounded, AppStrings.chipZeroPlastic),
     (Icons.social_distance_rounded, AppStrings.chipWithinFiveMiles),

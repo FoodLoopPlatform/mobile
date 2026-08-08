@@ -65,16 +65,10 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
   }
 
   Color _getPasswordStrengthColor(String strength) {
-    switch (strength) {
-      case AppStrings.passwordStrengthWeak:
-        return AppColors.error;
-      case AppStrings.passwordStrengthFair:
-        return AppColors.warning;
-      case AppStrings.passwordStrengthStrong:
-        return AppColors.success;
-      default:
-        return Colors.transparent;
-    }
+    if (strength == AppStrings.passwordStrengthWeak) return AppColors.error;
+    if (strength == AppStrings.passwordStrengthFair) return AppColors.warning;
+    if (strength == AppStrings.passwordStrengthStrong) return AppColors.success;
+    return Colors.transparent;
   }
 
   @override
@@ -93,8 +87,7 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
       },
       builder: (context, state) {
         final isLoading = state is AuthLoading;
-        final passwordStrength =
-            _getPasswordStrength(_passwordController.text);
+        final passwordStrength = _getPasswordStrength(_passwordController.text);
 
         return Column(
           children: [
@@ -118,93 +111,96 @@ class _CreateAccountBodyState extends State<CreateAccountBody> {
                       const CreateAccountHeader(),
                       SizedBox(height: 28.h),
 
-                // --- Account Type Dropdown ---
-                CustomDropdownField<AccountType>(
-                  label: AppStrings.accountTypeLabel,
-                  hint: AppStrings.accountTypeUser,
-                  value: _selectedAccountType,
-                  items: const [
-                    DropdownMenuItem(
-                      value: AccountType.user,
-                      child: Text(AppStrings.accountTypeUser),
-                    ),
-                    DropdownMenuItem(
-                      value: AccountType.seller,
-                      child: Text(AppStrings.accountTypeSeller),
-                    ),
-                    DropdownMenuItem(
-                      value: AccountType.charity,
-                      child: Text(AppStrings.accountTypeCharity),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    if (value != null) {
-                      setState(() => _selectedAccountType = value);
-                      context
-                          .read<AuthCubit>()
-                          .changeAccountType(value);
-                    }
-                  },
-                ),
-                SizedBox(height: 20.h),
-
-                // --- Form Fields ---
-                CreateAccountFormFields(
-                  fullNameController: _fullNameController,
-                  emailController: _emailController,
-                  phoneController: _phoneController,
-                  passwordController: _passwordController,
-                  confirmPasswordController: _confirmPasswordController,
-                  passwordStrength: passwordStrength,
-                  passwordStrengthColor: _getPasswordStrengthColor(passwordStrength),
-                  onPasswordChanged: (_) => setState(() {}),
-                ),
-                SizedBox(height: 24.h),
-
-                // --- Terms & Privacy ---
-                CreateAccountTermsSection(
-                  agreedToTerms: _agreedToTerms,
-                  onChanged: (v) => setState(() => _agreedToTerms = v ?? false),
-                ),
-                SizedBox(height: 32.h),
-
-                // --- Continue Button ---
-                CustomButton(
-                  label: AppStrings.continueButton,
-                  suffixIcon: Icons.arrow_forward_rounded,
-                  isLoading: isLoading,
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (!_agreedToTerms) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(AppStrings.mustAgreeToTerms),
-                            backgroundColor: AppColors.error,
+                      // --- Account Type Dropdown ---
+                      CustomDropdownField<AccountType>(
+                        label: AppStrings.accountTypeLabel,
+                        hint: AppStrings.accountTypeUser,
+                        value: _selectedAccountType,
+                        items: [
+                          DropdownMenuItem(
+                            value: AccountType.user,
+                            child: Text(AppStrings.accountTypeUser),
                           ),
-                        );
-                        return;
-                      }
-                      context.read<AuthCubit>().proceedToBusinessDetails(
-                            fullName: _fullNameController.text.trim(),
-                            email: _emailController.text.trim(),
-                            password: _passwordController.text,
-                            phoneNumber: _phoneController.text.trim(),
-                          );
-                      // Navigate directly so back→re-tap always works,
-                      // regardless of cubit state deduplication.
-                      if (_selectedAccountType == AccountType.seller ||
-                          _selectedAccountType == AccountType.charity) {
-                        Navigator.pushNamed(
-                            context, RoutesNames.businessDetailsView);
-                      }
-                    }
-                  },
-                ),
-                SizedBox(height: 20.h),
+                          DropdownMenuItem(
+                            value: AccountType.seller,
+                            child: Text(AppStrings.accountTypeSeller),
+                          ),
+                          DropdownMenuItem(
+                            value: AccountType.charity,
+                            child: Text(AppStrings.accountTypeCharity),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() => _selectedAccountType = value);
+                            context.read<AuthCubit>().changeAccountType(value);
+                          }
+                        },
+                      ),
+                      SizedBox(height: 20.h),
 
-                // --- Footer ---
-                const CreateAccountFooter(),
-                SizedBox(height: 20.h),
+                      // --- Form Fields ---
+                      CreateAccountFormFields(
+                        fullNameController: _fullNameController,
+                        emailController: _emailController,
+                        phoneController: _phoneController,
+                        passwordController: _passwordController,
+                        confirmPasswordController: _confirmPasswordController,
+                        passwordStrength: passwordStrength,
+                        passwordStrengthColor: _getPasswordStrengthColor(
+                          passwordStrength,
+                        ),
+                        onPasswordChanged: (_) => setState(() {}),
+                      ),
+                      SizedBox(height: 24.h),
+
+                      // --- Terms & Privacy ---
+                      CreateAccountTermsSection(
+                        agreedToTerms: _agreedToTerms,
+                        onChanged: (v) =>
+                            setState(() => _agreedToTerms = v ?? false),
+                      ),
+                      SizedBox(height: 32.h),
+
+                      // --- Continue Button ---
+                      CustomButton(
+                        label: AppStrings.continueButton,
+                        suffixIcon: Icons.arrow_forward_rounded,
+                        isLoading: isLoading,
+                        onTap: () {
+                          if (_formKey.currentState!.validate()) {
+                            if (!_agreedToTerms) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(AppStrings.mustAgreeToTerms),
+                                  backgroundColor: AppColors.error,
+                                ),
+                              );
+                              return;
+                            }
+                            context.read<AuthCubit>().proceedToBusinessDetails(
+                              fullName: _fullNameController.text.trim(),
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text,
+                              phoneNumber: _phoneController.text.trim(),
+                            );
+                            // Navigate directly so back→re-tap always works,
+                            // regardless of cubit state deduplication.
+                            if (_selectedAccountType == AccountType.seller ||
+                                _selectedAccountType == AccountType.charity) {
+                              Navigator.pushNamed(
+                                context,
+                                RoutesNames.businessDetailsView,
+                              );
+                            }
+                          }
+                        },
+                      ),
+                      SizedBox(height: 20.h),
+
+                      // --- Footer ---
+                      const CreateAccountFooter(),
+                      SizedBox(height: 20.h),
                     ],
                   ),
                 ),

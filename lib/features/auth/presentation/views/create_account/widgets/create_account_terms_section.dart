@@ -41,21 +41,23 @@ class CreateAccountTermsSection extends StatelessWidget {
                 color: AppColors.textSecondary,
               ),
               children: [
-                const TextSpan(text: AppStrings.termsPrefix),
+                TextSpan(text: AppStrings.termsPrefix),
                 TextSpan(
                   text: AppStrings.termsOfService,
                   style: const TextStyle(
-                      color: AppColors.primary,
-                      decoration: TextDecoration.underline),
+                    color: AppColors.primary,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
-                const TextSpan(text: AppStrings.termsAnd),
+                TextSpan(text: AppStrings.termsAnd),
                 TextSpan(
                   text: AppStrings.privacyPolicy,
                   style: const TextStyle(
-                      color: AppColors.primary,
-                      decoration: TextDecoration.underline),
+                    color: AppColors.primary,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
-                const TextSpan(text: AppStrings.termsSuffix),
+                TextSpan(text: AppStrings.termsSuffix),
               ],
             ),
           ),

@@ -30,7 +30,9 @@ All colors must be referenced from `lib/core/utils/app_colors.dart` — **never 
 - Font files are placed in `assets/fonts/` — configuration in `pubspec.yaml` is done by the user.
 
 ### Strings (`AppStrings`)
-All UI text must be referenced from `lib/core/utils/app_strings.dart` — **never hardcode strings directly in widget files**. This ensures easy future localization.
+All UI text must be referenced from `lib/core/utils/app_strings.dart` — **never hardcode strings directly in widget files**.
+- The `AppStrings` class uses dynamic getters to fetch the string for the active language.
+- The actual translated strings are maintained as Maps in `lib/core/utils/lang/ar.dart` and `en.dart`.
 
 ---
 
@@ -163,8 +165,8 @@ dependencies:
 
 ## Key Design Decisions
 - **Welcome screen** is under `features/onboarding/` (not `auth/`).
-- **Business Details** is only shown when account type is `Seller` or `Charity`.
+- **Business Details** is only shown when account type is `Merchant` or `Charity`.
 - **`AppColors`** is a separate class from `Constants` — constants.dart holds only non-color, non-string general values.
 - **`ApiConstants`** is separate from `constants.dart` and holds all backend URLs.
 - **Remember Me Logic**: The application checks `SecureStorageHelper` for a stored `refreshToken` on startup (in `main.dart`). If found, it validates it via the `/auth/refresh` API endpoint and automatically navigates the user to `MainNavigationView` if valid, bypassing the welcome/login flow.
-- **Right-to-Left (RTL)**: The application has `flutter_localizations` configured and hardcoded to the Arabic locale (`ar`) inside `MaterialApp` to enforce an RTL layout by default.
+- **Localization & RTL**: The application uses a `LocalizationCubit` (in `lib/features/localization/...`) wrapped around `MaterialApp` to manage language state (`ar` or `en`). The `locale` property of `MaterialApp` listens to this cubit, which automatically handles Right-to-Left (RTL) vs Left-to-Right (LTR) transitions dynamically because `flutter_localizations` is configured. The user's language preference is saved in `SecureStorageHelper`.
