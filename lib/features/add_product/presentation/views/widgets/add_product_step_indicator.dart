@@ -10,10 +10,14 @@ class AddProductStepIndicator extends StatelessWidget {
     super.key,
     this.step = 1,
     this.totalSteps = 3,
+    required this.stepName,
   });
 
   final int step;
   final int totalSteps;
+
+  /// Name of the current step, shown opposite the "Step X of Y" caption.
+  final String stepName;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,7 @@ class AddProductStepIndicator extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              AppStrings.addProductStepLabel,
+              '${AppStrings.stepWord} $step ${AppStrings.stepOfWord} $totalSteps',
               style: TextStyle(
                 fontFamily: 'DmSans',
                 fontSize: 12.sp,
@@ -34,7 +38,7 @@ class AddProductStepIndicator extends StatelessWidget {
               ),
             ),
             Text(
-              AppStrings.addProductStepName,
+              stepName,
               style: TextStyle(
                 fontFamily: 'DmSans',
                 fontSize: 12.sp,

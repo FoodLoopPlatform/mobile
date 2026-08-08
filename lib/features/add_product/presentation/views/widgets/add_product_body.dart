@@ -9,7 +9,9 @@ import 'package:foodloop/core/utils/validation.dart';
 import 'package:foodloop/core/widgets/custom_button.dart';
 import 'package:foodloop/core/widgets/custom_text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodloop/core/routes_manager/routes_names.dart';
 import 'package:foodloop/features/add_product/data/models/category_model.dart';
+import 'package:foodloop/features/add_product/data/models/product_draft.dart';
 import 'package:foodloop/features/add_product/presentation/manager/category_cubit/category_cubit.dart';
 import 'package:foodloop/features/add_product/presentation/views/widgets/add_product_step_indicator.dart';
 import 'package:foodloop/features/add_product/presentation/views/widgets/product_category_field.dart';
@@ -49,7 +51,22 @@ class _AddProductBodyState extends State<AddProductBody> {
 
   void _onNext() {
     if (!_formKey.currentState!.validate()) return;
-    // Step 2 (expiration details) isn't built yet.
+
+    final draft = ProductDraft(
+      name: _nameController.text.trim(),
+      category: _selectedCategory,
+      price: _priceController.text.trim(),
+      // Falls back to a single unit if the field holds something unparsable.
+      quantity: int.tryParse(_quantityController.text.trim()) ?? 1,
+      description: _descriptionController.text.trim(),
+      photos: _photos,
+    );
+
+    Navigator.pushNamed(
+      context,
+      RoutesNames.expirationDetailsView,
+      arguments: draft,
+    );
   }
 
   @override
@@ -69,7 +86,10 @@ class _AddProductBodyState extends State<AddProductBody> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AddProductStepIndicator(),
+                  const AddProductStepIndicator(
+                    step: 1,
+                    stepName: AppStrings.addProductStepName,
+                  ),
                   SizedBox(height: AppConstants.paddingL.h),
 
                   // --- Headline ---

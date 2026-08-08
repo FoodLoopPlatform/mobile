@@ -245,6 +245,74 @@ abstract class AppStrings {
   static const String productDescriptionHint =
       'اذكر المصدر أو المكونات أو طريقة التحضير...';
   static const String addProductNextStep = 'التالي: تفاصيل الصلاحية';
+  static const String stepWord = 'الخطوة';
+  static const String stepOfWord = 'من';
+
+  // --- Add Product (Step 2 — Expiration) ---
+  static const String expirationStepName = 'تفاصيل الصلاحية';
+  static const String expirationTitle = 'التحقق من الصلاحية';
+  static const String expirationSubtitle =
+      'لضمان سلامة الغذاء، نطلب تواريخ صلاحية دقيقة لجميع المنتجات المعروضة.';
+  static const String manualExpiryLabel = 'تاريخ الصلاحية';
+  static const String selectDateHint = 'اختر التاريخ';
+  static const String verifyViaCamera = 'التحقق عبر الكاميرا';
+  static const String verifyViaCameraHint =
+      'سيقوم الذكاء الاصطناعي بقراءة تاريخ الصلاحية من العبوة.';
+  static const String cameraVerifyUnavailable =
+      'قراءة التاريخ تلقائياً غير متاحة حالياً.';
+  static const String sameDateForAll = 'كل الوحدات لها نفس تاريخ الصلاحية';
+  static const String appliesToAllUnits = 'يُطبّق التاريخ على جميع الوحدات:';
+  static const String individualBatchesTitle = 'دفعات بتواريخ منفصلة';
+  static const String addAnotherBatch = 'إضافة دفعة أخرى';
+  static const String batchUploadPhoto = 'رفع صورة';
+  static const String verificationStatusTitle = 'حالة التحقق';
+  static const String productNameStatusLabel = 'اسم المنتج';
+  static const String quantityShort = 'الكمية';
+  static const String shelfLifeIndexLabel = 'مؤشر مدة الصلاحية';
+  static const String shelfLifeLong = 'مرتفع';
+  static const String shelfLifeModerate = 'متوسط';
+  static const String shelfLifeShort = 'قصير';
+  static const String shelfLifeExpired = 'منتهي الصلاحية';
+  static const String shelfLifeUnknown = '--';
+  static const String batchIntegrityLabel = 'سلامة الدفعة';
+  static const String batchIntegrityPending = 'قيد الموافقة';
+  static const String verifyDates = 'تأكيد التواريخ';
+  static const String verifyDisclaimer =
+      'بالضغط على تأكيد، فإنك تقر بأن هذه المنتجات تستوفي معايير الجودة المعتمدة.';
+
+  // --- Camera scanning ---
+  static const String scanningTitle = 'جارٍ التحقق من الصلاحية...';
+  static const String scanningMessage1 =
+      'يقوم النظام بقراءة تاريخ الصلاحية من العبوة.';
+  static const String scanningMessage2 = 'تحليل بنية الحروف للتحقق من الملصق...';
+  static const String scanningMessage3 = 'مطابقة التواريخ مع سجلات التوريد...';
+  static const String scanningMessage4 = 'التأكد من معايير السلامة المحلية...';
+  static const String scanStatusLabel = 'الحالة';
+  static const String scanStatusAnalyzing = 'جارٍ التحليل';
+  static const String scanElapsedLabel = 'المدة';
+  static const String scanSecondsSuffix = 'ث';
+  static const String scanSecureFooter = 'تتبع آمن للأغذية';
+
+  // --- Add Product (Step 3 — Results) ---
+  static const String resultsStepName = 'النتائج';
+  static const String resultsTitle = 'نتائج التحقق';
+  static const String resultsSubtitle =
+      'انتهى تحليل بيانات الصلاحية الخاصة بمنتجك.';
+  static const String totalVerifiedLabel = 'إجمالي الوحدات المؤكدة';
+  static const String unitsWord = 'وحدة';
+  static const String verifiedBatchesTitle = 'دفعات الصلاحية المؤكدة';
+  static const String unitsConfirmed = 'وحدة مؤكدة';
+  static const String issuesTitle = 'مشكلات مكتشفة';
+  static const String issueUnverifiedTitle = 'وحدات غير مؤكدة';
+  static const String issueUnverifiedMessage =
+      'لم يتم تأكيد تاريخ صلاحية جميع الوحدات. أضف دفعة أخرى أو عدّل الكميات.';
+  static const String retakeImage = 'إعادة التصوير';
+  static const String verificationRateLabel = 'نسبة التحقق';
+  static const String verificationRateHint =
+      'نسبة الوحدات التي تم تأكيد تاريخ صلاحيتها.';
+  static const String saveAsDraft = 'حفظ كمسودة';
+  static const String confirmAndPublish = 'تأكيد ونشر';
+  static const String batchPrefix = 'دفعة';
 
   // --- Logout ---
   static const String logout = 'تسجيل الخروج';

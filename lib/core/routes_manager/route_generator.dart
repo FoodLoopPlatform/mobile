@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:foodloop/core/routes_manager/routes_names.dart';
+import 'package:foodloop/features/add_product/data/models/product_draft.dart';
 import 'package:foodloop/features/add_product/presentation/views/add_product_view.dart';
+import 'package:foodloop/features/add_product/presentation/views/expiration_details_view.dart';
+import 'package:foodloop/features/add_product/presentation/views/scanning_view.dart';
+import 'package:foodloop/features/add_product/presentation/views/verification_results_view.dart';
 import 'package:foodloop/features/auth/presentation/views/business_details/business_details_view.dart';
 import 'package:foodloop/features/auth/presentation/views/create_account/create_account_view.dart';
 import 'package:foodloop/features/auth/presentation/views/email_verification/email_verification_view.dart';
@@ -63,6 +67,22 @@ class RouteGenerator {
 
       case RoutesNames.addProductView:
         return MaterialPageRoute(builder: (_) => const AddProductView());
+
+      case RoutesNames.expirationDetailsView:
+        final draft = settings.arguments as ProductDraft;
+        return MaterialPageRoute(
+          builder: (_) => ExpirationDetailsView(draft: draft),
+        );
+
+      case RoutesNames.scanningView:
+        final scanArgs = settings.arguments as ScanningArgs;
+        return MaterialPageRoute(builder: (_) => ScanningView(args: scanArgs));
+
+      case RoutesNames.verificationResultsView:
+        final resultsArgs = settings.arguments as VerificationResultsArgs;
+        return MaterialPageRoute(
+          builder: (_) => VerificationResultsView(args: resultsArgs),
+        );
 
       case RoutesNames.mainNav:
         return MaterialPageRoute(builder: (_) => const MainNavigationView());
