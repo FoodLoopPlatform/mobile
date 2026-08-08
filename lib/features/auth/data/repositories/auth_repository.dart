@@ -46,6 +46,24 @@ class AuthRepository {
     }
   }
 
+  /// Revokes the session server-side, then wipes local tokens.
+  ///
+  /// The local wipe happens even when the network call fails — otherwise a
+  /// dead connection would leave the user stuck in a logged-in state with no
+  /// way out.
+  Future<void> logout() async {
+    try {
+      final refreshToken = await SecureStorageHelper.getRefreshToken();
+      if (refreshToken != null && refreshToken.isNotEmpty) {
+        await _remoteDataSource.logout(refreshToken);
+      }
+    } catch (_) {
+      // Best-effort: revoking failed, but the user still leaves the session.
+    } finally {
+      await SecureStorageHelper.clearTokens();
+    }
+  }
+
   Future<AuthModel> register({
     required String name,
     required String email,
