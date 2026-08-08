@@ -26,6 +26,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>FoodLoop uses the camera to scan expiration dates on product packaging.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>FoodLoop needs access to your photos so you can attach product images.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>FoodLoop uses your location to help you pin your address accurately on the map.</string>
 	<key>UIApplicationSceneManifest</key>

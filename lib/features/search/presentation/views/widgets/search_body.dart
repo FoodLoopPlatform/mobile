@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/routes_manager/routes_names.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/features/market/data/models/product_model.dart';
-import 'package:foodloop/features/market/data/sample_products.dart';
+import 'package:foodloop/features/market/presentation/manager/products_cubit/products_cubit.dart';
+import 'package:foodloop/features/market/presentation/manager/products_cubit/products_state.dart';
 import 'package:foodloop/features/search/presentation/views/widgets/search_empty_state.dart';
 import 'package:foodloop/features/search/presentation/views/widgets/search_field.dart';
 import 'package:foodloop/features/search/presentation/views/widgets/search_filter_chips.dart';
@@ -19,29 +23,44 @@ class SearchBody extends StatefulWidget {
 }
 
 class _SearchBodyState extends State<SearchBody> {
+  static const int _pageSize = 20;
+  static const _debounceDelay = Duration(milliseconds: 400);
+
   final _controller = TextEditingController();
+  Timer? _debounce;
   String _query = '';
 
   @override
+  void initState() {
+    super.initState();
+    _search();
+  }
+
+  @override
   void dispose() {
+    _debounce?.cancel();
     _controller.dispose();
     super.dispose();
   }
 
-  /// Matches on product name or seller. An empty query browses everything.
-  List<ProductModel> get _results {
-    final q = _query.trim().toLowerCase();
-    if (q.isEmpty) return SampleProducts.all;
-    return SampleProducts.all
-        .where((p) =>
-            p.name.toLowerCase().contains(q) ||
-            p.seller.toLowerCase().contains(q))
-        .toList();
+  void _search() {
+    context.read<ProductsCubit>().loadProducts(
+          search: _query.trim().isEmpty ? null : _query.trim(),
+          pageSize: _pageSize,
+        );
+  }
+
+  void _onQueryChanged(String value) {
+    setState(() => _query = value);
+    _debounce?.cancel();
+    _debounce = Timer(_debounceDelay, _search);
   }
 
   void _clearSearch() {
     _controller.clear();
+    _debounce?.cancel();
     setState(() => _query = '');
+    _search();
   }
 
   void _openProduct(ProductModel product) {
@@ -54,7 +73,6 @@ class _SearchBodyState extends State<SearchBody> {
 
   @override
   Widget build(BuildContext context) {
-    final results = _results;
     final hasQuery = _query.trim().isNotEmpty;
 
     return Column(
@@ -68,21 +86,96 @@ class _SearchBodyState extends State<SearchBody> {
           ),
           child: SearchField(
             controller: _controller,
-            onChanged: (value) => setState(() => _query = value),
+            onChanged: _onQueryChanged,
           ),
         ),
         const SearchFilterChips(),
         SizedBox(height: AppConstants.paddingM.h),
         Expanded(
-          child: hasQuery && results.isEmpty
-              ? SearchEmptyState(
-                  query: _query.trim(),
-                  onBrowseAll: _clearSearch,
-                  onClearFilters: _clearSearch,
-                )
-              : _Results(results: results, onOpen: _openProduct),
+          child: BlocBuilder<ProductsCubit, ProductsState>(
+            builder: (context, state) {
+              if (state is ProductsFail) {
+                return _SearchError(message: state.message, onRetry: _search);
+              }
+
+              if (state is! ProductsLoaded) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              final results = state.page.items;
+
+              if (results.isEmpty) {
+                return hasQuery
+                    ? SearchEmptyState(
+                        query: _query.trim(),
+                        onBrowseAll: _clearSearch,
+                        onClearFilters: _clearSearch,
+                      )
+                    : Center(
+                        child: Text(
+                          AppStrings.noResultsSubtitle,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'DmSans',
+                            fontSize: 13.sp,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      );
+              }
+
+              return _Results(results: results, onOpen: _openProduct);
+            },
+          ),
         ),
       ],
+    );
+  }
+}
+
+class _SearchError extends StatelessWidget {
+  const _SearchError({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: AppConstants.screenHorizontalPadding.w,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.wifi_off_rounded, size: 40.r, color: AppColors.error),
+            SizedBox(height: AppConstants.paddingS.h),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'DmSans',
+                fontSize: 13.sp,
+                color: AppColors.textSecondary,
+              ),
+            ),
+            SizedBox(height: AppConstants.paddingM.h),
+            TextButton(
+              onPressed: onRetry,
+              child: Text(
+                AppStrings.retry,
+                style: TextStyle(
+                  fontFamily: 'DmSans',
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

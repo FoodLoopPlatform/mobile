@@ -80,37 +80,41 @@ class FoodloopApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) =>
-                  AuthCubit(AuthRepository(AuthRemoteDataSource(apiManager))),
-            ),
-            BlocProvider(
-              create: (_) => ProfileCubit(
-                ProfileRepository(ProfileRemoteDataSource(apiManager)),
+        return RepositoryProvider<ApiManager>.value(
+          value: apiManager,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => AuthCubit(
+                  AuthRepository(AuthRemoteDataSource(apiManager)),
+                ),
               ),
-            ),
-            BlocProvider(
-              create: (_) => CategoryCubit(
-                CategoryRepository(CategoryRemoteDataSource(apiManager)),
+              BlocProvider(
+                create: (_) => ProfileCubit(
+                  ProfileRepository(ProfileRemoteDataSource(apiManager)),
+                ),
               ),
-            ),
-          ],
-          child: MaterialApp(
-            title: 'Foodloop',
-            debugShowCheckedModeBanner: false,
-            locale: const Locale('ar'),
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
+              BlocProvider(
+                create: (_) => CategoryCubit(
+                  CategoryRepository(CategoryRemoteDataSource(apiManager)),
+                ),
+              ),
             ],
-            supportedLocales: const [Locale('ar'), Locale('en')],
-            theme: AppThemeManager.mainTheme,
-            navigatorKey: navigatorKey,
-            initialRoute: initialRoute,
-            onGenerateRoute: RouteGenerator.generateRoutes,
+            child: MaterialApp(
+              title: 'Foodloop',
+              debugShowCheckedModeBanner: false,
+              locale: const Locale('ar'),
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [Locale('ar'), Locale('en')],
+              theme: AppThemeManager.mainTheme,
+              navigatorKey: navigatorKey,
+              initialRoute: initialRoute,
+              onGenerateRoute: RouteGenerator.generateRoutes,
+            ),
           ),
         );
       },

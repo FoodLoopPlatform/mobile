@@ -31,10 +31,15 @@ class ApiManager {
     );
   }
 
-  Future<Response> get(String endPoint, {Map<String, dynamic>? headers}) async {
+  Future<Response> get(
+    String endPoint, {
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     return await _dio.get(
-      endPoint, 
-      options: Options(headers: headers)
+      endPoint,
+      queryParameters: queryParameters,
+      options: Options(headers: headers),
     );
   }
 
