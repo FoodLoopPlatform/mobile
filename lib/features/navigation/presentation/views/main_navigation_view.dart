@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodloop/core/utils/secure_storage_helper.dart';
+import 'package:foodloop/features/add_product/presentation/views/add_product_view.dart';
 import 'package:foodloop/features/cart/presentation/views/cart_view.dart';
 import 'package:foodloop/features/inbox/presentation/views/inbox_view.dart';
-import 'package:foodloop/features/listings/presentation/views/add_listing_view.dart';
 import 'package:foodloop/features/market/presentation/views/market_view.dart';
 import 'package:foodloop/features/navigation/presentation/views/widgets/custom_bottom_nav_bar.dart';
 import 'package:foodloop/features/orders/presentation/views/orders_view.dart';
@@ -43,7 +43,7 @@ class _MainNavigationViewState extends State<MainNavigationView> {
   List<Widget> get _views => [
     const MarketView(),
     const OrdersView(),
-    if (_isMerchant) const AddListingView() else const CartView(),
+    if (_isMerchant) const AddProductView() else const CartView(),
     const InboxView(),
     const ProfileView(),
   ];
