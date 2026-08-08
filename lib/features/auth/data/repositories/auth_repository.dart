@@ -30,6 +30,11 @@ class AuthRepository {
         } else {
           throw ServerError("Something went wrong. Please try again later.");
         }
+        // Persist the user's first role for UI role-gating (e.g. Merchant nav)
+        final roles = authModel.data!.user?.roles;
+        if (roles != null && roles.isNotEmpty) {
+          await SecureStorageHelper.saveUserRole(roles.first);
+        }
       } else {
         String msg = authModel.message ?? "Login failed";
         if (authModel.errors != null && authModel.errors!.isNotEmpty) {

@@ -38,7 +38,18 @@ void main() async {
         final newRefreshToken = response.data['data']['refreshToken'];
 
         await SecureStorageHelper.saveTokens(newAccessToken, newRefreshToken);
-        // initialRoute = RoutesNames.mainNav;
+
+        // If the refresh response includes user data, persist the role.
+        // Otherwise the role saved during the last manual login is still valid.
+        final userData = response.data['data']['user'];
+        if (userData != null) {
+          final roles = userData['roles'];
+          if (roles is List && roles.isNotEmpty) {
+            await SecureStorageHelper.saveUserRole(roles.first as String);
+          }
+        }
+
+        initialRoute = RoutesNames.mainNav;
       } else {
         await SecureStorageHelper.clearTokens();
       }

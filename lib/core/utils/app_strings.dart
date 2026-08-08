@@ -273,7 +273,9 @@ abstract class AppStrings {
   // --- Bottom Navigation ---
   static const String navMarket = 'السوق';
   static const String navOrders = 'الطلبات';
+  static const String navInbox = 'الرسائل';
   static const String navCart = 'العربة';
+  static const String navAddListing = 'إضافة';
   static const String navProfile = 'الملف الشخصي';
 
   // --- Generic ---
