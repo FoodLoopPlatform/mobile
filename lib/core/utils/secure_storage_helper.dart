@@ -5,6 +5,7 @@ class SecureStorageHelper {
 
   static const String _tokenKey = 'accessToken';
   static const String _refreshTokenKey = 'refreshToken';
+  static const String _userRoleKey = 'userRole';
 
   static Future<void> saveToken(String token) async {
     await _storage.write(key: _tokenKey, value: token);
@@ -22,6 +23,7 @@ class SecureStorageHelper {
   static Future<void> clearTokens() async {
     await _storage.delete(key: _tokenKey);
     await _storage.delete(key: _refreshTokenKey);
+    await _storage.delete(key: _userRoleKey);
   }
 
   static Future<void> deleteToken() async {
@@ -38,6 +40,20 @@ class SecureStorageHelper {
 
   static Future<void> deleteRefreshToken() async {
     await _storage.delete(key: _refreshTokenKey);
+  }
+
+  // --- User Role ---
+
+  static Future<void> saveUserRole(String role) async {
+    await _storage.write(key: _userRoleKey, value: role);
+  }
+
+  static Future<String?> getUserRole() async {
+    return await _storage.read(key: _userRoleKey);
+  }
+
+  static Future<void> clearUserRole() async {
+    await _storage.delete(key: _userRoleKey);
   }
 
   static Future<void> clearAll() async {

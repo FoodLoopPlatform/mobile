@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foodloop/core/utils/secure_storage_helper.dart';
+import 'package:foodloop/features/add_product/presentation/views/add_product_view.dart';
 import 'package:foodloop/features/cart/presentation/views/cart_view.dart';
+import 'package:foodloop/features/inbox/presentation/views/inbox_view.dart';
 import 'package:foodloop/features/market/presentation/views/market_view.dart';
 import 'package:foodloop/features/navigation/presentation/views/widgets/custom_bottom_nav_bar.dart';
 import 'package:foodloop/features/orders/presentation/views/orders_view.dart';
@@ -14,21 +17,36 @@ class MainNavigationView extends StatefulWidget {
 
 class _MainNavigationViewState extends State<MainNavigationView> {
   int _currentIndex = 0;
-  // int _currentIndex = 3;
   late final PageController _pageController;
 
-  final List<Widget> _views = const [
-    MarketView(),
-    OrdersView(),
-    CartView(),
-    ProfileView(),
-  ];
+  /// Stays false until we finish reading from SecureStorage.
+  bool _isMerchant = false;
+  bool _roleLoaded = false;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
+    _loadRole();
   }
+
+  Future<void> _loadRole() async {
+    final role = await SecureStorageHelper.getUserRole();
+    if (mounted) {
+      setState(() {
+        _isMerchant = role == 'Merchant';
+        _roleLoaded = true;
+      });
+    }
+  }
+
+  List<Widget> get _views => [
+    const MarketView(),
+    const OrdersView(),
+    if (_isMerchant) const AddProductView() else const CartView(),
+    const InboxView(),
+    const ProfileView(),
+  ];
 
   @override
   void dispose() {
@@ -52,6 +70,11 @@ class _MainNavigationViewState extends State<MainNavigationView> {
 
   @override
   Widget build(BuildContext context) {
+    // Show a blank scaffold while the role is being read (usually <50ms)
+    if (!_roleLoaded) {
+      return const Scaffold(body: SizedBox.shrink());
+    }
+
     return Scaffold(
       body: PageView(
         controller: _pageController,
@@ -61,6 +84,7 @@ class _MainNavigationViewState extends State<MainNavigationView> {
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
+        isMerchant: _isMerchant,
       ),
     );
   }
