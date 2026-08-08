@@ -7,6 +7,7 @@ class ApiConstants {
   static const String uploadDocumentsEndpoint = 'stores/me/documents';
 
   static const String categoriesEndpoint = 'categories';
+  static const String marketplaceProductsEndpoint = 'marketplace/products';
 
   static const String profileEndpoint = 'users/me';
   static const String addressesEndpoint = 'users/me/addresses';
