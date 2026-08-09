@@ -9,6 +9,8 @@ import 'package:foodloop/features/profile/presentation/views/widgets/profile_log
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_personal_info_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_preferences_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_saved_addresses_card.dart';
+import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_cubit.dart';
+import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_state.dart';
 
 class ProfileBody extends StatefulWidget {
   const ProfileBody({super.key});
@@ -26,49 +28,53 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileCubit, ProfileState>(
-      listener: (context, state) {
-        if (state is ProfileLoaded && state.actionError != null) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text(state.actionError!)));
-        }
-      },
-      builder: (context, state) {
-        if (state is ProfileFail) {
-          return _ProfileError(
-            message: state.message,
-            onRetry: () => context.read<ProfileCubit>().loadProfile(),
-          );
-        }
+    return BlocBuilder<LocalizationCubit, LocalizationState>(
+      builder: (context, _) {
+        return BlocConsumer<ProfileCubit, ProfileState>(
+          listener: (context, state) {
+            if (state is ProfileLoaded && state.actionError != null) {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(SnackBar(content: Text(state.actionError!)));
+            }
+          },
+          builder: (context, state) {
+            if (state is ProfileFail) {
+              return _ProfileError(
+                message: state.message,
+                onRetry: () => context.read<ProfileCubit>().loadProfile(),
+              );
+            }
 
-        if (state is! ProfileLoaded) {
-          return const Center(child: CircularProgressIndicator());
-        }
+            if (state is! ProfileLoaded) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        return RefreshIndicator(
-          onRefresh: () =>
-              context.read<ProfileCubit>().loadProfile(forceRefresh: true),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(
-              AppConstants.screenHorizontalPadding.w,
-              AppConstants.paddingS.h,
-              AppConstants.screenHorizontalPadding.w,
-              AppConstants.paddingL.h,
-            ),
-            child: Column(
-              children: [
-                ProfilePersonalInfoCard(profile: state.profile),
-                SizedBox(height: AppConstants.paddingM.h),
-                const ProfilePreferencesCard(),
-                SizedBox(height: AppConstants.paddingM.h),
-                ProfileSavedAddressesCard(addresses: state.addresses),
-                SizedBox(height: AppConstants.paddingL.h),
-                const ProfileLogoutButton(),
-              ],
-            ),
-          ),
+            return RefreshIndicator(
+              onRefresh: () =>
+                  context.read<ProfileCubit>().loadProfile(forceRefresh: true),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.fromLTRB(
+                  AppConstants.screenHorizontalPadding.w,
+                  AppConstants.paddingS.h,
+                  AppConstants.screenHorizontalPadding.w,
+                  AppConstants.paddingL.h,
+                ),
+                child: Column(
+                  children: [
+                    ProfilePersonalInfoCard(profile: state.profile),
+                    SizedBox(height: AppConstants.paddingM.h),
+                    ProfilePreferencesCard(),
+                    SizedBox(height: AppConstants.paddingM.h),
+                    ProfileSavedAddressesCard(addresses: state.addresses),
+                    SizedBox(height: AppConstants.paddingL.h),
+                    ProfileLogoutButton(),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );

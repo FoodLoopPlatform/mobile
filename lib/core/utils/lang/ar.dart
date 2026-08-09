@@ -3,6 +3,10 @@ final Map<String, String> arStrings = {
   'welcomeHeadline': 'نقضي على هدر الطعام في مصر.',
   'welcomeSubtitle1': 'نحول ',
   'welcomeSubtitle2': 'الفائض',
+  'welcomeSubtitle3':
+      ' إلى فرصة. نربط الشركات التي لديها فائض من الطعام بالمستهلكين الباحثين عن ',
+  'loginSubtitle':
+      'سجل دخولك لإدارة فائض الطعام الخاص بك وساعد في جعل الطعام الطازج متاحًا في جميع أنحاء مصر.',
   'welcomeSubtitle4': 'خيارات طازجة وبأسعار معقولة',
   'welcomeSubtitle5': ' في الوقت الفعلي.',
   'createAccount': 'إنشاء حساب',
@@ -157,8 +161,14 @@ final Map<String, String> arStrings = {
   'addProductStepLabel': 'الخطوة 1 من 3',
   'addProductStepName': 'تفاصيل المنتج',
   'addProductHeadline': 'ما الذي تعرضه اليوم؟',
+  'addProductSubtitle':
+      'أدخل البيانات الأساسية لمنتجاتك الطازجة أو المصنوعة يدوياً.',
   'productPhotosTitle': 'صور المنتج',
+  'productPhotosHint':
+      'اضغط لرفع صور عالية الجودة. الإضاءة الطبيعية هي الأفضل.',
   'productPhotosSelected': 'صورة تم اختيارها',
+  'productPhotosTip':
+      'الأوصاف التفصيلية والصور الواضحة ترفع مبيعاتك بنسبة تصل إلى 40%.',
   'productNameLabel': 'اسم المنتج',
   'productNameHint': 'مثال: خبز العجين المخمر',
   'productCategoryLabel': 'الفئة',
@@ -173,9 +183,12 @@ final Map<String, String> arStrings = {
   'stepOfWord': 'من',
   'expirationStepName': 'تفاصيل الصلاحية',
   'expirationTitle': 'التحقق من الصلاحية',
+  'expirationSubtitle':
+      'لضمان سلامة الغذاء، نطلب تواريخ انتهاء صلاحية دقيقة لجميع المنتجات المعروضة.',
   'manualExpiryLabel': 'تاريخ الصلاحية',
   'selectDateHint': 'اختر التاريخ',
   'verifyViaCamera': 'التحقق عبر الكاميرا',
+  'verifyViaCameraHint': 'سيقرأ الذكاء الاصطناعي تاريخ الانتهاء من العبوة.',
   'sameDateForAll': 'كل الوحدات لها نفس تاريخ الصلاحية',
   'appliesToAllUnits': 'يُطبّق التاريخ على جميع الوحدات:',
   'individualBatchesTitle': 'دفعات بتواريخ منفصلة',
@@ -193,6 +206,8 @@ final Map<String, String> arStrings = {
   'batchIntegrityLabel': 'سلامة الدفعة',
   'batchIntegrityPending': 'قيد الموافقة',
   'verifyDates': 'تأكيد التواريخ',
+  'verifyDisclaimer':
+      'بالضغط على تأكيد، تُقرّ بأن هذه المنتجات تستوفي معايير الجودة المعتمدة.',
   'scanningTitle': 'جارٍ التحقق من الصلاحية...',
   'scanningMessage2': 'تحليل بنية الحروف للتحقق من الملصق...',
   'scanningMessage3': 'مطابقة التواريخ مع سجلات التوريد...',
@@ -204,14 +219,18 @@ final Map<String, String> arStrings = {
   'scanSecureFooter': 'تتبع آمن للأغذية',
   'resultsStepName': 'النتائج',
   'resultsTitle': 'نتائج التحقق',
+  'resultsSubtitle': 'اكتمل تحليل بيانات الصلاحية لمنتجك.',
   'totalVerifiedLabel': 'إجمالي الوحدات المؤكدة',
   'unitsWord': 'وحدة',
   'verifiedBatchesTitle': 'دفعات الصلاحية المؤكدة',
   'unitsConfirmed': 'وحدة مؤكدة',
   'issuesTitle': 'مشكلات مكتشفة',
   'issueUnverifiedTitle': 'وحدات غير مؤكدة',
+  'issueUnverifiedMessage':
+      'تعذّر تأكيد تاريخ الانتهاء لجميع الوحدات. أضف دفعة أخرى أو عدّل الكميات.',
   'retakeImage': 'إعادة التصوير',
   'verificationRateLabel': 'نسبة التحقق',
+  'verificationRateHint': 'نسبة الوحدات التي تم تأكيد تاريخ انتهاء صلاحيتها.',
   'saveAsDraft': 'حفظ كمسودة',
   'confirmAndPublish': 'تأكيد ونشر',
   'batchPrefix': 'دفعة',
@@ -286,4 +305,5 @@ final Map<String, String> arStrings = {
   'retry': 'إعادة المحاولة',
   'back': 'رجوع',
   'loading': 'جاري التحميل...',
+  'addressEmptyHint': 'لم تقم بإضافة أي عناوين بعد.',
 };

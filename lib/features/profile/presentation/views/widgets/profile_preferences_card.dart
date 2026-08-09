@@ -23,7 +23,7 @@ class ProfilePreferencesCard extends StatelessWidget {
           SizedBox(height: AppConstants.paddingM.h),
 
           // --- Language ---
-          const _LanguageRow(),
+          _LanguageRow(),
           SizedBox(height: AppConstants.paddingM.h),
 
           // --- Notifications ---

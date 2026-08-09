@@ -10,9 +10,16 @@ abstract class AppStrings {
 
   static String _getString(String key) {
     if (currentLanguage == 'en') {
-      return enStrings[key] ?? key;
+      if (enStrings[key] == null) {
+        print('missing value language en $key');
+      }
+      return enStrings[key]!;
     }
-    return arStrings[key] ?? key;
+    if (arStrings[key] == null) {
+      print('missing value language ar $key');
+      return 'missing value language ar $key';
+    }
+    return arStrings[key]!;
   }
 
   // --- App Name ---

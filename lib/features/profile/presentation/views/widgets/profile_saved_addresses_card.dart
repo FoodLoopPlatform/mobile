@@ -24,7 +24,7 @@ class ProfileSavedAddressesCard extends StatelessWidget {
         children: [
           ProfileSectionTitle(
             title: AppStrings.savedAddressesTitle,
-            trailing: const _AddNewButton(),
+            trailing: _AddNewButton(),
           ),
           SizedBox(height: AppConstants.paddingM.h),
 
@@ -50,14 +50,17 @@ class ProfileSavedAddressesCard extends StatelessWidget {
           SizedBox(height: AppConstants.paddingM.h),
 
           // --- Empty-state hint ---
-          const _AddressesHint(),
+          _AddressesHint(),
         ],
       ),
     );
   }
 
   /// Deleting is irreversible, so it goes through a confirmation first.
-  Future<void> _confirmDelete(BuildContext context, AddressModel address) async {
+  Future<void> _confirmDelete(
+    BuildContext context,
+    AddressModel address,
+  ) async {
     // Captured before the await — `context` may be gone once the dialog closes.
     final cubit = context.read<ProfileCubit>();
 
@@ -141,8 +144,7 @@ class _AddNewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          Navigator.pushNamed(context, RoutesNames.addAddressView),
+      onTap: () => Navigator.pushNamed(context, RoutesNames.addAddressView),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
