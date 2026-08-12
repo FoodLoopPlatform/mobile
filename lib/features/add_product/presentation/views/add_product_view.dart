@@ -11,7 +11,6 @@ class AddProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(color: AppColors.primary),
         title: Text(
           AppStrings.addProductTitle,
           style: TextStyle(

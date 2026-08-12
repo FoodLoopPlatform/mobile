@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import '../../../../core/errors/errors.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/secure_storage_helper.dart';
 import '../data_sources/auth_remote_data_source.dart';
 import '../models/auth_model.dart';
@@ -16,7 +17,7 @@ class AuthRepository {
 
       if (authModel.success && authModel.data != null) {
         if (authModel.data!.user?.status == "PendingVerification") {
-          throw ServerError("Your account is not verified yet");
+          throw ServerError(AppStrings.errorAccountNotVerified);
         }
         if (authModel.data!.accessToken != null &&
             authModel.data!.accessToken != "") {
@@ -28,7 +29,7 @@ class AuthRepository {
             authModel.data!.refreshToken!,
           );
         } else {
-          throw ServerError("Something went wrong. Please try again later.");
+          throw ServerError(AppStrings.errorSomethingWentWrong);
         }
         // Persist the user's first role for UI role-gating (e.g. Merchant nav)
         final roles = authModel.data!.user?.roles;
@@ -36,7 +37,7 @@ class AuthRepository {
           await SecureStorageHelper.saveUserRole(roles.first);
         }
       } else {
-        String msg = authModel.message ?? "Login failed";
+        String msg = authModel.message ?? AppStrings.errorLoginFailed;
         if (authModel.errors != null && authModel.errors!.isNotEmpty) {
           msg = authModel.errors!.join(", ");
         }
@@ -44,10 +45,11 @@ class AuthRepository {
       }
       return authModel;
     } on DioException catch (e) {
+      print(e);
       throw ServerError.fromDioError(e);
     } catch (e) {
       if (e is ServerError) rethrow;
-      throw ServerError("Unknown error occurred");
+      throw ServerError(AppStrings.errorUnknown);
     }
   }
 
@@ -105,12 +107,17 @@ class AuthRepository {
           for (final entry in documentFiles.entries) {
             final file = entry.value;
             if (file != null) {
-              await _remoteDataSource.uploadDocument(email, entry.key, file);
+              await _remoteDataSource.uploadDocument(
+                email,
+                entry.key,
+                file,
+                role,
+              );
             }
           }
         }
       } else {
-        String msg = authModel.message ?? "Registration failed";
+        String msg = authModel.message ?? AppStrings.errorRegistrationFailed;
         if (authModel.errors != null && authModel.errors!.isNotEmpty) {
           msg = authModel.errors!.join(", ");
         }
@@ -122,7 +129,7 @@ class AuthRepository {
     } catch (e) {
       if (e is ServerError) rethrow;
       print("Error: $e");
-      throw ServerError("Unknown error occurred");
+      throw ServerError(AppStrings.errorUnknown);
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:foodloop/core/utils/app_strings.dart';
 
 abstract class Errors {
   final String errMessage;
@@ -11,33 +12,33 @@ class ServerError extends Errors {
   factory ServerError.fromDioError(DioException dioError) {
     switch (dioError.type) {
       case DioExceptionType.connectionTimeout:
-        return ServerError("انتهت مهلة الاتصال بالخادم");
+        return ServerError(AppStrings.errorConnectionTimeout);
       case DioExceptionType.sendTimeout:
-        return ServerError("انتهت مهلة إرسال الطلب");
+        return ServerError(AppStrings.errorSendTimeout);
       case DioExceptionType.receiveTimeout:
-        return ServerError("انتهت مهلة استقبال الرد من الخادم");
+        return ServerError(AppStrings.errorReceiveTimeout);
       case DioExceptionType.badCertificate:
-        return ServerError("الشهادة غير صالحة");
+        return ServerError(AppStrings.errorBadCertificate);
       case DioExceptionType.badResponse:
         return ServerError.fromResponse(dioError.response?.statusCode ?? 500, dioError.response?.data);
       case DioExceptionType.cancel:
-        return ServerError("تم إلغاء الطلب");
+        return ServerError(AppStrings.errorRequestCancelled);
       case DioExceptionType.connectionError:
-        return ServerError("خطأ في الاتصال بالشبكة");
+        return ServerError(AppStrings.errorConnectionError);
       case DioExceptionType.unknown:
         if (dioError.message != null && dioError.message!.contains("SocketException")) {
-          return ServerError("لا يوجد اتصال بالإنترنت");
+          return ServerError(AppStrings.errorNoInternet);
         } else {
-          return ServerError("حدث خطأ غير معروف، يرجى المحاولة مرة أخرى");
+          return ServerError(AppStrings.errorUnknown);
         }
       default:
-        return ServerError("حدث خطأ غير متوقع");
+        return ServerError(AppStrings.errorUnexpected);
     }
   }
 
   factory ServerError.fromResponse(int statusCode, dynamic response) {
     if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
-      String msg = "طلب غير صالح أو غير مصرح به";
+      String msg = AppStrings.errorBadRequest;
       if (response is Map<String, dynamic>) {
         if (response.containsKey("message") && response["message"] != null) {
           msg = response["message"];
@@ -53,11 +54,11 @@ class ServerError extends Errors {
       }
       return ServerError(msg);
     } else if (statusCode == 404) {
-      return ServerError("المورد المطلوب غير موجود");
+      return ServerError(AppStrings.errorNotFound);
     } else if (statusCode == 500) {
-      return ServerError("خطأ داخلي في الخادم");
+      return ServerError(AppStrings.errorInternalServer);
     } else {
-      return ServerError("حدث خطأ غير معروف ($statusCode)");
+      return ServerError("${AppStrings.errorUnknown} ($statusCode)");
     }
   }
 }

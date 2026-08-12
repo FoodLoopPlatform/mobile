@@ -1,3 +1,5 @@
+import 'package:foodloop/core/utils/app_strings.dart';
+
 /// Every FoodLoop endpoint answers with the same envelope:
 /// `{ "success": bool, "data": ..., "message": string, "errors": [...] }`
 /// [T] is whatever sits inside `data` for that particular endpoint.
@@ -23,6 +25,6 @@ class ApiResponse<T> {
 
   String get errorMessage {
     if (errors != null && errors!.isNotEmpty) return errors!.join(', ');
-    return message ?? 'Something went wrong';
+    return message ?? AppStrings.errorSomethingWentWrong;
   }
 }

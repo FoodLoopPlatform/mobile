@@ -1,6 +1,7 @@
 import 'package:foodloop/core/api_helper/api_constants.dart';
 import 'package:foodloop/core/api_helper/api_manager.dart';
 import 'package:foodloop/core/errors/errors.dart';
+import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/features/market/data/models/product_model.dart';
 import 'package:foodloop/features/market/data/models/products_page.dart';
 
@@ -61,7 +62,7 @@ class ProductsRemoteDataSource {
 
     if (body is Map<String, dynamic>) {
       if (body['success'] == false) {
-        throw ServerError(body['message']?.toString() ?? 'Something went wrong');
+        throw ServerError(body['message']?.toString() ?? AppStrings.errorSomethingWentWrong);
       }
 
       final data = body.containsKey('data') ? body['data'] : body;
@@ -90,7 +91,7 @@ class ProductsRemoteDataSource {
       }
     }
 
-    throw ServerError('Unexpected response from the server');
+    throw ServerError(AppStrings.errorUnexpectedResponse);
   }
 
   ProductsPage _pageFromList(

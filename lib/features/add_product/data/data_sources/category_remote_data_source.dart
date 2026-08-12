@@ -2,6 +2,7 @@ import '../../../../core/api_helper/api_constants.dart';
 import '../../../../core/api_helper/api_manager.dart';
 import '../../../../core/api_helper/api_response.dart';
 import '../../../../core/errors/errors.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../models/category_model.dart';
 
 class CategoryRemoteDataSource {
@@ -29,7 +30,7 @@ class CategoryRemoteDataSource {
       return parsed.data ?? const [];
     }
 
-    throw ServerError('Unexpected response from the server');
+    throw ServerError(AppStrings.errorUnexpectedResponse);
   }
 
   List<CategoryModel> _mapList(dynamic json) {

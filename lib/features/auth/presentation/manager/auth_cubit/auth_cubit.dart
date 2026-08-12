@@ -7,7 +7,7 @@ import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepository;
-  
+
   AuthCubit(this._authRepository) : super(const AuthInitial());
 
   // Cached registration fields
@@ -15,8 +15,11 @@ class AuthCubit extends Cubit<AuthState> {
   String _registerEmail = '';
   String _registerPassword = '';
   String _registerPhone = '';
-  
+
   AccountType selectedAccountType = AccountType.user;
+  void reset() {
+    emit(const AuthInitial());
+  }
 
   Future<void> logout() async {
     emit(const AuthLoading());
@@ -75,8 +78,10 @@ class AuthCubit extends Cubit<AuthState> {
       await _authRepository.login(email, password);
       emit(AuthSuccess(email: email));
     } on Errors catch (e) {
+      print(e);
       emit(AuthFail(message: e.errMessage));
     } catch (e) {
+      print(e);
       emit(AuthFail(message: e.toString()));
     }
   }
@@ -91,9 +96,10 @@ class AuthCubit extends Cubit<AuthState> {
     _registerEmail = email;
     _registerPassword = password;
     _registerPhone = phoneNumber;
-    
+
     // For Sellers and Charities, we just navigate to the next screen.
-    if (selectedAccountType == AccountType.seller || selectedAccountType == AccountType.charity) {
+    if (selectedAccountType == AccountType.seller ||
+        selectedAccountType == AccountType.charity) {
       emit(const AuthSellerSuccess());
     } else {
       // For Users, register directly

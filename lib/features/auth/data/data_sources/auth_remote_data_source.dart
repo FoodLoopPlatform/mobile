@@ -45,7 +45,7 @@ class AuthRemoteDataSource {
     });
   }
 
-  Future<void> uploadDocument(String email, String type, File file) async {
+  Future<void> uploadDocument(String email, String type, File file, String role) async {
     String fileName = file.path.split('/').last;
     FormData formData = FormData.fromMap({
       "Email": email,
@@ -53,6 +53,10 @@ class AuthRemoteDataSource {
       "File": await MultipartFile.fromFile(file.path, filename: fileName),
     });
 
-    await _apiManager.post(ApiConstants.uploadDocumentsEndpoint, formData);
+    final endpoint = role == 'Charity'
+        ? ApiConstants.charityDocumentsEndpoint
+        : ApiConstants.storeDocumentsEndpoint;
+
+    await _apiManager.post(endpoint, formData);
   }
 }

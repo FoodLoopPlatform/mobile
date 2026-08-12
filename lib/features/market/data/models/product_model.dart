@@ -23,6 +23,17 @@ class ProductModel extends Equatable {
   final double rating;
   final int reviews;
   final bool inStock;
+  final List<String> images;
+
+  final String? organizationId;
+  final String? categoryId;
+  final String? description;
+  final int? quantityAvailable;
+  final String? expirationDate;
+  final String? status;
+  final double? latitude;
+  final double? longitude;
+  final double? distanceKm;
 
   const ProductModel({
     required this.id,
@@ -37,6 +48,16 @@ class ProductModel extends Equatable {
     this.rating = 4.7,
     this.reviews = 1239,
     this.inStock = true,
+    this.images = const [],
+    this.organizationId,
+    this.categoryId,
+    this.description,
+    this.quantityAvailable,
+    this.expirationDate,
+    this.status,
+    this.latitude,
+    this.longitude,
+    this.distanceKm,
   });
 
   /// Whole-percent discount off [oldPrice], or null when not on offer.
@@ -67,18 +88,32 @@ class ProductModel extends Equatable {
       if (images is List && images.isNotEmpty) {
         final first = images.first;
         if (first is String) return first;
-        if (first is Map) return first['url']?.toString();
+        if (first is Map) return (first['imageUrl'] ?? first['url'])?.toString();
       }
       return null;
     }
 
-    final quantity = toDouble(json['quantity'] ?? json['stock']);
+    List<String> allImages() {
+      final rawImages = json['images'] ?? json['imageUrls'] ?? json['photos'];
+      if (rawImages is List) {
+        return rawImages.map((img) {
+          if (img is String) return img;
+          if (img is Map) return (img['imageUrl'] ?? img['url'])?.toString() ?? '';
+          return '';
+        }).where((s) => s.isNotEmpty).toList();
+      }
+      final single = firstImage();
+      return single != null ? [single] : [];
+    }
+
+    final quantity = toDouble(json['quantityAvailable'] ?? json['quantity'] ?? json['stock']);
 
     return ProductModel(
       id: json['id']?.toString() ?? '',
       name: (json['name'] ?? json['productName'] ?? json['title'] ?? '')
           .toString(),
-      seller: (json['storeName'] ??
+      seller: (json['organizationName'] ??
+              json['storeName'] ??
               json['sellerName'] ??
               json['seller'] ??
               json['ownerName'] ??
@@ -86,7 +121,7 @@ class ProductModel extends Equatable {
           .toString(),
       imageUrl:
           (json['imageUrl'] ?? json['image'] ?? firstImage() ?? '').toString(),
-      price: toDouble(json['price'] ?? json['unitPrice']) ?? 0,
+      price: toDouble(json['discountedPrice'] ?? json['price'] ?? json['unitPrice']) ?? 0,
       oldPrice: toDouble(
         json['originalPrice'] ?? json['oldPrice'] ?? json['comparePrice'],
       ),
@@ -96,6 +131,16 @@ class ProductModel extends Equatable {
       inStock: json['inStock'] is bool
           ? json['inStock'] as bool
           : (quantity == null || quantity > 0),
+      images: allImages(),
+      organizationId: json['organizationId']?.toString(),
+      categoryId: json['categoryId']?.toString(),
+      description: json['description']?.toString(),
+      quantityAvailable: toInt(json['quantityAvailable']),
+      expirationDate: json['expirationDate']?.toString(),
+      status: json['status']?.toString(),
+      latitude: toDouble(json['latitude']),
+      longitude: toDouble(json['longitude']),
+      distanceKm: toDouble(json['distanceKm']),
     );
   }
 

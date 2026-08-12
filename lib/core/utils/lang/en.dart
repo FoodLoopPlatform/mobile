@@ -316,5 +316,24 @@ final Map<String, String> enStrings = {
   'connectionLostSubtitle': 'We are having trouble reaching our network. Please check your internet connection or Wi-Fi status to continue exploring products near you.',
   'retry': 'Retry',
   'back': 'Back',
-  'loading': 'Loading...'
+  'loading': 'Loading...',
+
+  // --- Error Messages ---
+  'errorUnknown': 'Unknown error occurred',
+  'errorSomethingWentWrong': 'Something went wrong. Please try again later.',
+  'errorUnexpectedResponse': 'Unexpected response from the server',
+  'errorAccountNotVerified': 'Your account is not verified yet',
+  'errorLoginFailed': 'Login failed',
+  'errorRegistrationFailed': 'Registration failed',
+  'errorConnectionTimeout': 'Connection to the server timed out',
+  'errorSendTimeout': 'Request send timed out',
+  'errorReceiveTimeout': 'Server response timed out',
+  'errorBadCertificate': 'Invalid certificate',
+  'errorRequestCancelled': 'Request was cancelled',
+  'errorConnectionError': 'Network connection error',
+  'errorNoInternet': 'No internet connection',
+  'errorUnexpected': 'An unexpected error occurred',
+  'errorBadRequest': 'Invalid or unauthorized request',
+  'errorNotFound': 'The requested resource was not found',
+  'errorInternalServer': 'Internal server error',
 };

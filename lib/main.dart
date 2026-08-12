@@ -11,6 +11,9 @@ import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubi
 import 'package:foodloop/features/add_product/data/data_sources/category_remote_data_source.dart';
 import 'package:foodloop/features/add_product/data/repositories/category_repository.dart';
 import 'package:foodloop/features/add_product/presentation/manager/category_cubit/category_cubit.dart';
+import 'package:foodloop/features/add_product/data/data_sources/add_product_remote_data_source.dart';
+import 'package:foodloop/features/add_product/data/repositories/add_product_repository.dart';
+import 'package:foodloop/features/add_product/presentation/manager/add_product_cubit/add_product_cubit.dart';
 import 'package:foodloop/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:foodloop/features/profile/data/repositories/profile_repository.dart';
 import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
@@ -110,6 +113,11 @@ class FoodloopApp extends StatelessWidget {
               BlocProvider(
                 create: (_) => CategoryCubit(
                   CategoryRepository(CategoryRemoteDataSource(apiManager)),
+                ),
+              ),
+              BlocProvider(
+                create: (_) => AddProductCubit(
+                  AddProductRepository(AddProductRemoteDataSource(apiManager)),
                 ),
               ),
             ],

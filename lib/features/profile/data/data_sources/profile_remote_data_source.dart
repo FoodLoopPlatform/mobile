@@ -2,6 +2,7 @@ import '../../../../core/api_helper/api_constants.dart';
 import '../../../../core/api_helper/api_manager.dart';
 import '../../../../core/api_helper/api_response.dart';
 import '../../../../core/errors/errors.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../models/address_model.dart';
 import '../models/profile_model.dart';
 
@@ -70,7 +71,7 @@ class ProfileRemoteDataSource {
 
   ApiResponse<T> _parse<T>(dynamic body, T Function(dynamic json) fromJsonT) {
     if (body is! Map<String, dynamic>) {
-      throw ServerError('Unexpected response from the server');
+      throw ServerError(AppStrings.errorUnexpectedResponse);
     }
     return ApiResponse<T>.fromJson(body, fromJsonT);
   }

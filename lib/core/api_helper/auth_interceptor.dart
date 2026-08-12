@@ -6,43 +6,68 @@ import '../utils/secure_storage_helper.dart';
 
 class AuthInterceptor extends Interceptor {
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     final token = await SecureStorageHelper.getToken();
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';
     }
+
+    final language = await SecureStorageHelper.getLanguage() ?? 'ar';
+    options.headers['Accept-Language'] = language;
+
     return super.onRequest(options, handler);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      final refreshToken = await SecureStorageHelper.getRefreshToken();
-      if (refreshToken != null) {
-        try {
-          var dio = Dio();
-          var response = await dio.post(
-            '${ApiConstants.baseUrl}${ApiConstants.refreshEndpoint}',
-            data: {'refreshToken': refreshToken},
-          );
+      final requestPath = err.requestOptions.path;
 
-          if (response.statusCode == 200 && response.data['success'] == true) {
-             final newAccessToken = response.data['data']['accessToken'];
-             final newRefreshToken = response.data['data']['refreshToken'];
-             
-             await SecureStorageHelper.saveTokens(newAccessToken, newRefreshToken);
-             
-             err.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
-             final retryResponse = await dio.fetch(err.requestOptions);
-             return handler.resolve(retryResponse);
+      // Auth endpoints return 401 for invalid credentials — not expired
+      // sessions.  Let those errors propagate to the cubit as-is.
+      final isAuthRequest =
+          requestPath.contains(ApiConstants.loginEndpoint) ||
+          requestPath.contains(ApiConstants.registerEndpoint);
+
+      if (!isAuthRequest) {
+        final refreshToken = await SecureStorageHelper.getRefreshToken();
+        if (refreshToken != null) {
+          try {
+            var dio = Dio();
+            var response = await dio.post(
+              '${ApiConstants.baseUrl}${ApiConstants.refreshEndpoint}',
+              data: {'refreshToken': refreshToken},
+            );
+
+            if (response.statusCode == 200 &&
+                response.data['success'] == true) {
+              final newAccessToken = response.data['data']['accessToken'];
+              final newRefreshToken = response.data['data']['refreshToken'];
+
+              await SecureStorageHelper.saveTokens(
+                newAccessToken,
+                newRefreshToken,
+              );
+
+              err.requestOptions.headers['Authorization'] =
+                  'Bearer $newAccessToken';
+              final retryResponse = await dio.fetch(err.requestOptions);
+              return handler.resolve(retryResponse);
+            }
+          } catch (e) {
+            // Fall through to clear tokens
           }
-        } catch (e) {
-          // Fall through to clear tokens
         }
+
+        await SecureStorageHelper.clearTokens();
+        navigatorKey.currentState?.pushNamedAndRemoveUntil(
+          RoutesNames.loginView,
+          (route) => false,
+        );
       }
-      
-      await SecureStorageHelper.clearTokens();
-      navigatorKey.currentState?.pushNamedAndRemoveUntil(RoutesNames.loginView, (route) => false);
     }
     return super.onError(err, handler);
   }

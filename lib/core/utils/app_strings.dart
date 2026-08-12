@@ -449,4 +449,31 @@ abstract class AppStrings {
   // --- Generic ---
   static String get back => _getString('back');
   static String get loading => _getString('loading');
+
+  // --- Error Messages (repositories / data layer) ---
+  static String get errorUnknown => _getString('errorUnknown');
+  static String get errorSomethingWentWrong =>
+      _getString('errorSomethingWentWrong');
+  static String get errorUnexpectedResponse =>
+      _getString('errorUnexpectedResponse');
+  static String get errorAccountNotVerified =>
+      _getString('errorAccountNotVerified');
+  static String get errorLoginFailed => _getString('errorLoginFailed');
+  static String get errorRegistrationFailed =>
+      _getString('errorRegistrationFailed');
+
+  // --- Error Messages (Dio / network layer) ---
+  static String get errorConnectionTimeout =>
+      _getString('errorConnectionTimeout');
+  static String get errorSendTimeout => _getString('errorSendTimeout');
+  static String get errorReceiveTimeout => _getString('errorReceiveTimeout');
+  static String get errorBadCertificate => _getString('errorBadCertificate');
+  static String get errorRequestCancelled =>
+      _getString('errorRequestCancelled');
+  static String get errorConnectionError => _getString('errorConnectionError');
+  static String get errorNoInternet => _getString('errorNoInternet');
+  static String get errorUnexpected => _getString('errorUnexpected');
+  static String get errorBadRequest => _getString('errorBadRequest');
+  static String get errorNotFound => _getString('errorNotFound');
+  static String get errorInternalServer => _getString('errorInternalServer');
 }

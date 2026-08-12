@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import '../../../../core/errors/errors.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../data_sources/profile_remote_data_source.dart';
 import '../models/address_model.dart';
 import '../models/profile_model.dart';
@@ -85,7 +86,7 @@ class ProfileRepository {
       throw ServerError.fromDioError(e);
     } catch (e) {
       if (e is Errors) rethrow;
-      throw ServerError('Unknown error occurred');
+      throw ServerError(AppStrings.errorUnknown);
     }
   }
 }

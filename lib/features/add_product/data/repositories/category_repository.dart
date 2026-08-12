@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import '../../../../core/errors/errors.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../data_sources/category_remote_data_source.dart';
 import '../models/category_model.dart';
 
@@ -20,7 +21,7 @@ class CategoryRepository {
       throw ServerError.fromDioError(e);
     } catch (e) {
       if (e is Errors) rethrow;
-      throw ServerError('Unknown error occurred');
+      throw ServerError(AppStrings.errorUnknown);
     }
   }
 }

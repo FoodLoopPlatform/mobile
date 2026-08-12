@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
@@ -9,6 +10,9 @@ import 'package:foodloop/features/add_product/data/models/expiration_batch.dart'
 import 'package:foodloop/features/add_product/data/models/product_draft.dart';
 import 'package:foodloop/features/add_product/presentation/views/widgets/add_product_step_indicator.dart';
 import 'package:foodloop/features/add_product/presentation/views/widgets/verified_batch_tile.dart';
+import 'package:foodloop/features/add_product/presentation/manager/add_product_cubit/add_product_cubit.dart';
+import 'package:foodloop/features/add_product/presentation/manager/add_product_cubit/add_product_state.dart';
+import 'package:foodloop/core/routes_manager/routes_names.dart';
 
 class VerificationResultsBody extends StatelessWidget {
   const VerificationResultsBody({
@@ -40,85 +44,127 @@ class VerificationResultsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(
-              AppConstants.screenHorizontalPadding.w,
-              AppConstants.paddingM.h,
-              AppConstants.screenHorizontalPadding.w,
-              AppConstants.paddingL.h,
+    return BlocConsumer<AddProductCubit, AddProductState>(
+      listener: (context, state) {
+        if (state is AddProductSuccess) {
+          // Success, go back to main nav
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Product published successfully!')),
+          );
+          Navigator.pushNamedAndRemoveUntil(
+              context, RoutesNames.mainNav, (route) => false);
+          context.read<AddProductCubit>().resetState();
+        } else if (state is AddProductFail) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.error,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          );
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state is AddProductLoading;
+        return Stack(
+          children: [
+            Column(
               children: [
-                AddProductStepIndicator(
-                  step: 3,
-                  stepName: AppStrings.resultsStepName,
-                ),
-                SizedBox(height: AppConstants.paddingL.h),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.fromLTRB(
+                      AppConstants.screenHorizontalPadding.w,
+                      AppConstants.paddingM.h,
+                      AppConstants.screenHorizontalPadding.w,
+                      AppConstants.paddingL.h,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AddProductStepIndicator(
+                          step: 3,
+                          stepName: AppStrings.resultsStepName,
+                        ),
+                        SizedBox(height: AppConstants.paddingL.h),
 
-                Text(
-                  AppStrings.resultsTitle,
-                  style: TextStyle(
-                    fontFamily: 'PlayfairDisplay',
-                    fontSize: 26.sp,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primary,
+                        Text(
+                          AppStrings.resultsTitle,
+                          style: TextStyle(
+                            fontFamily: 'PlayfairDisplay',
+                            fontSize: 26.sp,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        SizedBox(height: 6.h),
+                        Text(
+                          AppStrings.resultsSubtitle,
+                          style: TextStyle(
+                            fontFamily: 'DmSans',
+                            fontSize: 13.sp,
+                            color: AppColors.textSecondary,
+                            height: 1.5,
+                          ),
+                        ),
+                        SizedBox(height: AppConstants.paddingL.h),
+
+                        // --- Total verified ---
+                        _TotalVerifiedCard(units: _verifiedUnits),
+                        SizedBox(height: AppConstants.paddingL.h),
+
+                        // --- Verified batches ---
+                        if (batches.isNotEmpty) ...[
+                          _SectionCaption(AppStrings.verifiedBatchesTitle),
+                          SizedBox(height: AppConstants.paddingS.h),
+                          for (var index = 0; index < batches.length; index++) ...[
+                            VerifiedBatchTile(batch: batches[index], index: index),
+                            SizedBox(height: AppConstants.paddingS.h),
+                          ],
+                          SizedBox(height: AppConstants.paddingS.h),
+                        ],
+
+                        // --- Issues (only when units are unaccounted for) ---
+                        if (_unverifiedUnits > 0) ...[
+                          _SectionCaption(AppStrings.issuesTitle),
+                          SizedBox(height: AppConstants.paddingS.h),
+                          _IssueCard(
+                            unverifiedUnits: _unverifiedUnits,
+                            onRetake: onRetake,
+                          ),
+                          SizedBox(height: AppConstants.paddingL.h),
+                        ],
+
+                        // --- Verification rate ---
+                        _VerificationRateCard(rate: _verificationRate),
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(height: 6.h),
-                Text(
-                  AppStrings.resultsSubtitle,
-                  style: TextStyle(
-                    fontFamily: 'DmSans',
-                    fontSize: 13.sp,
-                    color: AppColors.textSecondary,
-                    height: 1.5,
-                  ),
+
+                // --- Bottom actions ---
+                _ResultsActionBar(
+                  onSaveDraft: () => Navigator.pop(context),
+                  onPublish: isLoading
+                      ? () {}
+                      : () {
+                          context
+                              .read<AddProductCubit>()
+                              .publishProducts(draft, batches);
+                        },
                 ),
-                SizedBox(height: AppConstants.paddingL.h),
-
-                // --- Total verified ---
-                _TotalVerifiedCard(units: _verifiedUnits),
-                SizedBox(height: AppConstants.paddingL.h),
-
-                // --- Verified batches ---
-                if (batches.isNotEmpty) ...[
-                  _SectionCaption(AppStrings.verifiedBatchesTitle),
-                  SizedBox(height: AppConstants.paddingS.h),
-                  for (var index = 0; index < batches.length; index++) ...[
-                    VerifiedBatchTile(batch: batches[index], index: index),
-                    SizedBox(height: AppConstants.paddingS.h),
-                  ],
-                  SizedBox(height: AppConstants.paddingS.h),
-                ],
-
-                // --- Issues (only when units are unaccounted for) ---
-                if (_unverifiedUnits > 0) ...[
-                  _SectionCaption(AppStrings.issuesTitle),
-                  SizedBox(height: AppConstants.paddingS.h),
-                  _IssueCard(
-                    unverifiedUnits: _unverifiedUnits,
-                    onRetake: onRetake,
-                  ),
-                  SizedBox(height: AppConstants.paddingL.h),
-                ],
-
-                // --- Verification rate ---
-                _VerificationRateCard(rate: _verificationRate),
               ],
             ),
-          ),
-        ),
-
-        // --- Bottom actions ---
-        _ResultsActionBar(
-          onSaveDraft: () => Navigator.pop(context),
-          onPublish: () {},
-        ),
-      ],
+            if (isLoading)
+              Positioned.fill(
+                child: Container(
+                  color: Colors.black26,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:foodloop/core/errors/errors.dart';
+import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/features/market/data/data_sources/products_remote_data_source.dart';
 import 'package:foodloop/features/market/data/models/products_page.dart';
 
@@ -37,7 +38,7 @@ class ProductsRepository {
       throw ServerError.fromDioError(e);
     } catch (e) {
       if (e is Errors) rethrow;
-      throw ServerError('Unknown error occurred');
+      throw ServerError(AppStrings.errorUnknown);
     }
   }
 }

@@ -306,4 +306,23 @@ final Map<String, String> arStrings = {
   'back': 'رجوع',
   'loading': 'جاري التحميل...',
   'addressEmptyHint': 'لم تقم بإضافة أي عناوين بعد.',
+
+  // --- Error Messages ---
+  'errorUnknown': 'حدث خطأ غير معروف',
+  'errorSomethingWentWrong': 'حدث خطأ ما. يرجى المحاولة مرة أخرى لاحقاً.',
+  'errorUnexpectedResponse': 'استجابة غير متوقعة من الخادم',
+  'errorAccountNotVerified': 'لم يتم التحقق من حسابك بعد',
+  'errorLoginFailed': 'فشل تسجيل الدخول',
+  'errorRegistrationFailed': 'فشل إنشاء الحساب',
+  'errorConnectionTimeout': 'انتهت مهلة الاتصال بالخادم',
+  'errorSendTimeout': 'انتهت مهلة إرسال الطلب',
+  'errorReceiveTimeout': 'انتهت مهلة استقبال الرد من الخادم',
+  'errorBadCertificate': 'الشهادة غير صالحة',
+  'errorRequestCancelled': 'تم إلغاء الطلب',
+  'errorConnectionError': 'خطأ في الاتصال بالشبكة',
+  'errorNoInternet': 'لا يوجد اتصال بالإنترنت',
+  'errorUnexpected': 'حدث خطأ غير متوقع',
+  'errorBadRequest': 'طلب غير صالح أو غير مصرح به',
+  'errorNotFound': 'المورد المطلوب غير موجود',
+  'errorInternalServer': 'خطأ داخلي في الخادم',
 };

@@ -34,10 +34,11 @@ class AuthLoggedOut extends AuthState {
 
 class AuthFail extends AuthState {
   final String message;
-  const AuthFail({required this.message});
+  final DateTime timestamp;
+  AuthFail({required this.message}) : timestamp = DateTime.now();
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, timestamp];
 }
 
 class AuthAccountTypeChanged extends AuthState {
