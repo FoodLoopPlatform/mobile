@@ -19,6 +19,8 @@ import 'package:foodloop/features/onboarding/presentation/views/welcome_view.dar
 import 'package:foodloop/features/profile/data/models/address_model.dart';
 import 'package:foodloop/features/profile/presentation/views/add_address_view.dart';
 import 'package:foodloop/features/profile/presentation/views/profile_view.dart';
+import 'package:foodloop/features/support/presentation/views/create_ticket_view.dart';
+import 'package:foodloop/features/support/presentation/views/ticket_details_view.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
@@ -86,6 +88,15 @@ class RouteGenerator {
 
       case RoutesNames.mainNav:
         return MaterialPageRoute(builder: (_) => const MainNavigationView());
+
+      case RoutesNames.createTicketView:
+        return MaterialPageRoute(builder: (_) => const CreateTicketView());
+
+      case RoutesNames.ticketDetailsView:
+        final ticketId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => TicketDetailsView(ticketId: ticketId),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

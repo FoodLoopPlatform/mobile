@@ -17,5 +17,10 @@ class ApiConstants {
 
   static const String ordersEndpoint = 'orders';
 
+  // --- Support Tickets ---
+  static const String supportTicketsEndpoint = 'support-tickets';
+  static String supportTicketByIdEndpoint(String id) => 'support-tickets/$id';
+  static String supportTicketReplyEndpoint(String id) => 'support-tickets/$id/reply';
+
   static String addressByIdEndpoint(String id) => 'users/me/addresses/$id';
 }

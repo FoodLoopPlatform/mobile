@@ -16,4 +16,6 @@ abstract class RoutesNames {
   static const String scanningView = 'scanningView';
   static const String verificationResultsView = 'verificationResultsView';
   static const String mainNav = 'mainNav';
+  static const String createTicketView = 'createTicketView';
+  static const String ticketDetailsView = 'ticketDetailsView';
 }

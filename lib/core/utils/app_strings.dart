@@ -505,4 +505,44 @@ abstract class AppStrings {
   static String get pickupDetails => _getString('pickupDetails');
   static String get backToHome => _getString('backToHome');
   static String get errorPlaceOrder => _getString('errorPlaceOrder');
+
+  // --- Support Center ---
+  static String get supportCenterTitle => _getString('supportCenterTitle');
+  static String get supportCenterButton => _getString('supportCenterButton');
+  static String get createTicketTitle => _getString('createTicketTitle');
+  static String get createTicketSubtitle => _getString('createTicketSubtitle');
+  static String get ticketCategoryLabel => _getString('ticketCategoryLabel');
+  static String get ticketCategoryHint => _getString('ticketCategoryHint');
+  static String get ticketDescriptionLabel => _getString('ticketDescriptionLabel');
+  static String get ticketDescriptionHint => _getString('ticketDescriptionHint');
+  static String get submitTicket => _getString('submitTicket');
+  static String get recentOrdersLabel => _getString('recentOrdersLabel');
+  static String get ticketCategoryOrderIssue => _getString('ticketCategoryOrderIssue');
+  static String get ticketCategoryPayment => _getString('ticketCategoryPayment');
+  static String get ticketCategoryDelivery => _getString('ticketCategoryDelivery');
+  static String get ticketCategoryProductQuality => _getString('ticketCategoryProductQuality');
+  static String get ticketCategoryAccount => _getString('ticketCategoryAccount');
+  static String get ticketCategoryOther => _getString('ticketCategoryOther');
+  static String get inboxEmptyTitle => _getString('inboxEmptyTitle');
+  static String get inboxEmptySubtitle => _getString('inboxEmptySubtitle');
+  static String get ticketStatusOpen => _getString('ticketStatusOpen');
+  static String get ticketStatusClosed => _getString('ticketStatusClosed');
+  static String get ticketStatusInProgress => _getString('ticketStatusInProgress');
+  static String get ticketDetailsTitle => _getString('ticketDetailsTitle');
+  static String get closeTicketLabel => _getString('closeTicketLabel');
+  static String get typeMessageHint => _getString('typeMessageHint');
+  static String get ticketCreatedSuccess => _getString('ticketCreatedSuccess');
+  static String get ticketCreateError => _getString('ticketCreateError');
+  static String get replyError => _getString('replyError');
+  static String get ordersLoadingError => _getString('ordersLoadingError');
+
+  // --- Orders ---
+  static String get ordersTitle => _getString('ordersTitle');
+  static String get ordersEmptyTitle => _getString('ordersEmptyTitle');
+  static String get ordersEmptySubtitle => _getString('ordersEmptySubtitle');
+  static String get orderStatusPending => _getString('orderStatusPending');
+  static String get orderStatusCompleted => _getString('orderStatusCompleted');
+  static String get orderStatusCancelled => _getString('orderStatusCancelled');
+  static String get orderTotalLabel => _getString('orderTotalLabel');
+  static String get orderItemsLabel => _getString('orderItemsLabel');
 }

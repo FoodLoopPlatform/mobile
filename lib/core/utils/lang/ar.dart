@@ -306,6 +306,7 @@ final Map<String, String> arStrings = {
   'back': 'رجوع',
   'loading': 'جاري التحميل...',
   'addressEmptyHint': 'لم تقم بإضافة أي عناوين بعد.',
+  'addressNotesHint': 'ملاحظات / معالم (مثل: بجوار المسجد)',
 
   // --- Error Messages ---
   'errorUnknown': 'حدث خطأ غير معروف',
@@ -348,7 +349,8 @@ final Map<String, String> arStrings = {
 
   // --- Checkout Success ---
   'thankYouTitle': 'شكرًا لدعمك\nللاستدامة!',
-  'thankYouSubtitle': 'مساهمتك في حلقة الطعام\nتُحدث أثرًا مباشرًا على استدامة مجتمعنا.',
+  'thankYouSubtitle':
+      'مساهمتك في حلقة الطعام\nتُحدث أثرًا مباشرًا على استدامة مجتمعنا.',
   'orderReference': 'رقم الطلب',
   'placedSuccessfully': 'تم الطلب بنجاح',
   'estimatedReadyTime': 'الوقت المقدر للجاهزية',
@@ -356,4 +358,44 @@ final Map<String, String> arStrings = {
   'pickupDetails': 'تفاصيل الاستلام',
   'backToHome': 'العودة للرئيسية',
   'errorPlaceOrder': 'فشل تأكيد الطلب. يرجى المحاولة مجددًا.',
+
+  // --- Support Center ---
+  'supportCenterTitle': 'مركز الدعم',
+  'supportCenterButton': 'مركز الدعم',
+  'createTicketTitle': 'إنشاء تذكرة',
+  'createTicketSubtitle': 'كيف يمكننا مساعدتك في تجربتك الأخيرة؟',
+  'ticketCategoryLabel': 'فئة التذكرة',
+  'ticketCategoryHint': 'اختر فئة',
+  'ticketDescriptionLabel': 'الوصف التفصيلي',
+  'ticketDescriptionHint': 'صف المشكلة بالتفصيل...',
+  'submitTicket': 'إرسال التذكرة',
+  'recentOrdersLabel': 'الطلبات الأخيرة',
+  'ticketCategoryOrderIssue': 'مشكلة في الطلب',
+  'ticketCategoryPayment': 'مشكلة في الدفع',
+  'ticketCategoryDelivery': 'مشكلة في التوصيل',
+  'ticketCategoryProductQuality': 'جودة المنتج',
+  'ticketCategoryAccount': 'مشكلة في الحساب',
+  'ticketCategoryOther': 'أخرى',
+  'inboxEmptyTitle': 'لا توجد تذاكر بعد',
+  'inboxEmptySubtitle': 'تذاكر الدعم الخاصة بك ستظهر هنا',
+  'ticketStatusOpen': 'مفتوحة',
+  'ticketStatusClosed': 'مغلقة',
+  'ticketStatusInProgress': 'قيد المعالجة',
+  'ticketDetailsTitle': 'تفاصيل التذكرة',
+  'closeTicketLabel': 'إغلاق التذكرة',
+  'typeMessageHint': 'اكتب رسالتك هنا...',
+  'ticketCreatedSuccess': 'تم إرسال التذكرة بنجاح',
+  'ticketCreateError': 'فشل إرسال التذكرة. يرجى المحاولة مجددًا.',
+  'replyError': 'فشل إرسال الرد. يرجى المحاولة مجددًا.',
+  'ordersLoadingError': 'فشل تحميل الطلبات.',
+
+  // --- Orders ---
+  'ordersTitle': 'طلباتي',
+  'ordersEmptyTitle': 'لا توجد طلبات بعد',
+  'ordersEmptySubtitle': 'طلباتك ستظهر هنا بعد إتمام الشراء',
+  'orderStatusPending': 'قيد الانتظار',
+  'orderStatusCompleted': 'مكتمل',
+  'orderStatusCancelled': 'ملغى',
+  'orderTotalLabel': 'الإجمالي',
+  'orderItemsLabel': 'المنتجات',
 };

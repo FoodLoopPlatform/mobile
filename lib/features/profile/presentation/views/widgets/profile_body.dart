@@ -9,6 +9,7 @@ import 'package:foodloop/features/profile/presentation/views/widgets/profile_log
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_personal_info_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_preferences_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_saved_addresses_card.dart';
+import 'package:foodloop/features/profile/presentation/views/widgets/profile_support_card.dart';
 import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_cubit.dart';
 import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_state.dart';
 
@@ -68,6 +69,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                     ProfilePreferencesCard(),
                     SizedBox(height: AppConstants.paddingM.h),
                     ProfileSavedAddressesCard(addresses: state.addresses),
+                    SizedBox(height: AppConstants.paddingM.h),
+                    ProfileSupportCard(),
                     SizedBox(height: AppConstants.paddingL.h),
                     ProfileLogoutButton(),
                   ],
@@ -95,7 +98,11 @@ class _ProfileError extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.error_outline_rounded, size: 40.r, color: AppColors.error),
+            Icon(
+              Icons.error_outline_rounded,
+              size: 40.r,
+              color: AppColors.error,
+            ),
             SizedBox(height: 12.h),
             Text(
               message,
