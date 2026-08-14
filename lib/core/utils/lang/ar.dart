@@ -398,4 +398,24 @@ final Map<String, String> arStrings = {
   'orderStatusCancelled': 'ملغى',
   'orderTotalLabel': 'الإجمالي',
   'orderItemsLabel': 'المنتجات',
+
+  // --- Review Screen ---
+  'reviewTitle': 'كيف كانت تجربتك؟',
+  'reviewSubtitle': 'تقييمك يساعد المزارعين المحليين على تحسين خدمتهم ويضمن حصول المجتمع على أفضل المنتجات.',
+  'reviewRateLabel': 'قيّم الجودة',
+  'reviewCommentLabel': 'أخبرنا أكثر عن المنتج',
+  'reviewCommentHint': 'هل كانت العبوة مستدامة؟ هل كانت الخضروات طازجة؟ شاركنا رأيك...',
+  'reviewSubmit': 'إرسال التقييم',
+  'reviewSuccess': 'تم إرسال تقييمك بنجاح',
+  'reviewError': 'فشل إرسال التقييم. يرجى المحاولة مجددًا.',
+  'leaveReview': 'اكتب تقييمًا',
+  'yourRecentOrder': 'طلبك الأخير',
+
+  // --- Order Status Labels (Merchant) ---
+  'orderStatusConfirmed': 'مؤكد',
+  'orderStatusPreparing': 'قيد التحضير',
+  'orderStatusReadyForPickup': 'جاهز للاستلام',
+  'changeStatusLabel': 'تغيير الحالة',
+  'statusUpdateSuccess': 'تم تحديث الحالة بنجاح',
+  'statusUpdateError': 'فشل تحديث الحالة. يرجى المحاولة مجددًا.',
 };

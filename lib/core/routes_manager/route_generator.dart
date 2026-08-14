@@ -17,6 +17,8 @@ import 'package:foodloop/features/search/presentation/views/search_view.dart';
 import 'package:foodloop/features/navigation/presentation/views/main_navigation_view.dart';
 import 'package:foodloop/features/onboarding/presentation/views/welcome_view.dart';
 import 'package:foodloop/features/profile/data/models/address_model.dart';
+import 'package:foodloop/features/orders/data/models/order_model.dart';
+import 'package:foodloop/features/orders/presentation/views/review_order_view.dart';
 import 'package:foodloop/features/profile/presentation/views/add_address_view.dart';
 import 'package:foodloop/features/profile/presentation/views/profile_view.dart';
 import 'package:foodloop/features/support/presentation/views/create_ticket_view.dart';
@@ -96,6 +98,12 @@ class RouteGenerator {
         final ticketId = settings.arguments as String;
         return MaterialPageRoute(
           builder: (_) => TicketDetailsView(ticketId: ticketId),
+        );
+
+      case RoutesNames.reviewOrderView:
+        final order = settings.arguments as OrderModel;
+        return MaterialPageRoute(
+          builder: (_) => ReviewOrderView(order: order),
         );
       default:
         return MaterialPageRoute(

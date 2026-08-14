@@ -1,4 +1,4 @@
-import 'lang/ar.dart';
+﻿import 'lang/ar.dart';
 import 'lang/en.dart';
 
 abstract class AppStrings {
@@ -545,4 +545,25 @@ abstract class AppStrings {
   static String get orderStatusCancelled => _getString('orderStatusCancelled');
   static String get orderTotalLabel => _getString('orderTotalLabel');
   static String get orderItemsLabel => _getString('orderItemsLabel');
+
+  // --- Review Screen ---
+  static String get reviewTitle => _getString('reviewTitle');
+  static String get reviewSubtitle => _getString('reviewSubtitle');
+  static String get reviewRateLabel => _getString('reviewRateLabel');
+  static String get reviewCommentLabel => _getString('reviewCommentLabel');
+  static String get reviewCommentHint => _getString('reviewCommentHint');
+  static String get reviewSubmit => _getString('reviewSubmit');
+  static String get reviewSuccess => _getString('reviewSuccess');
+  static String get reviewError => _getString('reviewError');
+  static String get leaveReview => _getString('leaveReview');
+  static String get yourRecentOrder => _getString('yourRecentOrder');
+
+  // --- Order Status Labels (Merchant) ---
+  static String get orderStatusConfirmed => _getString('orderStatusConfirmed');
+  static String get orderStatusPreparing => _getString('orderStatusPreparing');
+  static String get orderStatusReadyForPickup =>
+      _getString('orderStatusReadyForPickup');
+  static String get changeStatusLabel => _getString('changeStatusLabel');
+  static String get statusUpdateSuccess => _getString('statusUpdateSuccess');
+  static String get statusUpdateError => _getString('statusUpdateError');
 }

@@ -18,4 +18,5 @@ abstract class RoutesNames {
   static const String mainNav = 'mainNav';
   static const String createTicketView = 'createTicketView';
   static const String ticketDetailsView = 'ticketDetailsView';
+  static const String reviewOrderView = 'reviewOrderView';
 }

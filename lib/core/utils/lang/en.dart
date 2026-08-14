@@ -430,4 +430,25 @@ final Map<String, String> enStrings = {
   'orderStatusCancelled': 'Cancelled',
   'orderTotalLabel': 'Total',
   'orderItemsLabel': 'Items',
+
+  // --- Review Screen ---
+  'reviewTitle': 'How was your experience?',
+  'reviewSubtitle': 'Your feedback helps our local farmers improve their service and ensures the community gets the highest quality sustainable produce.',
+  'reviewRateLabel': 'Rate the Quality',
+  'reviewCommentLabel': 'Tell us more about the produce',
+  'reviewCommentHint': 'Was the packaging sustainable? Were the vegetables fresh? Share your thoughts...',
+  'reviewSubmit': 'Submit Review',
+  'reviewSuccess': 'Your review was submitted successfully',
+  'reviewError': 'Failed to submit review. Please try again.',
+  'leaveReview': 'Leave a Review',
+  'yourRecentOrder': 'Your Recent Order',
+
+  // --- Order Status Labels (Merchant) ---
+  'orderStatusConfirmed': 'Confirmed',
+  'orderStatusPreparing': 'Preparing',
+  'orderStatusReadyForPickup': 'Ready for Pickup',
+  'changeStatusLabel': 'Change Status',
+  'statusUpdateSuccess': 'Status updated successfully',
+  'statusUpdateError': 'Failed to update status. Please try again.',
 };
+

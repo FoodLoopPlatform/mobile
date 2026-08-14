@@ -3,12 +3,14 @@ class OrderItemModel {
   final String productTitle;
   final int quantity;
   final double unitPrice;
+  final String? imageUrl;
 
   const OrderItemModel({
     required this.productId,
     required this.productTitle,
     required this.quantity,
     required this.unitPrice,
+    this.imageUrl,
   });
 
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
@@ -17,12 +19,14 @@ class OrderItemModel {
       productTitle: json['productTitle'] as String,
       quantity: json['quantity'] as int,
       unitPrice: (json['unitPrice'] as num).toDouble(),
+      imageUrl: json['imageUrl'] as String?,
     );
   }
 }
 
 class OrderModel {
   final String id;
+  final String userId;
   final String userFullName;
   final double totalAmount;
   final String paymentStatus;
@@ -32,6 +36,7 @@ class OrderModel {
 
   const OrderModel({
     required this.id,
+    required this.userId,
     required this.userFullName,
     required this.totalAmount,
     required this.paymentStatus,
@@ -43,6 +48,7 @@ class OrderModel {
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
       id: json['id'] as String,
+      userId: json['userId'] as String? ?? '',
       userFullName: json['userFullName'] as String? ?? '',
       totalAmount: (json['totalAmount'] as num).toDouble(),
       paymentStatus: json['paymentStatus'] as String? ?? '',
@@ -56,4 +62,8 @@ class OrderModel {
 
   /// Returns a short human-readable ID like "ORD-8AC6"
   String get shortId => 'ORD-${id.substring(0, 4).toUpperCase()}';
+
+  /// First item image URL if available
+  String? get firstItemImageUrl =>
+      items.isNotEmpty ? items.first.imageUrl : null;
 }
