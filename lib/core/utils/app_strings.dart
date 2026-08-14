@@ -476,4 +476,33 @@ abstract class AppStrings {
   static String get errorBadRequest => _getString('errorBadRequest');
   static String get errorNotFound => _getString('errorNotFound');
   static String get errorInternalServer => _getString('errorInternalServer');
+
+  // --- Cart & Checkout ---
+  static String get checkout => _getString('checkout');
+  static String get fulfillment => _getString('fulfillment');
+  static String get pickup => _getString('pickup');
+  static String get shippingTo => _getString('shippingTo');
+  static String get change => _getString('change');
+  static String get orderReview => _getString('orderReview');
+  static String get items => _getString('items');
+  static String get summary => _getString('summary');
+  static String get subtotal => _getString('subtotal');
+  static String get promoDiscount => _getString('promoDiscount');
+  static String get grandTotal => _getString('grandTotal');
+  static String get placeOrder => _getString('placeOrder');
+  static String get inCart => _getString('inCart');
+  static String get cartEmpty => _getString('cartEmpty');
+  static String get cartEmptySubtitle => _getString('cartEmptySubtitle');
+  static String get browsMarket => _getString('browsMarket');
+
+  // --- Checkout Success ---
+  static String get thankYouTitle => _getString('thankYouTitle');
+  static String get thankYouSubtitle => _getString('thankYouSubtitle');
+  static String get orderReference => _getString('orderReference');
+  static String get placedSuccessfully => _getString('placedSuccessfully');
+  static String get estimatedReadyTime => _getString('estimatedReadyTime');
+  static String get minutes => _getString('minutes');
+  static String get pickupDetails => _getString('pickupDetails');
+  static String get backToHome => _getString('backToHome');
+  static String get errorPlaceOrder => _getString('errorPlaceOrder');
 }

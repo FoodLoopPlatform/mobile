@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
+import 'package:foodloop/features/cart/data/models/cart_item_model.dart';
+import 'package:foodloop/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
+import 'package:foodloop/features/cart/presentation/manager/cart_cubit/cart_state.dart';
 import 'package:foodloop/features/market/data/models/product_model.dart';
 import 'package:foodloop/features/market/presentation/views/widgets/product_image.dart';
 
@@ -105,19 +109,124 @@ class RecommendedProductCard extends StatelessWidget {
                           color: AppColors.primary,
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(8.r),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius:
-                              BorderRadius.circular(AppConstants.radiusS.r),
-                        ),
-                        child: Icon(Icons.add_shopping_cart_rounded,
-                            size: 20.r, color: AppColors.textOnPrimary),
+                      // Cart button: stepper when in cart, add icon when not
+                      BlocBuilder<CartCubit, CartState>(
+                        builder: (context, state) {
+                          int? cartQty;
+                          if (state is CartLoaded) {
+                            final match = state.items
+                                .where((i) => i.productId == product.id)
+                                .toList();
+                            cartQty = match.isEmpty ? null : match.first.quantity;
+                          }
+
+                          if (cartQty != null) {
+                            return _InlineCartStepper(
+                              product: product,
+                              quantity: cartQty,
+                            );
+                          }
+
+                          return GestureDetector(
+                            onTap: () {
+                              context.read<CartCubit>().addItem(
+                                    CartItemModel(
+                                      productId: product.id,
+                                      name: product.name,
+                                      price: product.price,
+                                      imageUrl: product.imageUrl,
+                                      quantity: 1,
+                                    ),
+                                  );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8.r),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(
+                                    AppConstants.radiusS.r),
+                              ),
+                              child: Icon(
+                                Icons.add_shopping_cart_rounded,
+                                size: 20.r,
+                                color: AppColors.textOnPrimary,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
                 ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Compact inline stepper for cards — shows – qty + with animated transitions.
+class _InlineCartStepper extends StatelessWidget {
+  const _InlineCartStepper({
+    required this.product,
+    required this.quantity,
+  });
+
+  final ProductModel product;
+  final int quantity;
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<CartCubit>();
+    return GestureDetector(
+      // Prevent the card's onTap from firing when interacting with stepper
+      onTap: () {},
+      child: AnimatedContainer(
+        duration: AppConstants.animationFast,
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+        decoration: BoxDecoration(
+          color: AppColors.primary,
+          borderRadius: BorderRadius.circular(AppConstants.radiusS.r),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              onTap: () => cubit.updateQuantity(product.id, quantity - 1),
+              child: Padding(
+                padding: EdgeInsets.all(4.r),
+                child: Icon(
+                  quantity == 1
+                      ? Icons.delete_outline_rounded
+                      : Icons.remove_rounded,
+                  size: 16.r,
+                  color: AppColors.textOnPrimary,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 6.w),
+              child: Text(
+                '$quantity',
+                style: TextStyle(
+                  fontFamily: 'JetBrainsMono',
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textOnPrimary,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => cubit.updateQuantity(product.id, quantity + 1),
+              child: Padding(
+                padding: EdgeInsets.all(4.r),
+                child: Icon(
+                  Icons.add_rounded,
+                  size: 16.r,
+                  color: AppColors.textOnPrimary,
+                ),
               ),
             ),
           ],

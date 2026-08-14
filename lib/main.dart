@@ -19,16 +19,23 @@ import 'package:foodloop/features/profile/data/repositories/profile_repository.d
 import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
 import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_cubit.dart';
 import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_state.dart';
+import 'package:foodloop/features/cart/data/data_sources/cart_local_data_source.dart';
+import 'package:foodloop/features/cart/data/data_sources/order_remote_data_source.dart';
+import 'package:foodloop/features/cart/data/repositories/cart_repository.dart';
+import 'package:foodloop/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:foodloop/core/api_helper/api_constants.dart';
 import 'package:foodloop/core/utils/secure_storage_helper.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox<dynamic>('cart');
 
   String initialRoute = RoutesNames.welcomeView;
   final refreshToken = await SecureStorageHelper.getRefreshToken();
@@ -101,8 +108,17 @@ class FoodloopApp extends StatelessWidget {
                 create: (_) => LocalizationCubit(initialLanguage),
               ),
               BlocProvider(
+                create: (_) => CartCubit(
+                  CartRepository(
+                    CartLocalDataSource(),
+                    OrderRemoteDataSource(apiManager),
+                  ),
+                )..loadCart(),
+              ),
+              BlocProvider(
                 create: (_) => AuthCubit(
                   AuthRepository(AuthRemoteDataSource(apiManager)),
+                  CartLocalDataSource(),
                 ),
               ),
               BlocProvider(

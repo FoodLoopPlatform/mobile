@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodloop/core/utils/secure_storage_helper.dart';
 import 'package:foodloop/features/add_product/presentation/views/add_product_view.dart';
+import 'package:foodloop/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
+import 'package:foodloop/features/cart/presentation/manager/cart_cubit/cart_state.dart';
 import 'package:foodloop/features/cart/presentation/views/cart_view.dart';
 import 'package:foodloop/features/inbox/presentation/views/inbox_view.dart';
 import 'package:foodloop/features/market/presentation/views/market_view.dart';
@@ -81,10 +84,18 @@ class _MainNavigationViewState extends State<MainNavigationView> {
         onPageChanged: _onPageChanged,
         children: _views,
       ),
-      bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
-        isMerchant: _isMerchant,
+      bottomNavigationBar: BlocBuilder<CartCubit, CartState>(
+        builder: (context, cartState) {
+          final cartCount = cartState is CartLoaded
+              ? cartState.items.fold<int>(0, (sum, i) => sum + i.quantity)
+              : 0;
+          return CustomBottomNavBar(
+            currentIndex: _currentIndex,
+            onTap: _onTabTapped,
+            isMerchant: _isMerchant,
+            cartItemCount: cartCount,
+          );
+        },
       ),
     );
   }

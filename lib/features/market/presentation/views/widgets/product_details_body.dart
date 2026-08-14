@@ -61,7 +61,7 @@ class ProductDetailsBody extends StatelessWidget {
             ],
           ),
         ),
-        const ProductAddToCartBar(),
+        ProductAddToCartBar(product: product),
       ],
     );
   }

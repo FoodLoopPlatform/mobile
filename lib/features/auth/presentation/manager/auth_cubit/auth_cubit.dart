@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodloop/core/enums/account_type_enum.dart';
 import 'package:foodloop/core/errors/errors.dart';
 import 'package:foodloop/features/auth/data/repositories/auth_repository.dart';
+import 'package:foodloop/features/cart/data/data_sources/cart_local_data_source.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepository;
+  final CartLocalDataSource _cartLocalDataSource;
 
-  AuthCubit(this._authRepository) : super(const AuthInitial());
+  AuthCubit(this._authRepository, this._cartLocalDataSource)
+      : super(const AuthInitial());
 
   // Cached registration fields
   String _registerFullName = '';
@@ -24,6 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     emit(const AuthLoading());
     await _authRepository.logout();
+    await _cartLocalDataSource.clearCart();
     _clearDrafts();
     emit(const AuthLoggedOut());
   }
@@ -75,6 +79,9 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login(String email, String password) async {
     emit(const AuthLoading());
     try {
+      // Always clear the local cart first — ensures a clean state even
+      // when a different account is logging in on the same device.
+      await _cartLocalDataSource.clearCart();
       await _authRepository.login(email, password);
       emit(AuthSuccess(email: email));
     } on Errors catch (e) {

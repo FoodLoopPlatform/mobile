@@ -10,11 +10,13 @@ class CustomBottomNavBar extends StatelessWidget {
     required this.currentIndex,
     required this.onTap,
     required this.isMerchant,
+    this.cartItemCount = 0,
   });
 
   final int currentIndex;
   final ValueChanged<int> onTap;
   final bool isMerchant;
+  final int cartItemCount;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,7 @@ class CustomBottomNavBar extends StatelessWidget {
                   icon: Icons.shopping_cart_outlined,
                   label: AppStrings.navCart,
                   isActive: currentIndex == 2,
-                  badgeCount: 3,
+                  badgeCount: cartItemCount > 0 ? cartItemCount : null,
                   onTap: () => onTap(2),
                 ),
               // 3 - Inbox (all users)

@@ -15,5 +15,7 @@ class ApiConstants {
   static const String profileEndpoint = 'users/me';
   static const String addressesEndpoint = 'users/me/addresses';
 
+  static const String ordersEndpoint = 'orders';
+
   static String addressByIdEndpoint(String id) => 'users/me/addresses/$id';
 }
