@@ -29,6 +29,7 @@ class _SearchBodyState extends State<SearchBody> {
   final _controller = TextEditingController();
   Timer? _debounce;
   String _query = '';
+  String? _sortBy;
 
   @override
   void initState() {
@@ -46,6 +47,7 @@ class _SearchBodyState extends State<SearchBody> {
   void _search() {
     context.read<ProductsCubit>().loadProducts(
           search: _query.trim().isEmpty ? null : _query.trim(),
+          sortBy: _sortBy,
           pageSize: _pageSize,
         );
   }
@@ -59,7 +61,10 @@ class _SearchBodyState extends State<SearchBody> {
   void _clearSearch() {
     _controller.clear();
     _debounce?.cancel();
-    setState(() => _query = '');
+    setState(() {
+      _query = '';
+      _sortBy = null;
+    });
     _search();
   }
 
@@ -89,7 +94,12 @@ class _SearchBodyState extends State<SearchBody> {
             onChanged: _onQueryChanged,
           ),
         ),
-        const SearchFilterChips(),
+        SearchFilterChips(
+          onFilterSelected: (sortBy) {
+            setState(() => _sortBy = sortBy);
+            _search();
+          },
+        ),
         SizedBox(height: AppConstants.paddingM.h),
         Expanded(
           child: BlocBuilder<ProductsCubit, ProductsState>(

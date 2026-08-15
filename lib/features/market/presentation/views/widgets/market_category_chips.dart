@@ -6,19 +6,22 @@ import 'package:foodloop/core/utils/constants.dart';
 
 /// Horizontally scrolling category filter chips (static selection).
 class MarketCategoryChips extends StatefulWidget {
-  const MarketCategoryChips({super.key});
+  const MarketCategoryChips({super.key, this.onCategorySelected});
+
+  final ValueChanged<String?>? onCategorySelected;
 
   @override
   State<MarketCategoryChips> createState() => _MarketCategoryChipsState();
 }
 
 class _MarketCategoryChipsState extends State<MarketCategoryChips> {
-  static final List<String> _categories = [
-    AppStrings.categoryBakery,
-    AppStrings.categoryMeals,
-    AppStrings.categoryGroceries,
-    AppStrings.categoryDesserts,
-    AppStrings.categoryBeverages,
+  static final List<Map<String, String?>> _categories = [
+    {'label': AppStrings.viewAll, 'id': null},
+    {'label': AppStrings.categoryBakery, 'id': 'Bakery'},
+    {'label': AppStrings.categoryMeals, 'id': 'Meals'},
+    {'label': AppStrings.categoryGroceries, 'id': 'Groceries'},
+    {'label': AppStrings.categoryDesserts, 'id': 'Desserts'},
+    {'label': AppStrings.categoryBeverages, 'id': 'Beverages'},
   ];
 
   int _selected = 0;
@@ -37,8 +40,14 @@ class _MarketCategoryChipsState extends State<MarketCategoryChips> {
             SizedBox(width: AppConstants.paddingXS.w),
         itemBuilder: (context, index) {
           final isSelected = index == _selected;
+          final cat = _categories[index];
           return GestureDetector(
-            onTap: () => setState(() => _selected = index),
+            onTap: () {
+              if (_selected != index) {
+                setState(() => _selected = index);
+                widget.onCategorySelected?.call(cat['id']);
+              }
+            },
             child: AnimatedContainer(
               duration: AppConstants.animationFast,
               padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -50,7 +59,7 @@ class _MarketCategoryChipsState extends State<MarketCategoryChips> {
                 borderRadius: BorderRadius.circular(AppConstants.radiusFull.r),
               ),
               child: Text(
-                _categories[index],
+                cat['label']!,
                 style: TextStyle(
                   fontFamily: 'DmSans',
                   fontSize: 12.sp,

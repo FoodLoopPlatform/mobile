@@ -39,7 +39,7 @@ class _CartBodyState extends State<CartBody> {
         }
       },
       builder: (context, state) {
-        if (state is CartLoading) {
+        if (state is CartLoading || state is CartInitial) {
           return const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
@@ -53,7 +53,12 @@ class _CartBodyState extends State<CartBody> {
           return _buildCheckout(context, state);
         }
 
-        return const SizedBox.shrink();
+        // CartStoreConflict: the dialog is shown from product_add_to_cart_bar.
+        // While awaiting user decision we show the loading spinner so the cart
+        // screen doesn't flash a broken state.
+        return const Center(
+          child: CircularProgressIndicator(color: AppColors.primary),
+        );
       },
     );
   }
@@ -65,8 +70,11 @@ class _CartBodyState extends State<CartBody> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.shopping_cart_outlined,
-              size: 80.r, color: AppColors.neutralLight),
+          Icon(
+            Icons.shopping_cart_outlined,
+            size: 80.r,
+            color: AppColors.neutralLight,
+          ),
           SizedBox(height: 16.h),
           Text(
             AppStrings.cartEmpty,
@@ -100,7 +108,8 @@ class _CartBodyState extends State<CartBody> {
         SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: AppConstants.screenHorizontalPadding.w),
+              horizontal: AppConstants.screenHorizontalPadding.w,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -156,7 +165,8 @@ class _CartBodyState extends State<CartBody> {
             final item = state.items[index];
             return Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: AppConstants.screenHorizontalPadding.w),
+                horizontal: AppConstants.screenHorizontalPadding.w,
+              ),
               child: _CartItemTile(item: item),
             );
           },
@@ -166,8 +176,8 @@ class _CartBodyState extends State<CartBody> {
         SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                    horizontal: AppConstants.screenHorizontalPadding.w)
-                .copyWith(top: 24.h, bottom: 16.h),
+              horizontal: AppConstants.screenHorizontalPadding.w,
+            ).copyWith(top: 24.h, bottom: 16.h),
             child: _buildSummaryCard(state),
           ),
         ),
@@ -213,13 +223,15 @@ class _CartBodyState extends State<CartBody> {
       child: Row(
         children: [
           _buildToggleOption(
-              label: AppStrings.delivery,
-              selected: _isDelivery,
-              onTap: () => setState(() => _isDelivery = true)),
+            label: AppStrings.delivery,
+            selected: _isDelivery,
+            onTap: () => setState(() => _isDelivery = true),
+          ),
           _buildToggleOption(
-              label: AppStrings.pickup,
-              selected: !_isDelivery,
-              onTap: () => setState(() => _isDelivery = false)),
+            label: AppStrings.pickup,
+            selected: !_isDelivery,
+            onTap: () => setState(() => _isDelivery = false),
+          ),
         ],
       ),
     );
@@ -264,8 +276,11 @@ class _CartBodyState extends State<CartBody> {
       ),
       child: Row(
         children: [
-          Icon(Icons.location_on_outlined,
-              color: AppColors.primary, size: 20.r),
+          Icon(
+            Icons.location_on_outlined,
+            color: AppColors.primary,
+            size: 20.r,
+          ),
           SizedBox(width: 12.w),
           Expanded(
             child: Column(
@@ -392,8 +407,7 @@ class _CartBodyState extends State<CartBody> {
     );
   }
 
-  Widget _buildSummaryRow(String label, String value,
-      {Color? valueColor}) {
+  Widget _buildSummaryRow(String label, String value, {Color? valueColor}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -521,12 +535,14 @@ class _CartItemTile extends StatelessWidget {
 
           // Delete icon
           GestureDetector(
-            onTap: () =>
-                context.read<CartCubit>().removeItem(item.productId),
+            onTap: () => context.read<CartCubit>().removeItem(item.productId),
             child: Padding(
               padding: EdgeInsets.all(AppConstants.paddingXS.r),
-              child: Icon(Icons.delete_outline,
-                  color: AppColors.neutral, size: 20.r),
+              child: Icon(
+                Icons.delete_outline,
+                color: AppColors.neutral,
+                size: 20.r,
+              ),
             ),
           ),
         ],
@@ -539,8 +555,11 @@ class _CartItemTile extends StatelessWidget {
       width: 72.r,
       height: 72.r,
       color: AppColors.surfaceContainerHigh,
-      child: Icon(Icons.image_not_supported_outlined,
-          color: AppColors.neutralLight, size: 28.r),
+      child: Icon(
+        Icons.image_not_supported_outlined,
+        color: AppColors.neutralLight,
+        size: 28.r,
+      ),
     );
   }
 }
@@ -562,9 +581,10 @@ class _QuantityStepper extends StatelessWidget {
         children: [
           _StepperButton(
             icon: Icons.remove,
-            onTap: () => context
-                .read<CartCubit>()
-                .updateQuantity(item.productId, item.quantity - 1),
+            onTap: () => context.read<CartCubit>().updateQuantity(
+              item.productId,
+              item.quantity - 1,
+            ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -580,9 +600,10 @@ class _QuantityStepper extends StatelessWidget {
           ),
           _StepperButton(
             icon: Icons.add,
-            onTap: () => context
-                .read<CartCubit>()
-                .updateQuantity(item.productId, item.quantity + 1),
+            onTap: () => context.read<CartCubit>().updateQuantity(
+              item.productId,
+              item.quantity + 1,
+            ),
           ),
         ],
       ),

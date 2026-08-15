@@ -1,4 +1,4 @@
-﻿import 'lang/ar.dart';
+import 'lang/ar.dart';
 import 'lang/en.dart';
 
 abstract class AppStrings {
@@ -494,6 +494,14 @@ abstract class AppStrings {
   static String get cartEmpty => _getString('cartEmpty');
   static String get cartEmptySubtitle => _getString('cartEmptySubtitle');
   static String get browsMarket => _getString('browsMarket');
+  static String get cartStoreConflictTitle =>
+      _getString('cartStoreConflictTitle');
+  static String get cartStoreConflictMessage =>
+      _getString('cartStoreConflictMessage');
+  static String get cartStoreConflictConfirm =>
+      _getString('cartStoreConflictConfirm');
+  static String get cartStoreConflictCancel =>
+      _getString('cartStoreConflictCancel');
 
   // --- Checkout Success ---
   static String get thankYouTitle => _getString('thankYouTitle');
@@ -566,4 +574,10 @@ abstract class AppStrings {
   static String get changeStatusLabel => _getString('changeStatusLabel');
   static String get statusUpdateSuccess => _getString('statusUpdateSuccess');
   static String get statusUpdateError => _getString('statusUpdateError');
+  static String get advanceStatusBtn => _getString('advanceStatusBtn');
+  static String get cancelOrderBtn => _getString('cancelOrderBtn');
+  static String get cancelOrderConfirmTitle => _getString('cancelOrderConfirmTitle');
+  static String get cancelOrderConfirmMsg => _getString('cancelOrderConfirmMsg');
+  static String get confirmCancel => _getString('confirmCancel');
+  static String get keepOrder => _getString('keepOrder');
 }

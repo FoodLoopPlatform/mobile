@@ -37,16 +37,20 @@ class OrdersView extends StatelessWidget {
             if (state is OrderStatusUpdateSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(AppStrings.statusUpdateSuccess,
-                      style: const TextStyle(fontFamily: 'DmSans')),
+                  content: Text(
+                    AppStrings.statusUpdateSuccess,
+                    style: const TextStyle(fontFamily: 'DmSans'),
+                  ),
                   backgroundColor: AppColors.primaryLight,
                 ),
               );
             } else if (state is OrderStatusUpdateFail) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(AppStrings.statusUpdateError,
-                      style: const TextStyle(fontFamily: 'DmSans')),
+                  content: Text(
+                    AppStrings.statusUpdateError,
+                    style: const TextStyle(fontFamily: 'DmSans'),
+                  ),
                   backgroundColor: AppColors.error,
                 ),
               );
@@ -63,8 +67,11 @@ class OrdersView extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.error_outline_rounded,
-                          size: 40.r, color: AppColors.error),
+                      Icon(
+                        Icons.error_outline_rounded,
+                        size: 40.r,
+                        color: AppColors.error,
+                      ),
                       SizedBox(height: 12.h),
                       Text(
                         state.message,
@@ -79,10 +86,13 @@ class OrdersView extends StatelessWidget {
                       TextButton(
                         onPressed: () =>
                             context.read<OrdersCubit>().loadOrders(),
-                        child: Text(AppStrings.retry,
-                            style: TextStyle(
-                                fontFamily: 'DmSans',
-                                color: AppColors.primary)),
+                        child: Text(
+                          AppStrings.retry,
+                          style: TextStyle(
+                            fontFamily: 'DmSans',
+                            color: AppColors.primary,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -97,8 +107,11 @@ class OrdersView extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.shopping_bag_outlined,
-                            size: 72.r, color: AppColors.neutral),
+                        Icon(
+                          Icons.shopping_bag_outlined,
+                          size: 72.r,
+                          color: AppColors.neutral,
+                        ),
                         SizedBox(height: 16.h),
                         Text(
                           AppStrings.ordersEmptyTitle,
@@ -149,6 +162,197 @@ class OrdersView extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Merchant Action Buttons (Advance + Cancel)
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _MerchantOrderActions extends StatelessWidget {
+  const _MerchantOrderActions({required this.order});
+  final OrderModel order;
+
+  // Status progression — Cancelled and Completed are terminal.
+  static const List<String> _progression = [
+    'Pending',
+    'Confirmed',
+    'Preparing',
+    'ReadyForPickup',
+    'Completed',
+  ];
+
+  String? get _nextStatus {
+    final idx = _progression.indexWhere(
+      (s) => s.toLowerCase() == order.orderStatus.toLowerCase(),
+    );
+    if (idx == -1 || idx >= _progression.length - 1) return null;
+    return _progression[idx + 1];
+  }
+
+  bool get _isCancelled => order.orderStatus.toLowerCase() == 'cancelled';
+  bool get _isCompleted => order.orderStatus.toLowerCase() == 'completed';
+
+  String _nextStatusLabel(String nextStatus) {
+    switch (nextStatus.toLowerCase()) {
+      case 'confirmed':
+        return AppStrings.orderStatusConfirmed;
+      case 'preparing':
+        return AppStrings.orderStatusPreparing;
+      case 'readyforpickup':
+        return AppStrings.orderStatusReadyForPickup;
+      case 'completed':
+        return AppStrings.orderStatusCompleted;
+      default:
+        return nextStatus;
+    }
+  }
+
+  Future<void> _confirmCancel(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppConstants.radiusL.r),
+        ),
+        title: Text(
+          AppStrings.cancelOrderConfirmTitle,
+          style: TextStyle(
+            fontFamily: 'PlayfairDisplay',
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        content: Text(
+          AppStrings.cancelOrderConfirmMsg,
+          style: TextStyle(
+            fontFamily: 'DmSans',
+            fontSize: 14.sp,
+            color: AppColors.textSecondary,
+            height: 1.5,
+          ),
+        ),
+        actionsPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        actions: [
+          OutlinedButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: AppColors.outline),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
+              ),
+            ),
+            child: Text(
+              AppStrings.keepOrder,
+              style: TextStyle(
+                fontFamily: 'DmSans',
+                fontSize: 13.sp,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.error,
+              foregroundColor: AppColors.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
+              ),
+            ),
+            child: Text(
+              AppStrings.confirmCancel,
+              style: TextStyle(
+                fontFamily: 'DmSans',
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true && context.mounted) {
+      context.read<OrdersCubit>().updateOrderStatus(
+        orderId: order.id,
+        status: 'Cancelled',
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Nothing to show for terminal states.
+    if (_isCompleted || _isCancelled) return const SizedBox.shrink();
+
+    final next = _nextStatus;
+
+    return Row(
+      children: [
+        // --- Advance button ---
+        if (next != null) ...[
+          Expanded(
+            child: SizedBox(
+              height: 38.h,
+              child: ElevatedButton.icon(
+                onPressed: () => context.read<OrdersCubit>().updateOrderStatus(
+                  orderId: order.id,
+                  status: next,
+                ),
+                icon: Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 16.r,
+                  color: AppColors.surface,
+                ),
+                label: Text(
+                  _nextStatusLabel(next),
+                  style: TextStyle(
+                    fontFamily: 'DmSans',
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.surface,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
+                  ),
+                  padding: EdgeInsets.zero,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 8.w),
+        ],
+
+        // --- Cancel button ---
+        SizedBox(
+          height: 38.h,
+          child: OutlinedButton.icon(
+            onPressed: () => _confirmCancel(context),
+            icon: Icon(Icons.close_rounded, size: 15.r, color: AppColors.error),
+            label: Text(
+              AppStrings.cancelOrderBtn,
+              style: TextStyle(
+                fontFamily: 'DmSans',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.error,
+              ),
+            ),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: AppColors.error),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────────
 // Order Card
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -167,13 +371,13 @@ class _OrderCard extends StatelessWidget {
   ];
 
   List<String> get _statusLabels => [
-        AppStrings.orderStatusPending,
-        AppStrings.orderStatusConfirmed,
-        AppStrings.orderStatusPreparing,
-        AppStrings.orderStatusReadyForPickup,
-        AppStrings.orderStatusCompleted,
-        AppStrings.orderStatusCancelled,
-      ];
+    AppStrings.orderStatusPending,
+    AppStrings.orderStatusConfirmed,
+    AppStrings.orderStatusPreparing,
+    AppStrings.orderStatusReadyForPickup,
+    AppStrings.orderStatusCompleted,
+    AppStrings.orderStatusCancelled,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -184,8 +388,9 @@ class _OrderCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppConstants.radiusL.r),
-        border:
-            Border.all(color: AppColors.outlineVariant.withValues(alpha: 0.5)),
+        border: Border.all(
+          color: AppColors.outlineVariant.withValues(alpha: 0.5),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -210,56 +415,48 @@ class _OrderCard extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              // Merchant: dropdown to change status | User: static chip
-              if (isMerchant)
-                _StatusDropdown(
-                  currentStatus: order.orderStatus,
-                  statusValues: _statusValues,
-                  statusLabels: _statusLabels,
-                  onChanged: (newStatus) {
-                    context.read<OrdersCubit>().updateOrderStatus(
-                          orderId: order.id,
-                          status: newStatus,
-                        );
-                  },
-                )
-              else
-                _StatusChip(status: order.orderStatus),
+              // Merchant: static chip only (actions are in the buttons below)
+              // User: static chip
+              _StatusChip(status: order.orderStatus),
             ],
           ),
           SizedBox(height: 10.h),
 
           // --- Items ---
-          ...order.items.take(3).map((item) => Padding(
-                padding: EdgeInsets.only(bottom: 4.h),
-                child: Row(
-                  children: [
-                    Icon(Icons.circle, size: 5.r, color: AppColors.primary),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: Text(
-                        item.productTitle,
-                        style: TextStyle(
-                          fontFamily: 'DmSans',
-                          fontSize: 13.sp,
-                          color: AppColors.textSecondary,
+          ...order.items
+              .take(3)
+              .map(
+                (item) => Padding(
+                  padding: EdgeInsets.only(bottom: 4.h),
+                  child: Row(
+                    children: [
+                      Icon(Icons.circle, size: 5.r, color: AppColors.primary),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: Text(
+                          item.productTitle,
+                          style: TextStyle(
+                            fontFamily: 'DmSans',
+                            fontSize: 13.sp,
+                            color: AppColors.textSecondary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      'x${item.quantity}',
-                      style: TextStyle(
-                        fontFamily: 'JetBrainsMono',
-                        fontSize: 12.sp,
-                        color: AppColors.outline,
+                      SizedBox(width: 8.w),
+                      Text(
+                        'x${item.quantity}',
+                        style: TextStyle(
+                          fontFamily: 'JetBrainsMono',
+                          fontSize: 12.sp,
+                          color: AppColors.outline,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              )),
+              ),
           if (order.items.length > 3)
             Text(
               '+ ${order.items.length - 3} ${AppStrings.items}',
@@ -272,8 +469,9 @@ class _OrderCard extends StatelessWidget {
 
           SizedBox(height: 10.h),
           Divider(
-              height: 1,
-              color: AppColors.outlineVariant.withValues(alpha: 0.4)),
+            height: 1,
+            color: AppColors.outlineVariant.withValues(alpha: 0.4),
+          ),
           SizedBox(height: 10.h),
 
           // --- Footer ---
@@ -309,6 +507,12 @@ class _OrderCard extends StatelessWidget {
             ],
           ),
 
+          // --- Merchant Action Buttons ---
+          if (isMerchant) ...[
+            SizedBox(height: 12.h),
+            _MerchantOrderActions(order: order),
+          ],
+
           // --- Review Button (user only, completed orders) ---
           if (!isMerchant && isCompleted) ...[
             SizedBox(height: 10.h),
@@ -321,8 +525,11 @@ class _OrderCard extends StatelessWidget {
                   RoutesNames.reviewOrderView,
                   arguments: order,
                 ),
-                icon: Icon(Icons.star_outline_rounded,
-                    size: 16.r, color: AppColors.primary),
+                icon: Icon(
+                  Icons.star_outline_rounded,
+                  size: 16.r,
+                  color: AppColors.primary,
+                ),
                 label: Text(
                   AppStrings.leaveReview,
                   style: TextStyle(
@@ -335,8 +542,13 @@ class _OrderCard extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: AppColors.primary, width: 1.5),
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(AppConstants.radiusFull.r),
+                    borderRadius: BorderRadius.circular(
+                      AppConstants.radiusFull.r,
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppConstants.paddingS.r,
+                    vertical: AppConstants.paddingXS.r,
                   ),
                 ),
               ),
@@ -349,124 +561,6 @@ class _OrderCard extends StatelessWidget {
 
   String _formatDate(DateTime dt) =>
       '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Merchant Status Dropdown
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _StatusDropdown extends StatelessWidget {
-  const _StatusDropdown({
-    required this.currentStatus,
-    required this.statusValues,
-    required this.statusLabels,
-    required this.onChanged,
-  });
-
-  final String currentStatus;
-  final List<String> statusValues;
-  final List<String> statusLabels;
-  final ValueChanged<String> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    // Find the matching current value (case-insensitive)
-    final matchedValue = statusValues.firstWhere(
-      (v) => v.toLowerCase() == currentStatus.toLowerCase(),
-      orElse: () => statusValues.first,
-    );
-    final matchedLabel =
-        statusLabels[statusValues.indexOf(matchedValue)];
-
-    final config = _statusConfig(matchedValue);
-
-    return GestureDetector(
-      onTap: () async {
-        final result = await showMenu<String>(
-          context: context,
-          position: RelativeRect.fromLTRB(
-            MediaQuery.of(context).size.width - 180.w,
-            kToolbarHeight,
-            16.w,
-            0,
-          ),
-          items: List.generate(statusValues.length, (i) {
-            return PopupMenuItem<String>(
-              value: statusValues[i],
-              child: Text(
-                statusLabels[i],
-                style: TextStyle(
-                  fontFamily: 'DmSans',
-                  fontSize: 13.sp,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            );
-          }),
-        );
-        if (result != null && result != matchedValue) {
-          onChanged(result);
-        }
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-        decoration: BoxDecoration(
-          color: config.bg,
-          borderRadius: BorderRadius.circular(AppConstants.radiusFull.r),
-          border: Border.all(color: config.text.withValues(alpha: 0.2)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              matchedLabel,
-              style: TextStyle(
-                fontFamily: 'DmSans',
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w700,
-                color: config.text,
-              ),
-            ),
-            SizedBox(width: 4.w),
-            Icon(Icons.expand_more_rounded,
-                size: 14.r, color: config.text),
-          ],
-        ),
-      ),
-    );
-  }
-
-  _StatusColors _statusConfig(String status) {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return _StatusColors(
-            bg: const Color(0xFFFFF3E0), text: const Color(0xFFE65100));
-      case 'confirmed':
-        return _StatusColors(
-            bg: const Color(0xFFE3F2FD), text: const Color(0xFF1565C0));
-      case 'preparing':
-        return _StatusColors(
-            bg: const Color(0xFFF3E5F5), text: const Color(0xFF6A1B9A));
-      case 'readyforpickup':
-        return _StatusColors(
-            bg: const Color(0xFFE0F7FA), text: const Color(0xFF00695C));
-      case 'completed':
-        return _StatusColors(
-            bg: const Color(0xFFE8F5E9), text: const Color(0xFF2E7D32));
-      case 'cancelled':
-        return _StatusColors(
-            bg: const Color(0xFFFFEBEE), text: const Color(0xFFB71C1C));
-      default:
-        return _StatusColors(
-            bg: const Color(0xFFEEEEEE), text: const Color(0xFF616161));
-    }
-  }
-}
-
-class _StatusColors {
-  final Color bg;
-  final Color text;
-  const _StatusColors({required this.bg, required this.text});
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

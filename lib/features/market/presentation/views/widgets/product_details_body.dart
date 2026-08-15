@@ -3,16 +3,40 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
+import 'package:foodloop/core/utils/secure_storage_helper.dart';
 import 'package:foodloop/features/market/data/models/product_model.dart';
+import 'package:foodloop/core/enums/account_type_enum.dart';
+import 'package:foodloop/core/models/user_model.dart';
 import 'package:foodloop/features/market/presentation/views/widgets/product_add_to_cart_bar.dart';
 import 'package:foodloop/features/market/presentation/views/widgets/product_gallery.dart';
 import 'package:foodloop/features/market/presentation/views/widgets/product_logistics_card.dart';
 import 'package:foodloop/features/market/presentation/views/widgets/product_price_bento.dart';
 
-class ProductDetailsBody extends StatelessWidget {
+class ProductDetailsBody extends StatefulWidget {
   const ProductDetailsBody({super.key, required this.product});
 
   final ProductModel product;
+
+  @override
+  State<ProductDetailsBody> createState() => _ProductDetailsBodyState();
+}
+
+class _ProductDetailsBodyState extends State<ProductDetailsBody> {
+  bool isCustomer = false;
+  @override
+  void initState() {
+    super.initState();
+    _loadRole();
+  }
+
+  void _loadRole() async {
+    final role = await SecureStorageHelper.getUserRole();
+    if (mounted) {
+      setState(() {
+        isCustomer = role?.toLowerCase() == 'user';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +51,14 @@ class ProductDetailsBody extends StatelessWidget {
               AppConstants.paddingL.h,
             ),
             children: [
-              ProductGallery(product: product),
+              ProductGallery(product: widget.product),
               SizedBox(height: AppConstants.paddingM.h),
 
-              if (product.inStock) const _InStockBadge(),
+              if (widget.product.inStock) const _InStockBadge(),
               SizedBox(height: AppConstants.paddingS.h),
 
               Text(
-                product.name,
+                widget.product.name,
                 style: TextStyle(
                   fontFamily: 'PlayfairDisplay',
                   fontSize: 26.sp,
@@ -45,13 +69,13 @@ class ProductDetailsBody extends StatelessWidget {
               ),
               SizedBox(height: AppConstants.paddingS.h),
 
-              _SellerRow(product: product),
+              _SellerRow(product: widget.product),
               SizedBox(height: AppConstants.paddingL.h),
 
-              ProductPriceBento(product: product),
+              ProductPriceBento(product: widget.product),
               SizedBox(height: AppConstants.paddingL.h),
 
-              _DescriptionSection(),
+              _DescriptionSection(product: widget.product),
               SizedBox(height: AppConstants.paddingM.h),
 
               const _NutritionChips(),
@@ -61,7 +85,9 @@ class ProductDetailsBody extends StatelessWidget {
             ],
           ),
         ),
-        ProductAddToCartBar(product: product),
+
+        // Only regular customers can add to cart — sellers/charities browse only.
+        if (isCustomer) ProductAddToCartBar(product: widget.product),
       ],
     );
   }
@@ -166,6 +192,8 @@ class _SellerRow extends StatelessWidget {
 }
 
 class _DescriptionSection extends StatelessWidget {
+  const _DescriptionSection({required this.product});
+  final ProductModel product;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -183,7 +211,7 @@ class _DescriptionSection extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         Text(
-          AppStrings.productDescription,
+          product.description ?? '',
           style: TextStyle(
             fontFamily: 'DmSans',
             fontSize: 15.sp,

@@ -346,6 +346,10 @@ final Map<String, String> arStrings = {
   'cartEmpty': 'سلة التسوق فارغة',
   'cartEmptySubtitle': 'تصفح السوق وأضف منتجات طازجة.',
   'browsMarket': 'تصفح السوق',
+  'cartStoreConflictTitle': 'بدء طلب جديد؟',
+  'cartStoreConflictMessage': 'سلتك تحتوي على منتجات من متجر آخر. هل تريد إفراغ السلة والبدء من هذا المتجر؟',
+  'cartStoreConflictConfirm': 'نعم، ابدأ من جديد',
+  'cartStoreConflictCancel': 'لا، احتفظ بسلتي',
 
   // --- Checkout Success ---
   'thankYouTitle': 'شكرًا لدعمك\nللاستدامة!',
@@ -418,4 +422,10 @@ final Map<String, String> arStrings = {
   'changeStatusLabel': 'تغيير الحالة',
   'statusUpdateSuccess': 'تم تحديث الحالة بنجاح',
   'statusUpdateError': 'فشل تحديث الحالة. يرجى المحاولة مجددًا.',
+  'advanceStatusBtn': 'تقدم الحالة',
+  'cancelOrderBtn': 'إلغاء الطلب',
+  'cancelOrderConfirmTitle': 'إلغاء الطلب؟',
+  'cancelOrderConfirmMsg': 'هل أنت متأكد من رغبتك في إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.',
+  'confirmCancel': 'نعم، إلغاء',
+  'keepOrder': 'الإبقاء على الطلب',
 };

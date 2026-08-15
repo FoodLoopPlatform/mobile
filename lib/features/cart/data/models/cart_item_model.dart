@@ -5,12 +5,18 @@ class CartItemModel {
   final String imageUrl;
   int quantity;
 
+  /// The store that owns this product. Used to enforce single-store cart rule.
+  final String organizationId;
+  final String storeName;
+
   CartItemModel({
     required this.productId,
     required this.name,
     required this.price,
     required this.imageUrl,
     required this.quantity,
+    required this.organizationId,
+    required this.storeName,
   });
 
   Map<String, dynamic> toMap() => {
@@ -19,6 +25,8 @@ class CartItemModel {
         'price': price,
         'imageUrl': imageUrl,
         'quantity': quantity,
+        'organizationId': organizationId,
+        'storeName': storeName,
       };
 
   factory CartItemModel.fromMap(Map<dynamic, dynamic> map) => CartItemModel(
@@ -27,6 +35,8 @@ class CartItemModel {
         price: (map['price'] as num).toDouble(),
         imageUrl: map['imageUrl'] as String,
         quantity: map['quantity'] as int,
+        organizationId: (map['organizationId'] as String?) ?? '',
+        storeName: (map['storeName'] as String?) ?? '',
       );
 
   CartItemModel copyWith({int? quantity}) => CartItemModel(
@@ -35,5 +45,7 @@ class CartItemModel {
         price: price,
         imageUrl: imageUrl,
         quantity: quantity ?? this.quantity,
+        organizationId: organizationId,
+        storeName: storeName,
       );
 }

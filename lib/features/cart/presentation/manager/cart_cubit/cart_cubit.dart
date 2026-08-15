@@ -18,12 +18,30 @@ class CartCubit extends Cubit<CartState> {
   }
 
   Future<void> addItem(CartItemModel newItem) async {
+    // ── Single-store rule ──────────────────────────────────────────────────
+    // If the cart already has items from a different store, we cannot simply
+    // add the new item — emit a conflict state so the UI can ask the user.
+    if (_items.isNotEmpty &&
+        _items.first.organizationId.isNotEmpty &&
+        _items.first.organizationId != newItem.organizationId) {
+      emit(CartStoreConflict(pendingItem: newItem));
+      return;
+    }
+    // ── Normal add / quantity increment ───────────────────────────────────
     final idx = _items.indexWhere((i) => i.productId == newItem.productId);
     if (idx >= 0) {
       _items[idx] = _items[idx].copyWith(quantity: _items[idx].quantity + newItem.quantity);
     } else {
       _items.add(newItem);
     }
+    await _persist();
+    _emitLoaded();
+  }
+
+  /// Called after the user confirms they want to clear the old cart and start
+  /// a new one from a different store.
+  Future<void> clearCartAndAdd(CartItemModel newItem) async {
+    _items = [newItem];
     await _persist();
     _emitLoaded();
   }

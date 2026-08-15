@@ -4,10 +4,30 @@ import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
 
-/// Horizontally scrolling filter row. Static/visual — the first chip carries a
-/// dropdown affordance, the rest are plain toggles.
-class SearchFilterChips extends StatelessWidget {
-  const SearchFilterChips({super.key});
+/// Horizontally scrolling filter row.
+class SearchFilterChips extends StatefulWidget {
+  const SearchFilterChips({super.key, this.onFilterSelected});
+
+  final void Function(String? sortBy)? onFilterSelected;
+
+  @override
+  State<SearchFilterChips> createState() => _SearchFilterChipsState();
+}
+
+class _SearchFilterChipsState extends State<SearchFilterChips> {
+  int? _selectedIndex;
+
+  void _handleTap(int index, String filterKey) {
+    setState(() {
+      if (_selectedIndex == index) {
+        _selectedIndex = null;
+        widget.onFilterSelected?.call(null);
+      } else {
+        _selectedIndex = index;
+        widget.onFilterSelected?.call(filterKey);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +39,38 @@ class SearchFilterChips extends StatelessWidget {
           horizontal: AppConstants.screenHorizontalPadding.w,
         ),
         children: [
-          _Chip(
-            label: AppStrings.filterSortByPrice,
-            selected: true,
-            trailingIcon: Icons.keyboard_arrow_down_rounded,
+          GestureDetector(
+            onTap: () => _handleTap(0, 'price'),
+            child: _Chip(
+              label: AppStrings.filterSortByPrice,
+              selected: _selectedIndex == 0,
+              trailingIcon: Icons.keyboard_arrow_down_rounded,
+            ),
           ),
           SizedBox(width: AppConstants.paddingXS.w),
-          _Chip(label: AppStrings.filterRating),
+          GestureDetector(
+            onTap: () => _handleTap(1, 'rating'),
+            child: _Chip(
+              label: AppStrings.filterRating,
+              selected: _selectedIndex == 1,
+            ),
+          ),
           SizedBox(width: AppConstants.paddingXS.w),
-          _Chip(label: AppStrings.filterNearby),
+          GestureDetector(
+            onTap: () => _handleTap(2, 'distance'),
+            child: _Chip(
+              label: AppStrings.filterNearby,
+              selected: _selectedIndex == 2,
+            ),
+          ),
           SizedBox(width: AppConstants.paddingXS.w),
-          _Chip(label: AppStrings.filterOrganicOnly),
+          GestureDetector(
+            onTap: () => _handleTap(3, 'organic'),
+            child: _Chip(
+              label: AppStrings.filterOrganicOnly,
+              selected: _selectedIndex == 3,
+            ),
+          ),
         ],
       ),
     );

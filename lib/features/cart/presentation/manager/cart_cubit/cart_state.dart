@@ -48,3 +48,13 @@ class CartError extends CartState {
   @override
   List<Object?> get props => [message];
 }
+
+/// Emitted when the user tries to add a product from a different store than
+/// the one already in the cart. The UI should show a confirmation dialog and,
+/// if the user agrees, call [CartCubit.clearCartAndAdd] with [pendingItem].
+class CartStoreConflict extends CartState {
+  final CartItemModel pendingItem;
+  const CartStoreConflict({required this.pendingItem});
+  @override
+  List<Object?> get props => [pendingItem];
+}

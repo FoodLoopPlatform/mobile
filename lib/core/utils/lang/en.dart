@@ -378,6 +378,10 @@ final Map<String, String> enStrings = {
   'cartEmpty': 'Your cart is empty',
   'cartEmptySubtitle': 'Browse the market and add fresh products.',
   'browsMarket': 'Browse Market',
+  'cartStoreConflictTitle': 'Start a new order?',
+  'cartStoreConflictMessage': 'Your cart has items from another store. Do you want to clear it and start a new order from this store?',
+  'cartStoreConflictConfirm': 'Yes, start new order',
+  'cartStoreConflictCancel': 'No, keep my cart',
 
   // --- Checkout Success ---
   'thankYouTitle': 'Thank You for\nSupporting Sustainably!',
@@ -450,5 +454,11 @@ final Map<String, String> enStrings = {
   'changeStatusLabel': 'Change Status',
   'statusUpdateSuccess': 'Status updated successfully',
   'statusUpdateError': 'Failed to update status. Please try again.',
+  'advanceStatusBtn': 'Advance Status',
+  'cancelOrderBtn': 'Cancel Order',
+  'cancelOrderConfirmTitle': 'Cancel Order?',
+  'cancelOrderConfirmMsg': 'Are you sure you want to cancel this order? This cannot be undone.',
+  'confirmCancel': 'Yes, Cancel',
+  'keepOrder': 'Keep Order',
 };
 

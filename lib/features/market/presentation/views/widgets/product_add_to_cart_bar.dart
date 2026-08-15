@@ -42,7 +42,20 @@ class _ProductAddToCartBarState extends State<ProductAddToCartBar> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartCubit, CartState>(
+    return BlocConsumer<CartCubit, CartState>(
+      listenWhen: (previous, current) {
+        if (current is! CartStoreConflict) return false;
+        if (current.pendingItem.productId != widget.product.id) return false;
+        
+        // Prevent listeners in inactive routes (e.g. the market view underneath
+        // the product details view) from showing the dialog for the same product.
+        return ModalRoute.of(context)?.isCurrent == true;
+      },
+      listener: (context, state) {
+        if (state is CartStoreConflict) {
+          _showStoreConflictDialog(context, state.pendingItem);
+        }
+      },
       builder: (context, state) {
         final cartQty = _cartQty(state);
         final inCart = cartQty != null;
@@ -71,6 +84,105 @@ class _ProductAddToCartBarState extends State<ProductAddToCartBar> {
         );
       },
     );
+  }
+
+  // ── Store conflict dialog ───────────────────────────────────────────────────
+
+  void _showStoreConflictDialog(
+    BuildContext context,
+    CartItemModel pendingItem,
+  ) {
+    showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppConstants.radiusL.r),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.store_mall_directory_rounded,
+                color: AppColors.primary,
+                size: 22.r,
+              ),
+              SizedBox(width: 8.w),
+              Flexible(
+                child: Text(
+                  AppStrings.cartStoreConflictTitle,
+                  style: TextStyle(
+                    fontFamily: 'PlayfairDisplay',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            AppStrings.cartStoreConflictMessage,
+            style: TextStyle(
+              fontFamily: 'DmSans',
+              fontSize: 14.sp,
+              color: AppColors.textSecondary,
+              height: 1.5,
+            ),
+          ),
+          actionsPadding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 12.h,
+          ),
+          actions: [
+            OutlinedButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: AppColors.outline),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
+                ),
+              ),
+              child: Text(
+                AppStrings.cartStoreConflictCancel,
+                style: TextStyle(
+                  fontFamily: 'DmSans',
+                  fontSize: 13.sp,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.surface,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
+                ),
+              ),
+              child: Text(
+                AppStrings.cartStoreConflictConfirm,
+                style: TextStyle(
+                  fontFamily: 'DmSans',
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    ).then((confirmed) {
+      if (!context.mounted) return;
+      if (confirmed == true) {
+        context.read<CartCubit>().clearCartAndAdd(pendingItem);
+      } else {
+        // User kept old cart — restore loaded state so the bar renders correctly.
+        context.read<CartCubit>().loadCart();
+      }
+    });
   }
 
   // ── Already-in-cart: full-width stepper ────────────────────────────────────
@@ -203,6 +315,8 @@ class _ProductAddToCartBarState extends State<ProductAddToCartBar> {
                         price: widget.product.price,
                         imageUrl: widget.product.imageUrl,
                         quantity: _localQty,
+                        organizationId: widget.product.organizationId ?? '',
+                        storeName: widget.product.seller,
                       ),
                     );
               },

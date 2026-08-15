@@ -105,14 +105,10 @@ class _ProfileAvatar extends StatelessWidget {
                 color: AppColors.primary,
               ),
             )
-          : Image.asset(
-              AppAssets.profileAvatarPlaceholder,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Icon(
-                Icons.person_rounded,
-                size: 40.r,
-                color: AppColors.primary,
-              ),
+          : Icon(
+              Icons.person_rounded,
+              size: 40.r,
+              color: AppColors.primary,
             ),
     );
   }

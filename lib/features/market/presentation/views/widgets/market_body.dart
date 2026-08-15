@@ -25,6 +25,8 @@ class MarketBody extends StatefulWidget {
 class _MarketBodyState extends State<MarketBody> {
   static const int _homePageSize = 20;
 
+  String? _selectedCategory;
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +34,10 @@ class _MarketBodyState extends State<MarketBody> {
   }
 
   void _load() {
-    context.read<ProductsCubit>().loadProducts(pageSize: _homePageSize);
+    context.read<ProductsCubit>().loadProducts(
+          pageSize: _homePageSize,
+          categoryId: _selectedCategory,
+        );
   }
 
   void _openProduct(BuildContext context, ProductModel product) {
@@ -91,7 +96,12 @@ class _MarketBodyState extends State<MarketBody> {
             SizedBox(height: AppConstants.paddingM.h),
 
             // --- Categories ---
-            const MarketCategoryChips(),
+            MarketCategoryChips(
+              onCategorySelected: (categoryId) {
+                _selectedCategory = categoryId;
+                _load();
+              },
+            ),
             SizedBox(height: AppConstants.paddingL.h),
 
             // --- Recommended ---
