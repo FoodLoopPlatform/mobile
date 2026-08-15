@@ -59,4 +59,10 @@ class AuthRemoteDataSource {
 
     await _apiManager.post(endpoint, formData);
   }
+
+  Future<void> forgotPassword(String email) async {
+    await _apiManager.post(ApiConstants.forgotPasswordEndpoint, {
+      "email": email,
+    });
+  }
 }

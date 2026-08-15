@@ -347,10 +347,11 @@ final Map<String, String> arStrings = {
   'cartEmptySubtitle': 'تصفح السوق وأضف منتجات طازجة.',
   'browsMarket': 'تصفح السوق',
   'cartStoreConflictTitle': 'بدء طلب جديد؟',
-  'cartStoreConflictMessage': 'سلتك تحتوي على منتجات من متجر آخر. هل تريد إفراغ السلة والبدء من هذا المتجر؟',
+  'cartStoreConflictMessage':
+      'سلتك تحتوي على منتجات من متجر آخر. هل تريد إفراغ السلة والبدء من هذا المتجر؟',
   'cartStoreConflictConfirm': 'نعم، ابدأ من جديد',
   'cartStoreConflictCancel': 'لا، احتفظ بسلتي',
-
+  'noResultsSubtitle': "لا توجد نتائج",
   // --- Checkout Success ---
   'thankYouTitle': 'شكرًا لدعمك\nللاستدامة!',
   'thankYouSubtitle':
@@ -405,10 +406,12 @@ final Map<String, String> arStrings = {
 
   // --- Review Screen ---
   'reviewTitle': 'كيف كانت تجربتك؟',
-  'reviewSubtitle': 'تقييمك يساعد المزارعين المحليين على تحسين خدمتهم ويضمن حصول المجتمع على أفضل المنتجات.',
+  'reviewSubtitle':
+      'تقييمك يساعد المزارعين المحليين على تحسين خدمتهم ويضمن حصول المجتمع على أفضل المنتجات.',
   'reviewRateLabel': 'قيّم الجودة',
   'reviewCommentLabel': 'أخبرنا أكثر عن المنتج',
-  'reviewCommentHint': 'هل كانت العبوة مستدامة؟ هل كانت الخضروات طازجة؟ شاركنا رأيك...',
+  'reviewCommentHint':
+      'هل كانت العبوة مستدامة؟ هل كانت الخضروات طازجة؟ شاركنا رأيك...',
   'reviewSubmit': 'إرسال التقييم',
   'reviewSuccess': 'تم إرسال تقييمك بنجاح',
   'reviewError': 'فشل إرسال التقييم. يرجى المحاولة مجددًا.',
@@ -425,7 +428,8 @@ final Map<String, String> arStrings = {
   'advanceStatusBtn': 'تقدم الحالة',
   'cancelOrderBtn': 'إلغاء الطلب',
   'cancelOrderConfirmTitle': 'إلغاء الطلب؟',
-  'cancelOrderConfirmMsg': 'هل أنت متأكد من رغبتك في إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.',
+  'cancelOrderConfirmMsg':
+      'هل أنت متأكد من رغبتك في إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.',
   'confirmCancel': 'نعم، إلغاء',
   'keepOrder': 'الإبقاء على الطلب',
 };

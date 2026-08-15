@@ -144,4 +144,16 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> resendVerification(String email) async {
     // TODO: connect to API
   }
+
+  Future<void> forgotPassword(String email) async {
+    emit(const AuthLoading());
+    try {
+      await _authRepository.forgotPassword(email);
+      emit(AuthForgotPasswordSuccess(message: 'Password reset link sent to your email.'));
+    } on Errors catch (e) {
+      emit(AuthFail(message: e.errMessage));
+    } catch (e) {
+      emit(AuthFail(message: e.toString()));
+    }
+  }
 }

@@ -8,6 +8,9 @@ import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/features/market/data/data_sources/products_remote_data_source.dart';
 import 'package:foodloop/features/market/data/repositories/products_repository.dart';
 import 'package:foodloop/features/market/presentation/manager/products_cubit/products_cubit.dart';
+import 'package:foodloop/features/add_product/data/data_sources/category_remote_data_source.dart';
+import 'package:foodloop/features/add_product/data/repositories/category_repository.dart';
+import 'package:foodloop/features/add_product/presentation/manager/category_cubit/category_cubit.dart';
 import 'package:foodloop/features/market/presentation/views/widgets/market_body.dart';
 
 class MarketView extends StatelessWidget {
@@ -44,12 +47,23 @@ class MarketView extends StatelessWidget {
           SizedBox(width: 4.w),
         ],
       ),
-      body: BlocProvider(
-        create: (context) => ProductsCubit(
-          ProductsRepository(
-            ProductsRemoteDataSource(context.read<ApiManager>()),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ProductsCubit(
+              ProductsRepository(
+                ProductsRemoteDataSource(context.read<ApiManager>()),
+              ),
+            ),
           ),
-        ),
+          BlocProvider(
+            create: (context) => CategoryCubit(
+              CategoryRepository(
+                CategoryRemoteDataSource(context.read<ApiManager>()),
+              ),
+            )..loadCategories(),
+          ),
+        ],
         child: const MarketBody(),
       ),
     );

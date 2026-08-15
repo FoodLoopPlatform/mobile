@@ -48,3 +48,12 @@ class AuthAccountTypeChanged extends AuthState {
   @override
   List<Object?> get props => [accountType];
 }
+
+class AuthForgotPasswordSuccess extends AuthState {
+  final String message;
+  final DateTime timestamp;
+  AuthForgotPasswordSuccess({required this.message}) : timestamp = DateTime.now();
+
+  @override
+  List<Object?> get props => [message, timestamp];
+}

@@ -63,23 +63,6 @@ class _MarketBodyState extends State<MarketBody> {
         }
 
         final items = state.page.items;
-        if (items.isEmpty) {
-          return Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontal),
-              child: Text(
-                AppStrings.noResultsSubtitle,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'DmSans',
-                  fontSize: 13.sp,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ),
-          );
-        }
-
         final sections = _MarketSections.split(items);
 
         return ListView(
@@ -97,6 +80,7 @@ class _MarketBodyState extends State<MarketBody> {
 
             // --- Categories ---
             MarketCategoryChips(
+              selectedCategoryId: _selectedCategory,
               onCategorySelected: (categoryId) {
                 _selectedCategory = categoryId;
                 _load();
@@ -104,73 +88,94 @@ class _MarketBodyState extends State<MarketBody> {
             ),
             SizedBox(height: AppConstants.paddingL.h),
 
-            // --- Recommended ---
-            if (sections.recommended.isNotEmpty) ...[
-              MarketSectionHeader(
-                title: AppStrings.recommendedTitle,
-                showViewAll: true,
-              ),
-              SizedBox(height: AppConstants.paddingS.h),
-              _HorizontalList(
-                height: 290.h,
-                itemCount: sections.recommended.length,
-                itemBuilder: (context, index) {
-                  final product = sections.recommended[index];
-                  return RecommendedProductCard(
-                    product: product,
-                    onTap: () => _openProduct(context, product),
-                  );
-                },
-              ),
-              SizedBox(height: AppConstants.paddingL.h),
-            ],
-
-            // --- Nearby deals ---
-            if (sections.deals.isNotEmpty) ...[
-              MarketSectionHeader(
-                title: AppStrings.nearbyDealsTitle,
-                trailingIcon: Icons.bolt_rounded,
-              ),
-              SizedBox(height: AppConstants.paddingS.h),
-              _HorizontalList(
-                height: 210.h,
-                itemCount: sections.deals.length,
-                itemBuilder: (context, index) {
-                  final product = sections.deals[index];
-                  return NearbyDealCard(
-                    product: product,
-                    onTap: () => _openProduct(context, product),
-                  );
-                },
-              ),
-              SizedBox(height: AppConstants.paddingL.h),
-            ],
-
-            // --- Trending grid ---
-            if (sections.trending.isNotEmpty) ...[
-              MarketSectionHeader(title: AppStrings.trendingTitle),
-              SizedBox(height: AppConstants.paddingS.h),
+            if (items.isEmpty)
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: horizontal),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: sections.trending.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: AppConstants.paddingS.h,
-                    crossAxisSpacing: AppConstants.paddingS.w,
-                    childAspectRatio: 0.82,
+                padding: EdgeInsets.only(
+                  top: 100.h,
+                  left: horizontal,
+                  right: horizontal,
+                ),
+                child: Center(
+                  child: Text(
+                    AppStrings.noResultsSubtitle,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'DmSans',
+                      fontSize: 13.sp,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
+                ),
+              )
+            else ...[
+              // --- Recommended ---
+              if (sections.recommended.isNotEmpty) ...[
+                MarketSectionHeader(
+                  title: AppStrings.recommendedTitle,
+                  showViewAll: true,
+                ),
+                SizedBox(height: AppConstants.paddingS.h),
+                _HorizontalList(
+                  height: 290.h,
+                  itemCount: sections.recommended.length,
                   itemBuilder: (context, index) {
-                    final product = sections.trending[index];
-                    return TrendingItemCard(
+                    final product = sections.recommended[index];
+                    return RecommendedProductCard(
                       product: product,
                       onTap: () => _openProduct(context, product),
                     );
                   },
                 ),
-              ),
+                SizedBox(height: AppConstants.paddingL.h),
+              ],
+
+              // --- Nearby deals ---
+              if (sections.deals.isNotEmpty) ...[
+                MarketSectionHeader(
+                  title: AppStrings.nearbyDealsTitle,
+                  trailingIcon: Icons.bolt_rounded,
+                ),
+                SizedBox(height: AppConstants.paddingS.h),
+                _HorizontalList(
+                  height: 210.h,
+                  itemCount: sections.deals.length,
+                  itemBuilder: (context, index) {
+                    final product = sections.deals[index];
+                    return NearbyDealCard(
+                      product: product,
+                      onTap: () => _openProduct(context, product),
+                    );
+                  },
+                ),
+                SizedBox(height: AppConstants.paddingL.h),
+              ],
+
+              // --- Trending grid ---
+              if (sections.trending.isNotEmpty) ...[
+                MarketSectionHeader(title: AppStrings.trendingTitle),
+                SizedBox(height: AppConstants.paddingS.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontal),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: sections.trending.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: AppConstants.paddingS.h,
+                      crossAxisSpacing: AppConstants.paddingS.w,
+                      childAspectRatio: 0.82,
+                    ),
+                    itemBuilder: (context, index) {
+                      final product = sections.trending[index];
+                      return TrendingItemCard(
+                        product: product,
+                        onTap: () => _openProduct(context, product),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ],
           ],
         );

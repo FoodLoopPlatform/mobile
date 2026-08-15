@@ -4,6 +4,7 @@ class ApiConstants {
   static const String loginEndpoint = 'auth/login';
   static const String refreshEndpoint = 'auth/refresh';
   static const String logoutEndpoint = 'auth/logout';
+  static const String forgotPasswordEndpoint = 'auth/forgot-password';
   static const String storeDocumentsEndpoint = 'stores/me/documents';
   static const String charityDocumentsEndpoint = 'charities/me/documents';
   static const String storeProductsEndpoint = 'stores/me/products';

@@ -132,4 +132,14 @@ class AuthRepository {
       throw ServerError(AppStrings.errorUnknown);
     }
   }
+
+  Future<void> forgotPassword(String email) async {
+    try {
+      await _remoteDataSource.forgotPassword(email);
+    } on DioException catch (e) {
+      throw ServerError.fromDioError(e);
+    } catch (e) {
+      throw ServerError(AppStrings.errorUnknown);
+    }
+  }
 }

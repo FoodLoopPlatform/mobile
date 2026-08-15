@@ -12,10 +12,12 @@ class ForgotPasswordCard extends StatelessWidget {
     super.key,
     required this.emailController,
     required this.onSendResetLink,
+    this.isLoading = false,
   });
 
   final TextEditingController emailController;
   final VoidCallback onSendResetLink;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +82,7 @@ class ForgotPasswordCard extends StatelessWidget {
           CustomButton(
             label: AppStrings.sendResetLink,
             suffixIcon: Icons.arrow_forward_rounded,
+            isLoading: isLoading,
             onTap: onSendResetLink,
           ),
           SizedBox(height: AppConstants.paddingL.h),
