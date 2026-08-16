@@ -26,20 +26,13 @@ class VerificationResultsBody extends StatelessWidget {
   final List<ExpirationBatch> batches;
   final VoidCallback onRetake;
 
-  int get _verifiedUnits =>
-      batches.fold(0, (sum, batch) => sum + batch.quantity);
-
-  /// Units from step 1 that no batch accounts for. Never negative — entering
-  /// more units across batches than the original quantity isn't an "issue".
-  int get _unverifiedUnits {
-    final remaining = draft.quantity - _verifiedUnits;
-    return remaining > 0 ? remaining : 0;
-  }
-
   int get _verificationRate {
-    if (draft.quantity <= 0) return 0;
-    final rate = (_verifiedUnits / draft.quantity) * 100;
-    return rate.clamp(0, 100).round();
+    if (batches.isEmpty) return 0;
+    final totalConfidence = batches.fold(
+      0.0,
+      (sum, batch) => sum + batch.confidenceScore,
+    );
+    return ((totalConfidence / batches.length) * 100).round();
   }
 
   @override
@@ -52,7 +45,10 @@ class VerificationResultsBody extends StatelessWidget {
             const SnackBar(content: Text('Product published successfully!')),
           );
           Navigator.pushNamedAndRemoveUntil(
-              context, RoutesNames.mainNav, (route) => false);
+            context,
+            RoutesNames.mainNav,
+            (route) => false,
+          );
           context.read<AddProductCubit>().resetState();
         } else if (state is AddProductFail) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -107,31 +103,23 @@ class VerificationResultsBody extends StatelessWidget {
                         ),
                         SizedBox(height: AppConstants.paddingL.h),
 
-                        // --- Total verified ---
-                        _TotalVerifiedCard(units: _verifiedUnits),
-                        SizedBox(height: AppConstants.paddingL.h),
-
                         // --- Verified batches ---
-                        if (batches.isNotEmpty) ...[
-                          _SectionCaption(AppStrings.verifiedBatchesTitle),
-                          SizedBox(height: AppConstants.paddingS.h),
-                          for (var index = 0; index < batches.length; index++) ...[
-                            VerifiedBatchTile(batch: batches[index], index: index),
-                            SizedBox(height: AppConstants.paddingS.h),
-                          ],
-                          SizedBox(height: AppConstants.paddingS.h),
-                        ],
-
-                        // --- Issues (only when units are unaccounted for) ---
-                        if (_unverifiedUnits > 0) ...[
-                          _SectionCaption(AppStrings.issuesTitle),
-                          SizedBox(height: AppConstants.paddingS.h),
-                          _IssueCard(
-                            unverifiedUnits: _unverifiedUnits,
-                            onRetake: onRetake,
-                          ),
-                          SizedBox(height: AppConstants.paddingL.h),
-                        ],
+                        // if (batches.isNotEmpty) ...[
+                        //   _SectionCaption(AppStrings.verifiedBatchesTitle),
+                        //   SizedBox(height: AppConstants.paddingS.h),
+                        //   for (
+                        //     var index = 0;
+                        //     index < batches.length;
+                        //     index++
+                        //   ) ...[
+                        //     VerifiedBatchTile(
+                        //       batch: batches[index],
+                        //       index: index,
+                        //     ),
+                        //     SizedBox(height: AppConstants.paddingS.h),
+                        //   ],
+                        //   SizedBox(height: AppConstants.paddingS.h),
+                        // ],
 
                         // --- Verification rate ---
                         _VerificationRateCard(rate: _verificationRate),
@@ -146,9 +134,10 @@ class VerificationResultsBody extends StatelessWidget {
                   onPublish: isLoading
                       ? () {}
                       : () {
-                          context
-                              .read<AddProductCubit>()
-                              .publishProducts(draft, batches);
+                          context.read<AddProductCubit>().publishProducts(
+                            draft,
+                            batches,
+                          );
                         },
                 ),
               ],
@@ -157,9 +146,7 @@ class VerificationResultsBody extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   color: Colors.black26,
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: const Center(child: CircularProgressIndicator()),
                 ),
               ),
           ],
@@ -184,168 +171,6 @@ class _SectionCaption extends StatelessWidget {
         fontWeight: FontWeight.w700,
         letterSpacing: 0.6,
         color: AppColors.outline,
-      ),
-    );
-  }
-}
-
-class _TotalVerifiedCard extends StatelessWidget {
-  const _TotalVerifiedCard({required this.units});
-
-  final int units;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(AppConstants.paddingM.r),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(AppConstants.radiusL.r),
-        border: Border.all(color: AppColors.outlineVariant),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppStrings.totalVerifiedLabel,
-                  style: TextStyle(
-                    fontFamily: 'DmSans',
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.6,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  '$units ${AppStrings.unitsWord}',
-                  style: TextStyle(
-                    fontFamily: 'PlayfairDisplay',
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 48.r,
-            height: 48.r,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.secondaryContainer,
-            ),
-            child: Icon(
-              Icons.verified_rounded,
-              size: 24.r,
-              color: AppColors.onSecondaryContainer,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _IssueCard extends StatelessWidget {
-  const _IssueCard({required this.unverifiedUnits, required this.onRetake});
-
-  final int unverifiedUnits;
-  final VoidCallback onRetake;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(AppConstants.paddingM.r),
-      decoration: BoxDecoration(
-        color: AppColors.errorContainer.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(AppConstants.radiusL.r),
-        border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 40.r,
-            height: 40.r,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.error,
-            ),
-            child: Icon(
-              Icons.no_photography_outlined,
-              size: 20.r,
-              color: AppColors.textOnPrimary,
-            ),
-          ),
-          SizedBox(width: AppConstants.paddingS.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${AppStrings.issueUnverifiedTitle}: $unverifiedUnits',
-                  style: TextStyle(
-                    fontFamily: 'DmSans',
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.onErrorContainer,
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  AppStrings.issueUnverifiedMessage,
-                  style: TextStyle(
-                    fontFamily: 'DmSans',
-                    fontSize: 12.sp,
-                    color: AppColors.onErrorContainer,
-                    height: 1.5,
-                  ),
-                ),
-                SizedBox(height: AppConstants.paddingS.h),
-                GestureDetector(
-                  onTap: onRetake,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppConstants.paddingM.w,
-                      vertical: AppConstants.paddingS.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.error,
-                      borderRadius: BorderRadius.circular(
-                        AppConstants.radiusM.r,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.photo_camera_outlined,
-                          size: 16.r,
-                          color: AppColors.textOnPrimary,
-                        ),
-                        SizedBox(width: 6.w),
-                        Text(
-                          AppStrings.retakeImage,
-                          style: TextStyle(
-                            fontFamily: 'DmSans',
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textOnPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -416,6 +241,40 @@ class _VerificationRateCard extends StatelessWidget {
               height: 1.4,
             ),
           ),
+          if (rate < 80) ...[
+            SizedBox(height: AppConstants.paddingM.h),
+            Container(
+              padding: EdgeInsets.all(AppConstants.paddingS.r),
+              decoration: BoxDecoration(
+                color: AppColors.errorContainer.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
+                border: Border.all(
+                  color: AppColors.error.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline_rounded,
+                    size: 16.r,
+                    color: AppColors.error,
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      AppStrings.ocrReviewWarning,
+                      style: TextStyle(
+                        fontFamily: 'DmSans',
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.error,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -450,12 +309,12 @@ class _ResultsActionBar extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Expanded(
-                child: CustomOutlinedButton(
-                  label: AppStrings.saveAsDraft,
-                  onTap: onSaveDraft,
-                ),
-              ),
+              // Expanded(
+              //   child: CustomOutlinedButton(
+              //     label: AppStrings.saveAsDraft,
+              //     onTap: onSaveDraft,
+              //   ),
+              // ),
               SizedBox(width: AppConstants.paddingS.w),
               Expanded(
                 flex: 2,

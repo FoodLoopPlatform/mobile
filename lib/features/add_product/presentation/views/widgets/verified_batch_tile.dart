@@ -36,8 +36,11 @@ class VerifiedBatchTile extends StatelessWidget {
               color: AppColors.primarySurface,
               borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
             ),
-            child: Icon(Icons.event_available_rounded,
-                size: 20.r, color: AppColors.primary),
+            child: Icon(
+              Icons.event_available_rounded,
+              size: 20.r,
+              color: AppColors.primary,
+            ),
           ),
           SizedBox(width: AppConstants.paddingS.w),
           Expanded(

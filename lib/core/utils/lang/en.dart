@@ -237,6 +237,7 @@ final Map<String, String> enStrings = {
   'scanningMessage2': 'Analyzing character structure to verify the label...',
   'scanningMessage3': 'Matching dates with supply records...',
   'scanningMessage4': 'Ensuring local safety standards...',
+  'ocrReviewWarning': 'Due to low scan accuracy, this product will require admin review before going live.',
   'scanStatusLabel': 'Status',
   'scanStatusAnalyzing': 'Analyzing',
   'scanElapsedLabel': 'Duration',
@@ -255,9 +256,8 @@ final Map<String, String> enStrings = {
   'issueUnverifiedMessage':
       'The expiration date for all units could not be confirmed. Add another batch or adjust quantities.',
   'retakeImage': 'Retake Photo',
-  'verificationRateLabel': 'Verification Rate',
-  'verificationRateHint':
-      'The percentage of units with a confirmed expiration date.',
+  'verificationRateLabel': 'Scan Accuracy',
+  'verificationRateHint': 'The confidence score of the scanned expiration date.',
   'saveAsDraft': 'Save as Draft',
   'confirmAndPublish': 'Confirm and Publish',
   'batchPrefix': 'Batch',
@@ -460,5 +460,34 @@ final Map<String, String> enStrings = {
   'cancelOrderConfirmMsg': 'Are you sure you want to cancel this order? This cannot be undone.',
   'confirmCancel': 'Yes, Cancel',
   'keepOrder': 'Keep Order',
+
+  // --- Store Profile ---
+  'storeProfileTitle': 'Store Profile',
+  'storeReputationTitle': 'Reputation',
+  'storeInformationTitle': 'Store Information',
+  'storeRecentReviewsTitle': 'Recent Reviews',
+  'storeOpenNow': 'Open Now',
+  'storeClosedNow': 'Closed',
+  'storeVerified': 'Verified',
+  'storeRatingSuffix': '/ 5.0',
+  'storeTotalReviews': 'Verified Customer Reviews',
+  'storeLoadMoreReviews': 'Load More Reviews',
+  'storeLoadingError': 'Could not load store details. Please try again.',
+  'storeNoReviews': 'No reviews yet.',
+  'storeAddressLabel': 'Address',
+  'storeContactLabel': 'Contact',
+  'storeHoursLabel': 'Opening Hours',
+  'storeIdLabel': 'Store ID',
+  'storeVerifiedCustomers': 'verified customer transactions',
+
+  // --- OCR Scan ---
+  'ocrScanningTitle': 'Analysing image...',
+  'ocrScanSuccessDate': 'Expiry date extracted successfully.',
+  'ocrScanPastDate': 'Extracted date is in the past — confidence set to 0.',
+  'ocrScanFailed': 'Scan could not read the image. Please verify manually.',
+  'ocrNoDateTitle': 'No Expiry Date Found',
+  'ocrNoDateMessage': 'The scan failed and no expiry date was entered. Please pick a date manually to continue.',
+  'ocrNoDatePickButton': 'Pick Date',
+  'ocrConfidenceBadge': 'OCR Confidence',
 };
 

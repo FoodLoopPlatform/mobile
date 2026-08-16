@@ -21,6 +21,9 @@ abstract class ApiConstants {
   // --- Listings Endpoints ---
   static const String listingsEndpoint = '/listings';
 
+  // --- Store Endpoints ---
+  static const String storesEndpoint = '/stores';
+
   // --- Connection Timeout ---
   static const int connectTimeout = 15000; // ms
   static const int receiveTimeout = 15000; // ms

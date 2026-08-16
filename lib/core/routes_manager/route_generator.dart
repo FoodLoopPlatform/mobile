@@ -23,6 +23,7 @@ import 'package:foodloop/features/profile/presentation/views/add_address_view.da
 import 'package:foodloop/features/profile/presentation/views/profile_view.dart';
 import 'package:foodloop/features/support/presentation/views/create_ticket_view.dart';
 import 'package:foodloop/features/support/presentation/views/ticket_details_view.dart';
+import 'package:foodloop/features/store_profile/presentation/views/store_profile_view.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
@@ -105,6 +106,13 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => ReviewOrderView(order: order),
         );
+
+      case RoutesNames.storeProfileView:
+        final storeId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => StoreProfileView(storeId: storeId),
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

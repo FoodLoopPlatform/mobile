@@ -521,21 +521,29 @@ abstract class AppStrings {
   static String get createTicketSubtitle => _getString('createTicketSubtitle');
   static String get ticketCategoryLabel => _getString('ticketCategoryLabel');
   static String get ticketCategoryHint => _getString('ticketCategoryHint');
-  static String get ticketDescriptionLabel => _getString('ticketDescriptionLabel');
-  static String get ticketDescriptionHint => _getString('ticketDescriptionHint');
+  static String get ticketDescriptionLabel =>
+      _getString('ticketDescriptionLabel');
+  static String get ticketDescriptionHint =>
+      _getString('ticketDescriptionHint');
   static String get submitTicket => _getString('submitTicket');
   static String get recentOrdersLabel => _getString('recentOrdersLabel');
-  static String get ticketCategoryOrderIssue => _getString('ticketCategoryOrderIssue');
-  static String get ticketCategoryPayment => _getString('ticketCategoryPayment');
-  static String get ticketCategoryDelivery => _getString('ticketCategoryDelivery');
-  static String get ticketCategoryProductQuality => _getString('ticketCategoryProductQuality');
-  static String get ticketCategoryAccount => _getString('ticketCategoryAccount');
+  static String get ticketCategoryOrderIssue =>
+      _getString('ticketCategoryOrderIssue');
+  static String get ticketCategoryPayment =>
+      _getString('ticketCategoryPayment');
+  static String get ticketCategoryDelivery =>
+      _getString('ticketCategoryDelivery');
+  static String get ticketCategoryProductQuality =>
+      _getString('ticketCategoryProductQuality');
+  static String get ticketCategoryAccount =>
+      _getString('ticketCategoryAccount');
   static String get ticketCategoryOther => _getString('ticketCategoryOther');
   static String get inboxEmptyTitle => _getString('inboxEmptyTitle');
   static String get inboxEmptySubtitle => _getString('inboxEmptySubtitle');
   static String get ticketStatusOpen => _getString('ticketStatusOpen');
   static String get ticketStatusClosed => _getString('ticketStatusClosed');
-  static String get ticketStatusInProgress => _getString('ticketStatusInProgress');
+  static String get ticketStatusInProgress =>
+      _getString('ticketStatusInProgress');
   static String get ticketDetailsTitle => _getString('ticketDetailsTitle');
   static String get closeTicketLabel => _getString('closeTicketLabel');
   static String get typeMessageHint => _getString('typeMessageHint');
@@ -576,8 +584,43 @@ abstract class AppStrings {
   static String get statusUpdateError => _getString('statusUpdateError');
   static String get advanceStatusBtn => _getString('advanceStatusBtn');
   static String get cancelOrderBtn => _getString('cancelOrderBtn');
-  static String get cancelOrderConfirmTitle => _getString('cancelOrderConfirmTitle');
-  static String get cancelOrderConfirmMsg => _getString('cancelOrderConfirmMsg');
+  static String get cancelOrderConfirmTitle =>
+      _getString('cancelOrderConfirmTitle');
+  static String get cancelOrderConfirmMsg =>
+      _getString('cancelOrderConfirmMsg');
   static String get confirmCancel => _getString('confirmCancel');
   static String get keepOrder => _getString('keepOrder');
+
+  // --- Store Profile ---
+  static String get storeProfileTitle => _getString('storeProfileTitle');
+  static String get storeReputationTitle => _getString('storeReputationTitle');
+  static String get storeInformationTitle =>
+      _getString('storeInformationTitle');
+  static String get storeRecentReviewsTitle =>
+      _getString('storeRecentReviewsTitle');
+  static String get storeOpenNow => _getString('storeOpenNow');
+  static String get storeClosedNow => _getString('storeClosedNow');
+  static String get storeVerified => _getString('storeVerified');
+  static String get storeRatingSuffix => _getString('storeRatingSuffix');
+  static String get storeTotalReviews => _getString('storeTotalReviews');
+  static String get storeLoadMoreReviews => _getString('storeLoadMoreReviews');
+  static String get storeLoadingError => _getString('storeLoadingError');
+  static String get storeNoReviews => _getString('storeNoReviews');
+  static String get storeAddressLabel => _getString('storeAddressLabel');
+  static String get storeContactLabel => _getString('storeContactLabel');
+  static String get storeHoursLabel => _getString('storeHoursLabel');
+  static String get storeIdLabel => _getString('storeIdLabel');
+  static String get storeVerifiedCustomers =>
+      _getString('storeVerifiedCustomers');
+
+  // --- OCR Scan ---
+  static String get ocrScanningTitle => _getString('ocrScanningTitle');
+  static String get ocrScanSuccessDate => _getString('ocrScanSuccessDate');
+  static String get ocrScanPastDate => _getString('ocrScanPastDate');
+  static String get ocrScanFailed => _getString('ocrScanFailed');
+  static String get ocrNoDateTitle => _getString('ocrNoDateTitle');
+  static String get ocrNoDateMessage => _getString('ocrNoDateMessage');
+  static String get ocrNoDatePickButton => _getString('ocrNoDatePickButton');
+  static String get ocrConfidenceBadge => _getString('ocrConfidenceBadge');
+  static String get ocrReviewWarning => _getString('ocrReviewWarning');
 }

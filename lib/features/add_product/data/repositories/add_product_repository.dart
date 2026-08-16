@@ -28,6 +28,8 @@ class AddProductRepository {
         discountedPrice: price, // Same as original price as requested
         quantityAvailable: batch.quantity,
         expirationDate: formattedDate,
+        confidenceScore: batch.confidenceScore,
+        extractedText: batch.extractedText,
       );
 
       // 2. Upload images for this product

@@ -11,6 +11,7 @@ import 'package:foodloop/features/market/presentation/views/widgets/product_add_
 import 'package:foodloop/features/market/presentation/views/widgets/product_gallery.dart';
 import 'package:foodloop/features/market/presentation/views/widgets/product_logistics_card.dart';
 import 'package:foodloop/features/market/presentation/views/widgets/product_price_bento.dart';
+import 'package:foodloop/core/routes_manager/routes_names.dart';
 
 class ProductDetailsBody extends StatefulWidget {
   const ProductDetailsBody({super.key, required this.product});
@@ -144,15 +145,27 @@ class _SellerRow extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              product.seller,
-              style: TextStyle(
-                fontFamily: 'DmSans',
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
-                decoration: TextDecoration.underline,
-                decorationColor: AppColors.outlineVariant,
+            GestureDetector(
+              onTap: () {
+                final storeId = product.organizationId;
+                if (storeId != null && storeId.isNotEmpty) {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesNames.storeProfileView,
+                    arguments: storeId,
+                  );
+                }
+              },
+              child: Text(
+                product.seller,
+                style: TextStyle(
+                  fontFamily: 'DmSans',
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                  decoration: TextDecoration.underline,
+                  decorationColor: AppColors.outlineVariant,
+                ),
               ),
             ),
             SizedBox(height: 2.h),

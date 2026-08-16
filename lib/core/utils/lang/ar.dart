@@ -229,12 +229,28 @@ final Map<String, String> arStrings = {
   'issueUnverifiedMessage':
       'تعذّر تأكيد تاريخ الانتهاء لجميع الوحدات. أضف دفعة أخرى أو عدّل الكميات.',
   'retakeImage': 'إعادة التصوير',
-  'verificationRateLabel': 'نسبة التحقق',
-  'verificationRateHint': 'نسبة الوحدات التي تم تأكيد تاريخ انتهاء صلاحيتها.',
+  'verificationRateLabel': 'دقة التحقق',
+  'verificationRateHint': 'نسبة دقة المسح الضوئي لتاريخ الصلاحية.',
   'saveAsDraft': 'حفظ كمسودة',
   'confirmAndPublish': 'تأكيد ونشر',
   'batchPrefix': 'دفعة',
+
+  // --- Camera scanning ---
+  'scanningTitle': 'جارٍ التحقق من الصلاحية...',
+  'scanningMessage1': 'يقوم النظام بقراءة تاريخ الانتهاء من العبوة.',
+  'scanningMessage2': 'تحليل الحروف للتحقق من الملصق...',
+  'scanningMessage3': 'مطابقة التواريخ مع سجلات التوريد...',
+  'scanningMessage4': 'ضمان معايير السلامة المحلية...',
+  'ocrReviewWarning': 'نظراً لانخفاض دقة التحقق، سيتطلب المنتج مراجعة من الإدارة قبل نشره للعملاء.',
+  'scanStatusLabel': 'الحالة',
+  'scanStatusAnalyzing': 'تحليل',
+  'scanElapsedLabel': 'المدة',
+  'scanSecondsSuffix': 'ث',
+  'scanSecureFooter': 'تتبع آمن للأغذية',
+
+  // --- Logout ---
   'logout': 'تسجيل الخروج',
+
   'mapDragHint': 'حرّك الخريطة لتحديد موقع التوصيل بدقة.',
   'locationServiceDisabled': 'خدمة الموقع غير مُفعّلة على جهازك.',
   'locationPermissionDenied': 'تم رفض إذن الوصول إلى الموقع.',
@@ -432,4 +448,33 @@ final Map<String, String> arStrings = {
       'هل أنت متأكد من رغبتك في إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.',
   'confirmCancel': 'نعم، إلغاء',
   'keepOrder': 'الإبقاء على الطلب',
+
+  // --- Store Profile ---
+  'storeProfileTitle': 'ملف المتجر',
+  'storeReputationTitle': 'السمعة',
+  'storeInformationTitle': 'معلومات المتجر',
+  'storeRecentReviewsTitle': 'التقييمات الأخيرة',
+  'storeOpenNow': 'مفتوح الآن',
+  'storeClosedNow': 'مغلق',
+  'storeVerified': 'موثق',
+  'storeRatingSuffix': '/ 5.0',
+  'storeTotalReviews': 'تقييمات عملاء موثقة',
+  'storeLoadMoreReviews': 'تحميل المزيد من التقييمات',
+  'storeLoadingError': 'تعذر تحميل بيانات المتجر. يرجى المحاولة مجددًا.',
+  'storeNoReviews': 'لا توجد تقييمات بعد.',
+  'storeAddressLabel': 'العنوان',
+  'storeContactLabel': 'التواصل',
+  'storeHoursLabel': 'ساعات العمل',
+  'storeIdLabel': 'معرّف المتجر',
+  'storeVerifiedCustomers': 'معاملة عميل موثقة',
+
+  // --- OCR Scan ---
+  'ocrScanningTitle': 'جارٍ تحليل الصورة...',
+  'ocrScanSuccessDate': 'تم استخراج تاريخ انتهاء الصلاحية بنجاح.',
+  'ocrScanPastDate': 'التاريخ المستخرج في الماضي — تم ضبط الثقة على 0.',
+  'ocrScanFailed': 'تعذّر قراءة الصورة. يرجى التحقق يدويًا.',
+  'ocrNoDateTitle': 'لم يُعثر على تاريخ انتهاء الصلاحية',
+  'ocrNoDateMessage': 'فشل المسح ولم يتم إدخال تاريخ. يرجى اختيار تاريخ يدويًا للمتابعة.',
+  'ocrNoDatePickButton': 'اختر تاريخًا',
+  'ocrConfidenceBadge': 'دقة المسح الضوئي',
 };

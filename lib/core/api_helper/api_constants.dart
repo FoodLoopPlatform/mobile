@@ -9,6 +9,7 @@ class ApiConstants {
   static const String charityDocumentsEndpoint = 'charities/me/documents';
   static const String storeProductsEndpoint = 'stores/me/products';
   static String storeProductImagesEndpoint(String id) => 'stores/me/products/$id/images';
+  static const String ocrScanEndpoint = 'stores/me/products/ocr-scan';
 
   static const String categoriesEndpoint = 'categories';
   static const String marketplaceProductsEndpoint = 'marketplace/products';
@@ -25,6 +26,10 @@ class ApiConstants {
   static const String supportTicketsEndpoint = 'support-tickets';
   static String supportTicketByIdEndpoint(String id) => 'support-tickets/$id';
   static String supportTicketReplyEndpoint(String id) => 'support-tickets/$id/reply';
+
+  // --- Stores ---
+  static const String storesEndpoint = 'stores';
+  static String storeReviewsEndpoint(String id) => 'stores/$id/reviews';
 
   static String addressByIdEndpoint(String id) => 'users/me/addresses/$id';
 }
