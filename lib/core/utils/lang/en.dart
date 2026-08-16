@@ -288,8 +288,6 @@ final Map<String, String> enStrings = {
   'inStock': 'In Stock',
   'currentOffer': 'Current Offer',
   'freePickup': 'Free Pickup',
-  'delivery': 'Delivery',
-  'deliveryFee': 'Fee 25 EGP',
   'reviewsCount': 'Review',
   'flashDealExpires': 'Flash deal expires in',
   'saveBadgePrefix': 'Save',

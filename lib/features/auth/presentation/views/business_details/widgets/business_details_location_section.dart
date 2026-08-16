@@ -45,7 +45,8 @@ class BusinessDetailsLocationSection extends StatelessWidget {
               .map((g) => DropdownMenuItem(value: g, child: Text(g)))
               .toList(),
           onChanged: onGovernorateChanged,
-          validator: (v) => v == null || v.isEmpty ? AppStrings.fieldRequired : null,
+          validator: (v) =>
+              v == null || v.isEmpty ? AppStrings.fieldRequired : null,
         ),
         SizedBox(height: 16.h),
         CustomDropdownField<String>(
@@ -61,7 +62,8 @@ class BusinessDetailsLocationSection extends StatelessWidget {
             DropdownMenuItem(value: 'Other', child: Text('Other')),
           ],
           onChanged: onCityChanged,
-          validator: (v) => v == null || v.isEmpty ? AppStrings.fieldRequired : null,
+          validator: (v) =>
+              v == null || v.isEmpty ? AppStrings.fieldRequired : null,
         ),
         SizedBox(height: 16.h),
         CustomTextField(
@@ -78,16 +80,16 @@ class BusinessDetailsLocationSection extends StatelessWidget {
           keyboardType: TextInputType.streetAddress,
         ),
         SizedBox(height: 20.h),
-        const MapPlaceholder(),
+        // const MapPlaceholder(),
         SizedBox(height: 8.h),
-        Text(
-          AppStrings.mapHint,
-          style: TextStyle(
-            fontFamily: 'DmSans',
-            fontSize: 11.sp,
-            color: AppColors.textHint,
-          ),
-        ),
+        // Text(
+        //   AppStrings.mapHint,
+        //   style: TextStyle(
+        //     fontFamily: 'DmSans',
+        //     fontSize: 11.sp,
+        //     color: AppColors.textHint,
+        //   ),
+        // ),
       ],
     );
   }
