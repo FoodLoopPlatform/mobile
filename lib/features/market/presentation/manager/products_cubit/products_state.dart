@@ -18,10 +18,29 @@ class ProductsLoading extends ProductsState {
 
 class ProductsLoaded extends ProductsState {
   final ProductsPage page;
-  const ProductsLoaded({required this.page});
+  final bool isFetchingMore;
+  final bool hasReachedMax;
+
+  const ProductsLoaded({
+    required this.page,
+    this.isFetchingMore = false,
+    this.hasReachedMax = false,
+  });
+
+  ProductsLoaded copyWith({
+    ProductsPage? page,
+    bool? isFetchingMore,
+    bool? hasReachedMax,
+  }) {
+    return ProductsLoaded(
+      page: page ?? this.page,
+      isFetchingMore: isFetchingMore ?? this.isFetchingMore,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
 
   @override
-  List<Object?> get props => [page];
+  List<Object?> get props => [page, isFetchingMore, hasReachedMax];
 }
 
 class ProductsFail extends ProductsState {

@@ -19,6 +19,10 @@ class AddProductRepository {
       final String formattedDate =
           "${batch.date.year.toString().padLeft(4, '0')}-${batch.date.month.toString().padLeft(2, '0')}-${batch.date.day.toString().padLeft(2, '0')}";
 
+      final String expiryVerificationState = batch.confidenceScore >= .85
+          ? 'AiVerified'
+          : 'AiLowConfidence';
+
       // 1. Create the product
       final productId = await _remoteDataSource.addProduct(
         categoryId: draft.category?.id ?? '',
@@ -29,6 +33,7 @@ class AddProductRepository {
         quantityAvailable: batch.quantity,
         expirationDate: formattedDate,
         confidenceScore: batch.confidenceScore,
+        expiryVerificationState: expiryVerificationState,
         extractedText: batch.extractedText,
       );
 

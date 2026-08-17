@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodloop/core/api_helper/api_manager.dart';
 import 'package:foodloop/features/add_product/data/data_sources/add_product_remote_data_source.dart';
 import 'package:foodloop/features/add_product/data/models/expiration_batch.dart';
+import 'package:foodloop/features/add_product/data/models/product_draft.dart';
 import 'package:foodloop/features/add_product/presentation/manager/scanning_cubit/scanning_state.dart';
 
 class ScanningCubit extends Cubit<ScanningState> {
@@ -26,6 +27,7 @@ class ScanningCubit extends Cubit<ScanningState> {
   Future<void> scanImage({
     required File image,
     required List<ExpirationBatch> batches,
+    required ProductDraft draft,
   }) async {
     emit(const ScanningLoading());
 
@@ -58,14 +60,28 @@ class ScanningCubit extends Cubit<ScanningState> {
 
       // Apply OCR data to each batch.
       // If ocrDate is null but the user had a manual date, keep that date (confidence = 0).
-      final updated = batches.map((batch) {
-        final effectiveDate = ocrDate ?? batch.date;
-        return batch.copyWith(
-          date: effectiveDate,
-          confidenceScore: confidence,
-          extractedText: result.extractedText,
-        );
-      }).toList();
+      List<ExpirationBatch> updated;
+      if (batches.isEmpty) {
+        updated = [
+          ExpirationBatch(
+            date: ocrDate!,
+            quantity: draft.quantity,
+            confidenceScore: confidence,
+            extractedText: result.extractedText,
+            photo: image,
+          ),
+        ];
+      } else {
+        updated = batches.map((batch) {
+          final effectiveDate = ocrDate ?? batch.date;
+          return batch.copyWith(
+            date: effectiveDate,
+            confidenceScore: confidence,
+            extractedText: result.extractedText,
+            photo: batch.photo ?? image,
+          );
+        }).toList();
+      }
 
       emit(ScanningSuccess(updated));
     } catch (e) {

@@ -50,6 +50,7 @@ class AddProductRemoteDataSource {
     required int quantityAvailable,
     required String expirationDate,
     required double confidenceScore,
+    required String expiryVerificationState,
     String? extractedText,
   }) async {
     try {
@@ -64,6 +65,7 @@ class AddProductRemoteDataSource {
           "quantityAvailable": quantityAvailable,
           "expirationDate": expirationDate,
           "confidenceScore": confidenceScore,
+          "expiryVerificationState": expiryVerificationState,
           if (extractedText != null && extractedText.isNotEmpty)
             "extractedText": extractedText,
         },

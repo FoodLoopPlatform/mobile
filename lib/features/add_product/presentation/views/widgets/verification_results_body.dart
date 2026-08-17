@@ -104,22 +104,22 @@ class VerificationResultsBody extends StatelessWidget {
                         SizedBox(height: AppConstants.paddingL.h),
 
                         // --- Verified batches ---
-                        // if (batches.isNotEmpty) ...[
-                        //   _SectionCaption(AppStrings.verifiedBatchesTitle),
-                        //   SizedBox(height: AppConstants.paddingS.h),
-                        //   for (
-                        //     var index = 0;
-                        //     index < batches.length;
-                        //     index++
-                        //   ) ...[
-                        //     VerifiedBatchTile(
-                        //       batch: batches[index],
-                        //       index: index,
-                        //     ),
-                        //     SizedBox(height: AppConstants.paddingS.h),
-                        //   ],
-                        //   SizedBox(height: AppConstants.paddingS.h),
-                        // ],
+                        if (batches.isNotEmpty) ...[
+                          _SectionCaption(AppStrings.verifiedBatchesTitle),
+                          SizedBox(height: AppConstants.paddingS.h),
+                          for (
+                            var index = 0;
+                            index < batches.length;
+                            index++
+                          ) ...[
+                            VerifiedBatchTile(
+                              batch: batches[index],
+                              index: index,
+                            ),
+                            SizedBox(height: AppConstants.paddingS.h),
+                          ],
+                          SizedBox(height: AppConstants.paddingS.h),
+                        ],
 
                         // --- Verification rate ---
                         _VerificationRateCard(rate: _verificationRate),

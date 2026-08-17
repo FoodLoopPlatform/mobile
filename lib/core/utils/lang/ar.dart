@@ -13,7 +13,8 @@ final Map<String, String> arStrings = {
   'login': 'تسجيل الدخول',
   'english': 'English',
   'createAccountTitle': 'إنشاء حساب',
-  'createAccountSubtitle': 'انضم إلى شبكتنا لتقليل الخسائر الاقتصادية وتوفير الغذاء الطازج في مصر.',
+  'createAccountSubtitle':
+      'انضم إلى شبكتنا لتقليل الخسائر الاقتصادية وتوفير الغذاء الطازج في مصر.',
   'accountTypeLabel': 'نوع الحساب',
   'accountTypeUser': 'مستخدم',
   'accountTypeSeller': 'بائع',
@@ -46,6 +47,8 @@ final Map<String, String> arStrings = {
   'noAccountPrefix': 'ليس لديك حساب؟ ',
   'joinFoodloop': 'انضم إلى فودلوب.',
   'forgotPasswordTitle': 'نسيت كلمة المرور؟',
+  'forgotPasswordSubtitle':
+      'أدخل بريدك الإلكتروني المسجل، وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.',
   'forgotPasswordEmailHint': 'name@example.com',
   'sendResetLink': 'إرسال رابط إعادة التعيين',
   'backToLogin': 'العودة لتسجيل الدخول',
@@ -71,7 +74,8 @@ final Map<String, String> arStrings = {
   'streetLabel': 'الشارع',
   'streetHint': 'مثال: شارع 9',
   'pinOnMap': 'حدد على الخريطة',
-  'mapHint': 'تساعد الإحداثيات الدقيقة فرق الخدمات اللوجستية في العثور عليك بشكل أسرع.',
+  'mapHint':
+      'تساعد الإحداثيات الدقيقة فرق الخدمات اللوجستية في العثور عليك بشكل أسرع.',
   'businessInfoSectionTitle': 'معلومات النشاط التجاري',
   'businessCategoryLabel': 'نوع النشاط التجاري',
   'businessCategoryHint': 'اختر نوع نشاطك',
@@ -113,7 +117,8 @@ final Map<String, String> arStrings = {
   'healthCertSubtitle': 'مطلوبة للتعامل مع الأغذية',
   'statusPending': 'قيد الانتظار',
   'changeLabel': 'تغيير',
-  'verificationTimeNote': 'تستغرق عملية التحقق عادة من 24 إلى 48 ساعة. سيتم إخطارك عبر البريد الإلكتروني بمجرد الموافقة.',
+  'verificationTimeNote':
+      'تستغرق عملية التحقق عادة من 24 إلى 48 ساعة. سيتم إخطارك عبر البريد الإلكتروني بمجرد الموافقة.',
   'submitForVerification': 'إرسال للتحقق',
   'dataSecurityNote': 'بياناتك مشفرة ويتم التعامل معها بأمان.',
   'emailVerificationTitle': 'تأكيد البريد الإلكتروني',
@@ -243,7 +248,8 @@ final Map<String, String> arStrings = {
 
   // --- Camera scanning ---
   'scanningMessage1': 'يقوم النظام بقراءة تاريخ الانتهاء من العبوة.',
-  'ocrReviewWarning': 'نظراً لانخفاض دقة التحقق، سيتطلب المنتج مراجعة من الإدارة قبل نشره للعملاء.',
+  'ocrReviewWarning':
+      'نظراً لانخفاض دقة التحقق، سيتطلب المنتج مراجعة من الإدارة قبل نشره للعملاء.',
   'scanStatusAnalyzing': 'تحليل',
 
   // --- Logout ---
@@ -471,7 +477,8 @@ final Map<String, String> arStrings = {
   'ocrScanPastDate': 'التاريخ المستخرج في الماضي — تم ضبط الثقة على 0.',
   'ocrScanFailed': 'تعذّر قراءة الصورة. يرجى التحقق يدويًا.',
   'ocrNoDateTitle': 'لم يُعثر على تاريخ انتهاء الصلاحية',
-  'ocrNoDateMessage': 'فشل المسح ولم يتم إدخال تاريخ. يرجى اختيار تاريخ يدويًا للمتابعة.',
+  'ocrNoDateMessage':
+      'فشل المسح ولم يتم إدخال تاريخ. يرجى اختيار تاريخ يدويًا للمتابعة.',
   'ocrNoDatePickButton': 'اختر تاريخًا',
   'ocrConfidenceBadge': 'دقة المسح الضوئي',
 };

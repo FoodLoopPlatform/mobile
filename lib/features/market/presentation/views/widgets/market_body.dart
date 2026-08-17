@@ -26,11 +26,27 @@ class _MarketBodyState extends State<MarketBody> {
   static const int _homePageSize = 20;
 
   String? _selectedCategory;
+  late final ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController()..addListener(_onScroll);
     _load();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<ProductsCubit>().loadMoreProducts();
+    }
   }
 
   void _load() {
@@ -66,6 +82,7 @@ class _MarketBodyState extends State<MarketBody> {
         final sections = _MarketSections.split(items);
 
         return ListView(
+          controller: _scrollController,
           padding: EdgeInsets.only(
             top: AppConstants.paddingS.h,
             bottom: AppConstants.paddingL.h,
@@ -177,6 +194,11 @@ class _MarketBodyState extends State<MarketBody> {
                 ),
               ],
             ],
+
+            if (state.isFetchingMore) ...[
+              SizedBox(height: AppConstants.paddingM.h),
+              const Center(child: CircularProgressIndicator()),
+            ],
           ],
         );
       },
@@ -202,19 +224,32 @@ class _MarketSections {
   });
 
   factory _MarketSections.split(List<ProductModel> items) {
-    final recommended = items.take(6).toList();
-    var remainder = items.skip(recommended.length).toList();
+    // Only use the first 20 items (page 1) to determine Recommended and Deals
+    // This ensures these sections are stable and don't reorganize when we load page 2+.
+    final firstPage = items.take(20).toList();
+    
+    final recommended = firstPage.take(6).toList();
+    final firstPageRemainder = firstPage.skip(recommended.length).toList();
 
-    var deals = remainder.where((p) => p.discountPercent != null).toList();
+    // Cap deals to a reasonable number so it doesn't consume all remaining items
+    // (especially in this app where most items might be discounted).
+    var deals = firstPageRemainder.where((p) => p.discountPercent != null).take(6).toList();
     if (deals.isEmpty) {
-      deals = remainder.take(4).toList();
+      deals = firstPageRemainder.take(4).toList();
     }
-    final trending = remainder.where((p) => !deals.contains(p)).toList();
+    
+    // Trending is everything else from the ENTIRE list of items
+    final Set<String> topSectionIds = {
+      ...recommended.map((e) => e.id),
+      ...deals.map((e) => e.id),
+    };
+    
+    final trending = items.where((p) => !topSectionIds.contains(p.id)).toList();
 
     return _MarketSections(
       recommended: recommended,
       deals: deals,
-      trending: trending.isEmpty ? remainder : trending,
+      trending: trending, // Removed the fallback that was causing duplicate/disappearing items
     );
   }
 }

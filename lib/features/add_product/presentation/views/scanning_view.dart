@@ -35,6 +35,7 @@ class ScanningView extends StatelessWidget {
         body: ScanningBody(
           image: args.image,
           batches: args.batches,
+          draft: args.draft,
           // Replaces itself so Back from the results skips the scan screen.
           onNavigateToResults: (updatedBatches) =>
               Navigator.pushReplacementNamed(

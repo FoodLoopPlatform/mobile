@@ -10,17 +10,20 @@ import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/features/add_product/data/models/expiration_batch.dart';
 import 'package:foodloop/features/add_product/presentation/manager/scanning_cubit/scanning_cubit.dart';
 import 'package:foodloop/features/add_product/presentation/manager/scanning_cubit/scanning_state.dart';
+import 'package:foodloop/features/add_product/data/models/product_draft.dart';
 
 class ScanningBody extends StatefulWidget {
   const ScanningBody({
     super.key,
     required this.image,
     required this.batches,
+    required this.draft,
     required this.onNavigateToResults,
   });
 
   final File image;
   final List<ExpirationBatch> batches;
+  final ProductDraft draft;
 
   /// Called when ready to proceed to the results screen.
   /// [updatedBatches] carries OCR-enriched data (or fallback).
@@ -53,22 +56,21 @@ class _ScanningBodyState extends State<ScanningBody>
   void initState() {
     super.initState();
 
-    _messageTimer = Stream.periodic(
-      const Duration(milliseconds: 1500),
-      (i) => i,
-    ).listen((_) {
-      if (mounted) {
-        setState(() => _messageIndex = (_messageIndex + 1) % _messages.length);
-      }
-    });
+    _messageTimer =
+        Stream.periodic(const Duration(milliseconds: 1500), (i) => i).listen((
+          _,
+        ) {
+          if (mounted) {
+            setState(
+              () => _messageIndex = (_messageIndex + 1) % _messages.length,
+            );
+          }
+        });
 
-    _elapsedTimer = Stream.periodic(
-      const Duration(seconds: 1),
-      (i) => i,
-    ).listen((_) {
-      if (mounted) setState(() => _elapsedSeconds++);
-    });
-
+    _elapsedTimer = Stream.periodic(const Duration(seconds: 1), (i) => i)
+        .listen((_) {
+          if (mounted) setState(() => _elapsedSeconds++);
+        });
 
     _scanController = AnimationController(
       vsync: this,
@@ -83,9 +85,10 @@ class _ScanningBodyState extends State<ScanningBody>
     // Trigger the actual OCR call
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ScanningCubit>().scanImage(
-            image: widget.image,
-            batches: widget.batches,
-          );
+        image: widget.image,
+        batches: widget.batches,
+        draft: widget.draft,
+      );
     });
   }
 
@@ -162,9 +165,15 @@ class _ScanningBodyState extends State<ScanningBody>
       // Build fallback batches with the manually chosen date
       final fallback = widget.batches.isNotEmpty
           ? widget.batches
-              .map((b) => b.copyWith(date: picked, confidenceScore: 0.0))
-              .toList()
-          : [ExpirationBatch(date: picked!, quantity: 1, confidenceScore: 0.0)];
+                .map((b) => b.copyWith(date: picked, confidenceScore: 0.0))
+                .toList()
+          : [
+              ExpirationBatch(
+                date: picked!,
+                quantity: widget.draft.quantity,
+                confidenceScore: 0.0,
+              ),
+            ];
       _proceed(fallback);
     }
   }
@@ -271,7 +280,9 @@ class _ScanningBodyState extends State<ScanningBody>
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.surfaceContainerHigh,
-                  borderRadius: BorderRadius.circular(AppConstants.radiusFull.r),
+                  borderRadius: BorderRadius.circular(
+                    AppConstants.radiusFull.r,
+                  ),
                   border: Border.all(color: AppColors.outlineVariant),
                 ),
                 child: Row(
