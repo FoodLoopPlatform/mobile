@@ -11,6 +11,11 @@ class ApiConstants {
   static String storeProductImagesEndpoint(String id) => 'stores/me/products/$id/images';
   static const String ocrScanEndpoint = 'stores/me/products/ocr-scan';
 
+  // --- Notifications ---
+  static const String notificationsEndpoint = 'notifications';
+  static const String notificationsReadAllEndpoint = 'notifications/read-all';
+  static String notificationReadEndpoint(String id) => 'notifications/$id/read';
+
   static const String categoriesEndpoint = 'categories';
   static const String marketplaceProductsEndpoint = 'marketplace/products';
 

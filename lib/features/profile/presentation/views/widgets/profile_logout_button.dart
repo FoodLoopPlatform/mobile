@@ -6,6 +6,7 @@ import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
 import 'package:foodloop/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:foodloop/features/notifications/presentation/manager/notifications_cubit/notifications_cubit.dart';
 import 'package:foodloop/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
 
 class ProfileLogoutButton extends StatelessWidget {
@@ -15,6 +16,7 @@ class ProfileLogoutButton extends StatelessWidget {
     // Captured up front — `context` is gone once we navigate away.
     final authCubit = context.read<AuthCubit>();
     final profileCubit = context.read<ProfileCubit>();
+    final notificationsCubit = context.read<NotificationsCubit>();
     final navigator = Navigator.of(context);
 
     final confirmed = await showDialog<bool>(
@@ -70,6 +72,7 @@ class ProfileLogoutButton extends StatelessWidget {
     await authCubit.logout();
     // Wipe the cached profile/addresses so the next sign-in starts clean.
     profileCubit.reset();
+    notificationsCubit.reset();
 
     navigator.pushNamedAndRemoveUntil(
       RoutesNames.loginView,

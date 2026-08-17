@@ -12,6 +12,7 @@ import 'package:foodloop/features/add_product/data/data_sources/category_remote_
 import 'package:foodloop/features/add_product/data/repositories/category_repository.dart';
 import 'package:foodloop/features/add_product/presentation/manager/category_cubit/category_cubit.dart';
 import 'package:foodloop/features/market/presentation/views/widgets/market_body.dart';
+import 'package:foodloop/features/notifications/presentation/views/widgets/notification_bell_button.dart';
 
 class MarketView extends StatelessWidget {
   const MarketView({super.key});
@@ -44,6 +45,7 @@ class MarketView extends StatelessWidget {
             icon: Icon(Icons.search_rounded,
                 size: 24.r, color: AppColors.textSecondary),
           ),
+          const NotificationBellButton(),
           SizedBox(width: 4.w),
         ],
       ),

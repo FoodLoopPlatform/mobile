@@ -487,5 +487,18 @@ final Map<String, String> enStrings = {
   'ocrNoDateMessage': 'The scan failed and no expiry date was entered. Please pick a date manually to continue.',
   'ocrNoDatePickButton': 'Pick Date',
   'ocrConfidenceBadge': 'OCR Confidence',
+
+  // --- Notifications ---
+  'notificationsTitle': 'Notifications',
+  'notificationsEmptyTitle': 'No notifications',
+  'notificationsEmptyHint':
+      'Order updates and new offers will show up here.',
+  'notificationsMarkAllRead': 'Mark all as read',
+  'notificationsToday': 'Today',
+  'notificationsEarlier': 'Earlier',
+  'timeJustNow': 'Just now',
+  'timeMinutesAgo': '% min ago',
+  'timeHoursAgo': '% hr ago',
+  'timeDaysAgo': '% days ago',
 };
 

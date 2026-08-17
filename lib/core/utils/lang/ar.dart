@@ -481,4 +481,16 @@ final Map<String, String> arStrings = {
       'فشل المسح ولم يتم إدخال تاريخ. يرجى اختيار تاريخ يدويًا للمتابعة.',
   'ocrNoDatePickButton': 'اختر تاريخًا',
   'ocrConfidenceBadge': 'دقة المسح الضوئي',
+
+  // --- Notifications ---
+  'notificationsTitle': 'الإشعارات',
+  'notificationsEmptyTitle': 'لا توجد إشعارات',
+  'notificationsEmptyHint': 'ستظهر هنا تحديثات طلباتك والعروض الجديدة.',
+  'notificationsMarkAllRead': 'تعليم الكل كمقروء',
+  'notificationsToday': 'اليوم',
+  'notificationsEarlier': 'أقدم',
+  'timeJustNow': 'الآن',
+  'timeMinutesAgo': 'منذ % دقيقة',
+  'timeHoursAgo': 'منذ % ساعة',
+  'timeDaysAgo': 'منذ % يوم',
 };

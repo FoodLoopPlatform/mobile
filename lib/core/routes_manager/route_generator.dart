@@ -15,6 +15,7 @@ import 'package:foodloop/features/market/data/models/product_model.dart';
 import 'package:foodloop/features/market/presentation/views/product_details_view.dart';
 import 'package:foodloop/features/search/presentation/views/search_view.dart';
 import 'package:foodloop/features/navigation/presentation/views/main_navigation_view.dart';
+import 'package:foodloop/features/notifications/presentation/views/notifications_view.dart';
 import 'package:foodloop/features/onboarding/presentation/views/welcome_view.dart';
 import 'package:foodloop/features/profile/data/models/address_model.dart';
 import 'package:foodloop/features/orders/data/models/order_model.dart';
@@ -106,6 +107,9 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => ReviewOrderView(order: order),
         );
+
+      case RoutesNames.notificationsView:
+        return MaterialPageRoute(builder: (_) => const NotificationsView());
 
       case RoutesNames.storeProfileView:
         final storeId = settings.arguments as String;
