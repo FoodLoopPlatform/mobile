@@ -623,4 +623,19 @@ abstract class AppStrings {
   static String get ocrNoDatePickButton => _getString('ocrNoDatePickButton');
   static String get ocrConfidenceBadge => _getString('ocrConfidenceBadge');
   static String get ocrReviewWarning => _getString('ocrReviewWarning');
+
+  // --- Notifications ---
+  static String get notificationsTitle => _getString('notificationsTitle');
+  static String get notificationsEmptyTitle =>
+      _getString('notificationsEmptyTitle');
+  static String get notificationsEmptyHint =>
+      _getString('notificationsEmptyHint');
+  static String get notificationsMarkAllRead =>
+      _getString('notificationsMarkAllRead');
+  static String get notificationsToday => _getString('notificationsToday');
+  static String get notificationsEarlier => _getString('notificationsEarlier');
+  static String get timeJustNow => _getString('timeJustNow');
+  static String get timeMinutesAgo => _getString('timeMinutesAgo');
+  static String get timeHoursAgo => _getString('timeHoursAgo');
+  static String get timeDaysAgo => _getString('timeDaysAgo');
 }
