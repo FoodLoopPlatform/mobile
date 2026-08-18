@@ -638,4 +638,13 @@ abstract class AppStrings {
   static String get timeMinutesAgo => _getString('timeMinutesAgo');
   static String get timeHoursAgo => _getString('timeHoursAgo');
   static String get timeDaysAgo => _getString('timeDaysAgo');
+  
+  // --- Report Product ---
+  static String get reportProductTitle => _getString('reportProductTitle');
+  static String get reportReasonLabel => _getString('reportReasonLabel');
+  static String get reportReasonHint => _getString('reportReasonHint');
+  static String get reportDetailsLabel => _getString('reportDetailsLabel');
+  static String get reportDetailsHint => _getString('reportDetailsHint');
+  static String get reportSubmit => _getString('reportSubmit');
+  static String get reportSuccess => _getString('reportSuccess');
 }

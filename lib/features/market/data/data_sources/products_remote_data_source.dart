@@ -39,7 +39,22 @@ class ProductsRemoteDataSource {
       ApiConstants.marketplaceProductsEndpoint,
       queryParameters: query,
     );
-    return _parse(response.data, fallbackPageNumber: pageNumber, fallbackPageSize: pageSize);
+    return _parse(
+      response.data,
+      fallbackPageNumber: pageNumber,
+      fallbackPageSize: pageSize,
+    );
+  }
+
+  Future<void> reportProduct({
+    required String productId,
+    required String reason,
+    required String details,
+  }) async {
+    await _apiManager.post(ApiConstants.reportProductEndpoint(productId), {
+      'reason': reason,
+      'details': details,
+    });
   }
 
   /// The envelope isn't documented, so a bare array, `{data: [...]}` and
@@ -62,7 +77,9 @@ class ProductsRemoteDataSource {
 
     if (body is Map<String, dynamic>) {
       if (body['success'] == false) {
-        throw ServerError(body['message']?.toString() ?? AppStrings.errorSomethingWentWrong);
+        throw ServerError(
+          body['message']?.toString() ?? AppStrings.errorSomethingWentWrong,
+        );
       }
 
       final data = body.containsKey('data') ? body['data'] : body;
@@ -77,7 +94,8 @@ class ProductsRemoteDataSource {
       }
 
       if (data is Map<String, dynamic>) {
-        final rawItems = data['items'] ??
+        final rawItems =
+            data['items'] ??
             data['products'] ??
             data['results'] ??
             data['data'] ??
@@ -110,7 +128,8 @@ class ProductsRemoteDataSource {
       pageNumber: pageNumber,
       pageSize: pageSize,
       totalCount: _toInt(meta['totalCount']) ?? items.length,
-      hasNextPage: meta['hasNextPage'] == true ||
+      hasNextPage:
+          meta['hasNextPage'] == true ||
           (totalPages != null && pageNumber < totalPages) ||
           (totalPages == null && items.length >= pageSize),
     );

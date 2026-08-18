@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "555929582465",
+    "project_id": "foodloop-8b933",
+    "storage_bucket": "foodloop-8b933.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555929582465:android:85d8c29b66dc89b1eac680",
+        "android_client_info": {
+          "package_name": "com.example.foodloop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlwZwB1TLxA4h8W8qskgKw7OBrI_H0bfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

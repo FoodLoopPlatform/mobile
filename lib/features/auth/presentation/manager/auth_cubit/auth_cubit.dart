@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodloop/core/api_helper/api_manager.dart';
 import 'package:foodloop/core/enums/account_type_enum.dart';
 import 'package:foodloop/core/errors/errors.dart';
+import 'package:foodloop/core/services/push_notification_service.dart';
 import 'package:foodloop/features/auth/data/repositories/auth_repository.dart';
 import 'package:foodloop/features/cart/data/data_sources/cart_local_data_source.dart';
 import 'auth_state.dart';
@@ -9,8 +11,9 @@ import 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepository;
   final CartLocalDataSource _cartLocalDataSource;
+  final ApiManager _apiManager;
 
-  AuthCubit(this._authRepository, this._cartLocalDataSource)
+  AuthCubit(this._authRepository, this._cartLocalDataSource, this._apiManager)
       : super(const AuthInitial());
 
   // Cached registration fields
@@ -83,6 +86,8 @@ class AuthCubit extends Cubit<AuthState> {
       // when a different account is logging in on the same device.
       await _cartLocalDataSource.clearCart();
       await _authRepository.login(email, password);
+      // Sync FCM token with the backend after successful login.
+      PushNotificationService.syncDeviceToken(_apiManager);
       emit(AuthSuccess(email: email));
     } on Errors catch (e) {
       print(e);
@@ -132,6 +137,8 @@ class AuthCubit extends Cubit<AuthState> {
         businessCategory: businessCategory,
         documentFiles: documentFiles,
       );
+      // Sync FCM token with the backend after successful registration.
+      PushNotificationService.syncDeviceToken(_apiManager);
       emit(AuthSuccess(email: _registerEmail));
     } on Errors catch (e) {
       emit(AuthFail(message: e.errMessage));

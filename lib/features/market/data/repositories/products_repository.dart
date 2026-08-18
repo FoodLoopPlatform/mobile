@@ -41,4 +41,23 @@ class ProductsRepository {
       throw ServerError(AppStrings.errorUnknown);
     }
   }
+
+  Future<void> reportProduct({
+    required String productId,
+    required String reason,
+    required String details,
+  }) async {
+    try {
+      await _remoteDataSource.reportProduct(
+        productId: productId,
+        reason: reason,
+        details: details,
+      );
+    } on DioException catch (e) {
+      throw ServerError.fromDioError(e);
+    } catch (e) {
+      if (e is Errors) rethrow;
+      throw ServerError(AppStrings.errorUnknown);
+    }
+  }
 }

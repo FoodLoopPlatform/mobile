@@ -500,5 +500,14 @@ final Map<String, String> enStrings = {
   'timeMinutesAgo': '% min ago',
   'timeHoursAgo': '% hr ago',
   'timeDaysAgo': '% days ago',
+
+  // --- Report Product ---
+  'reportProductTitle': 'Report Product',
+  'reportReasonLabel': 'Reason for reporting',
+  'reportReasonHint': 'Select a reason',
+  'reportDetailsLabel': 'Additional Details',
+  'reportDetailsHint': 'Please provide more details about the issue...',
+  'reportSubmit': 'Submit Report',
+  'reportSuccess': 'Product reported successfully. We will review it shortly.',
 };
 

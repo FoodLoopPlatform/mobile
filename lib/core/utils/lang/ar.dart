@@ -493,4 +493,13 @@ final Map<String, String> arStrings = {
   'timeMinutesAgo': 'منذ % دقيقة',
   'timeHoursAgo': 'منذ % ساعة',
   'timeDaysAgo': 'منذ % يوم',
+
+  // --- Report Product ---
+  'reportProductTitle': 'الإبلاغ عن منتج',
+  'reportReasonLabel': 'سبب الإبلاغ',
+  'reportReasonHint': 'اختر سبباً',
+  'reportDetailsLabel': 'تفاصيل إضافية',
+  'reportDetailsHint': 'يرجى تقديم المزيد من التفاصيل حول المشكلة...',
+  'reportSubmit': 'إرسال البلاغ',
+  'reportSuccess': 'تم الإبلاغ عن المنتج بنجاح. سنقوم بمراجعته قريباً.',
 };

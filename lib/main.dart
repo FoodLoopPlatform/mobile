@@ -28,15 +28,20 @@ import 'package:foodloop/features/cart/data/repositories/cart_repository.dart';
 import 'package:foodloop/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:foodloop/core/api_helper/api_constants.dart';
+import 'package:foodloop/core/services/push_notification_service.dart';
 import 'package:foodloop/core/utils/secure_storage_helper.dart';
+import 'package:foodloop/firebase_options.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await PushNotificationService.initialize();
   await Hive.initFlutter();
   await Hive.openBox<dynamic>('cart');
 
@@ -66,6 +71,9 @@ void main() async {
             await SecureStorageHelper.saveUserRole(roles.first as String);
           }
         }
+
+        // Sync FCM token with the backend on auto-login.
+        await PushNotificationService.syncDeviceToken(ApiManager());
 
         initialRoute = RoutesNames.mainNav;
       } else {
@@ -122,6 +130,7 @@ class FoodloopApp extends StatelessWidget {
                 create: (_) => AuthCubit(
                   AuthRepository(AuthRemoteDataSource(apiManager)),
                   CartLocalDataSource(),
+                  apiManager,
                 ),
               ),
               BlocProvider(

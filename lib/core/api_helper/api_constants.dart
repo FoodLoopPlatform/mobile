@@ -15,9 +15,11 @@ class ApiConstants {
   static const String notificationsEndpoint = 'notifications';
   static const String notificationsReadAllEndpoint = 'notifications/read-all';
   static String notificationReadEndpoint(String id) => 'notifications/$id/read';
+  static const String deviceTokenEndpoint = 'notifications/device-token';
 
   static const String categoriesEndpoint = 'categories';
   static const String marketplaceProductsEndpoint = 'marketplace/products';
+  static String reportProductEndpoint(String id) => 'marketplace/products/$id/report';
 
   static const String profileEndpoint = 'users/me';
   static const String addressesEndpoint = 'users/me/addresses';
