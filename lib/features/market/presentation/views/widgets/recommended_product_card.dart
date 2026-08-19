@@ -40,7 +40,7 @@ class _RecommendedProductCardState extends State<RecommendedProductCard> {
     final role = await SecureStorageHelper.getUserRole();
     if (mounted) {
       setState(() {
-        isCustomer = role?.toLowerCase() == 'user';
+        isCustomer = role?.toLowerCase() == 'customer';
       });
     }
   }

@@ -8,6 +8,9 @@ import 'package:foodloop/features/cart/data/models/cart_item_model.dart';
 import 'package:foodloop/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
 import 'package:foodloop/features/cart/presentation/manager/cart_cubit/cart_state.dart';
 import 'package:foodloop/features/cart/presentation/views/checkout_success_view.dart';
+import 'package:foodloop/features/orders/presentation/manager/payment_cubit/payment_cubit.dart';
+import 'package:foodloop/features/orders/presentation/manager/payment_cubit/payment_state.dart';
+import 'package:foodloop/features/orders/presentation/views/paymob_webview_view.dart';
 
 class CartBody extends StatefulWidget {
   const CartBody({super.key});
@@ -21,45 +24,105 @@ class _CartBodyState extends State<CartBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CartCubit, CartState>(
-      listener: (context, state) {
-        if (state is CartOrderSuccess) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => CheckoutSuccessView(response: state.response),
-            ),
-          );
-        } else if (state is CartError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: AppColors.error,
-            ),
-          );
-        }
-      },
-      builder: (context, state) {
-        if (state is CartLoading || state is CartInitial) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColors.primary),
-          );
-        }
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<CartCubit, CartState>(
+          listener: (context, state) {
+            if (state is CartOrderSuccess) {
+              final orderId = state.response.orderReference ?? '';
+              if (orderId.isNotEmpty) {
+                context.read<PaymentCubit>().getCheckoutUrl(orderId);
+              } else {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => CheckoutSuccessView(response: state.response),
+                  ),
+                );
+              }
+            } else if (state is CartError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: AppColors.error,
+                ),
+              );
+            }
+          },
+        ),
+        BlocListener<PaymentCubit, PaymentState>(
+          listener: (context, state) async {
+            if (state is PaymentUrlLoaded) {
+              final isSuccess = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => PaymobWebviewView(paymentUrl: state.checkoutUrl),
+                ),
+              ) as bool?;
 
-        if (state is CartLoaded && state.items.isEmpty) {
-          return _buildEmptyCart(context);
-        }
+              if (isSuccess == true) {
+                final cartState = context.read<CartCubit>().state;
+                if (cartState is CartOrderSuccess) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => CheckoutSuccessView(response: cartState.response),
+                    ),
+                  );
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Payment cancelled or failed'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+              }
+            } else if (state is PaymentError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  backgroundColor: AppColors.error,
+                ),
+              );
+            }
+          },
+        ),
+      ],
+      child: BlocBuilder<PaymentCubit, PaymentState>(
+        builder: (context, paymentState) {
+          return Stack(
+            children: [
+              BlocBuilder<CartCubit, CartState>(
+                builder: (context, state) {
+                  if (state is CartLoading || state is CartInitial) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: AppColors.primary),
+                    );
+                  }
 
-        if (state is CartLoaded) {
-          return _buildCheckout(context, state);
-        }
+                  if (state is CartLoaded && state.items.isEmpty) {
+                    return _buildEmptyCart(context);
+                  }
 
-        // CartStoreConflict: the dialog is shown from product_add_to_cart_bar.
-        // While awaiting user decision we show the loading spinner so the cart
-        // screen doesn't flash a broken state.
-        return const Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
-        );
-      },
+                  if (state is CartLoaded) {
+                    return _buildCheckout(context, state);
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(color: AppColors.primary),
+                  );
+                },
+              ),
+              if (paymentState is PaymentLoading)
+                Container(
+                  color: Colors.black.withValues(alpha: 0.3),
+                  child: const Center(
+                    child: CircularProgressIndicator(color: AppColors.primary),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+
     );
   }
 

@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
+import 'package:foodloop/core/api_helper/api_manager.dart';
+import 'package:foodloop/features/orders/data/repositories/payment_repository.dart';
+import 'package:foodloop/features/orders/presentation/manager/payment_cubit/payment_cubit.dart';
 import 'widgets/cart_body.dart';
 
 class CartView extends StatefulWidget {
@@ -23,23 +26,28 @@ class _CartViewState extends State<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
+    return BlocProvider(
+      create: (context) => PaymentCubit(
+        PaymentRepository(context.read<ApiManager>()),
+      ),
+      child: Scaffold(
         backgroundColor: AppColors.background,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        title: Text(
-          AppStrings.checkout,
-          style: const TextStyle(
-            fontFamily: 'PlayfairDisplay',
-            fontSize: 22,
-            fontWeight: FontWeight.w700,
-            color: AppColors.primary,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          title: Text(
+            AppStrings.checkout,
+            style: const TextStyle(
+              fontFamily: 'PlayfairDisplay',
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: AppColors.primary,
+            ),
           ),
         ),
+        body: const CartBody(),
       ),
-      body: const CartBody(),
     );
   }
 }

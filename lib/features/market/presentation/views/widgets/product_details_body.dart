@@ -34,7 +34,7 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
     final role = await SecureStorageHelper.getUserRole();
     if (mounted) {
       setState(() {
-        isCustomer = role?.toLowerCase() == 'user';
+        isCustomer = role?.toLowerCase() == 'customer';
       });
     }
   }

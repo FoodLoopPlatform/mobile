@@ -25,6 +25,7 @@ class ApiConstants {
   static const String addressesEndpoint = 'users/me/addresses';
 
   static const String ordersEndpoint = 'orders';
+  static String paymobCheckoutEndpoint(String id) => 'orders/$id/paymob-checkout';
   static const String storeOrdersEndpoint = 'stores/me/orders';
   static const String reviewsEndpoint = 'reviews';
   static String storeOrderStatusEndpoint(String id) => 'stores/me/orders/$id/status';

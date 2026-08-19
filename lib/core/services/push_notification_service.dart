@@ -72,7 +72,9 @@ class PushNotificationService {
       }
 
       // Show a top toast using Overlay
-      final overlay = Overlay.of(context);
+      final overlay = navigatorKey.currentState?.overlay;
+      if (overlay == null) return;
+      
       late OverlayEntry entry;
       entry = OverlayEntry(
         builder: (context) {

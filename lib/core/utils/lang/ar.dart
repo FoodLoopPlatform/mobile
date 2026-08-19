@@ -266,7 +266,7 @@ final Map<String, String> arStrings = {
   'cityAlexandria': 'الإسكندرية',
   'cityGiza': 'الجيزة',
   'currencyEgp': 'ج.م',
-  'marketBrand': 'فودلوب',
+  'marketBrand': 'FoodLoop',
   'activeOrderLabel': 'طلب نشط',
   'activeOrderStatus': 'يصل خلال 12 دقيقة',
   'categoryBakery': 'مخبوزات',
