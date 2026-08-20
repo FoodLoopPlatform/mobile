@@ -1,21 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodloop/core/api_helper/api_manager.dart';
 import 'package:foodloop/core/routes_manager/routes_names.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
+import 'package:foodloop/features/market/data/data_sources/products_remote_data_source.dart';
+import 'package:foodloop/features/market/data/repositories/products_repository.dart';
+import 'package:foodloop/features/market/presentation/manager/report_product_cubit/report_product_cubit.dart';
+import 'package:foodloop/features/market/presentation/views/widgets/report_product_dialog.dart';
 import 'package:foodloop/features/orders/data/models/order_model.dart';
+import 'package:foodloop/features/orders/data/repositories/payment_repository.dart';
 import 'package:foodloop/features/orders/presentation/manager/orders_cubit/orders_cubit.dart';
 import 'package:foodloop/features/orders/presentation/manager/orders_cubit/orders_state.dart';
+import 'package:foodloop/features/orders/presentation/manager/payment_cubit/payment_cubit.dart';
+import 'package:foodloop/features/orders/presentation/manager/payment_cubit/payment_state.dart';
+import 'package:foodloop/features/orders/presentation/views/paymob_webview_view.dart';
+import 'package:foodloop/features/orders/presentation/views/widgets/payment_method_bottom_sheet.dart';
 
 class OrdersView extends StatelessWidget {
   const OrdersView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => OrdersCubit()..loadOrders(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => OrdersCubit()..loadOrders()),
+        BlocProvider(
+          create: (context) => PaymentCubit(
+            PaymentRepository(context.read<ApiManager>()),
+          ),
+        ),
+      ],
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -32,34 +49,77 @@ class OrdersView extends StatelessWidget {
             ),
           ),
         ),
-        body: BlocConsumer<OrdersCubit, OrdersState>(
-          listener: (context, state) {
-            if (state is OrderStatusUpdateSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    AppStrings.statusUpdateSuccess,
-                    style: const TextStyle(fontFamily: 'DmSans'),
-                  ),
-                  backgroundColor: AppColors.primaryLight,
-                ),
-              );
-            } else if (state is OrderStatusUpdateFail) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    AppStrings.statusUpdateError,
-                    style: const TextStyle(fontFamily: 'DmSans'),
-                  ),
-                  backgroundColor: AppColors.error,
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state is OrdersLoading || state is OrderStatusUpdateLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<OrdersCubit, OrdersState>(
+              listener: (context, state) {
+                if (state is OrderStatusUpdateSuccess) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        AppStrings.statusUpdateSuccess,
+                        style: const TextStyle(fontFamily: 'DmSans'),
+                      ),
+                      backgroundColor: AppColors.primaryLight,
+                    ),
+                  );
+                } else if (state is OrderStatusUpdateFail) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        AppStrings.statusUpdateError,
+                        style: const TextStyle(fontFamily: 'DmSans'),
+                      ),
+                      backgroundColor: AppColors.error,
+                    ),
+                  );
+                }
+              },
+            ),
+            BlocListener<PaymentCubit, PaymentState>(
+              listener: (context, state) async {
+                if (state is PaymentUrlLoaded) {
+                  final isSuccess = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => PaymobWebviewView(paymentUrl: state.checkoutUrl),
+                    ),
+                  ) as bool?;
+
+                  if (isSuccess == true) {
+                    if (context.mounted) {
+                      context.read<OrdersCubit>().loadOrders();
+                    }
+                  }
+                } else if (state is PaymentWalletSuccess) {
+                  if (context.mounted) {
+                    context.read<OrdersCubit>().loadOrders();
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Payment successful!'),
+                      backgroundColor: AppColors.primaryLight,
+                    ),
+                  );
+                } else if (state is PaymentError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.errorMessage),
+                      backgroundColor: AppColors.error,
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+          child: BlocBuilder<PaymentCubit, PaymentState>(
+            builder: (context, paymentState) {
+              return Stack(
+                children: [
+                  BlocBuilder<OrdersCubit, OrdersState>(
+                    builder: (context, state) {
+                      if (state is OrdersLoading || state is OrderStatusUpdateLoading) {
+                        return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+                      }
             if (state is OrdersFail) {
               return Center(
                 child: Padding(
@@ -156,11 +216,22 @@ class OrdersView extends StatelessWidget {
             return const SizedBox.shrink();
           },
         ),
+        if (paymentState is PaymentLoading)
+          Container(
+            color: Colors.black.withValues(alpha: 0.3),
+            child: const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),
+          ),
+                ],
+              );
+            },
+          ),
+        ),
       ),
     );
   }
 }
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Merchant Action Buttons (Advance + Cancel)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -382,6 +453,8 @@ class _OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCompleted = order.orderStatus.toLowerCase() == 'completed';
+    final isPending = order.orderStatus.toLowerCase() == 'pending';
+    final isPaymentPending = order.paymentStatus.toLowerCase() == 'pending';
 
     return Container(
       padding: EdgeInsets.all(AppConstants.paddingM.r),
@@ -553,6 +626,73 @@ class _OrderCard extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 8.h),
+            SizedBox(
+              width: double.infinity,
+              height: 40.h,
+              child: TextButton.icon(
+                onPressed: () => _showReportProductSelection(context, order),
+                icon: Icon(
+                  Icons.report_problem_outlined,
+                  size: 16.r,
+                  color: AppColors.error,
+                ),
+                label: Text(
+                  AppStrings.reportProductTitle,
+                  style: TextStyle(
+                    fontFamily: 'DmSans',
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.error,
+                  ),
+                ),
+              ),
+            ),
+          ],
+
+          // --- Pay Now Button (user only, pending payment & pending order) ---
+          if (!isMerchant && isPending && isPaymentPending) ...[
+            SizedBox(height: 12.h),
+            SizedBox(
+              width: double.infinity,
+              height: 40.h,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  showModalBottomSheet<String>(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (_) => PaymentMethodBottomSheet(totalAmount: order.totalAmount),
+                  ).then((selectedMethod) {
+                    if (selectedMethod == 'wallet') {
+                      context.read<PaymentCubit>().payWithWallet(order.id);
+                    } else if (selectedMethod == 'card') {
+                      context.read<PaymentCubit>().getCheckoutUrl(order.id);
+                    }
+                  });
+                },
+                icon: Icon(
+                  Icons.payment_rounded,
+                  size: 16.r,
+                  color: AppColors.textOnPrimary,
+                ),
+                label: Text(
+                  'Pay Now',
+                  style: TextStyle(
+                    fontFamily: 'DmSans',
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textOnPrimary,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppConstants.radiusFull.r),
+                  ),
+                ),
+              ),
+            ),
           ],
         ],
       ),
@@ -561,6 +701,78 @@ class _OrderCard extends StatelessWidget {
 
   String _formatDate(DateTime dt) =>
       '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
+
+  void _showReportProductSelection(BuildContext context, OrderModel order) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+      ),
+      builder: (_) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(AppConstants.paddingL.r),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppStrings.reportProductTitle,
+                  style: TextStyle(
+                    fontFamily: 'PlayfairDisplay',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                ...order.items.map(
+                  (item) => ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(Icons.shopping_bag_outlined, color: AppColors.primary),
+                    title: Text(
+                      item.productTitle,
+                      style: TextStyle(
+                        fontFamily: 'DmSans',
+                        fontSize: 14.sp,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context); // close selection
+                      _showReportDialog(context, item.productId);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showReportDialog(BuildContext context, String productId) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+      ),
+      builder: (_) {
+        return BlocProvider(
+          create: (_) => ReportProductCubit(
+            ProductsRepository(
+              ProductsRemoteDataSource(context.read<ApiManager>()),
+            ),
+          ),
+          child: ReportProductDialog(productId: productId),
+        );
+      },
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

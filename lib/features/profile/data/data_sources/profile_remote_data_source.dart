@@ -5,6 +5,7 @@ import '../../../../core/errors/errors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../models/address_model.dart';
 import '../models/profile_model.dart';
+import '../models/wallet_model.dart';
 
 class ProfileRemoteDataSource {
   final ApiManager _apiManager;
@@ -39,6 +40,11 @@ class ProfileRemoteDataSource {
           .map((e) => AddressModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
+  }
+
+  Future<WalletModel> getWalletBalance() async {
+    final response = await _apiManager.get(ApiConstants.walletEndpoint);
+    return _unwrap(response.data, (json) => WalletModel.fromJson(json));
   }
 
   Future<AddressModel?> addAddress(AddressModel address) async {

@@ -4,6 +4,7 @@ import '../../../../core/utils/app_strings.dart';
 import '../data_sources/profile_remote_data_source.dart';
 import '../models/address_model.dart';
 import '../models/profile_model.dart';
+import '../models/wallet_model.dart';
 
 class ProfileRepository {
   final ProfileRemoteDataSource _remoteDataSource;
@@ -12,6 +13,7 @@ class ProfileRepository {
 
   ProfileModel? _cachedProfile;
   List<AddressModel>? _cachedAddresses;
+  WalletModel? _cachedWallet;
 
   Future<ProfileModel> getProfile({bool forceRefresh = false}) {
     return _guard(() async {
@@ -46,6 +48,14 @@ class ProfileRepository {
     });
   }
 
+  Future<WalletModel> getWalletBalance({bool forceRefresh = false}) {
+    return _guard(() async {
+      if (_cachedWallet != null && !forceRefresh) return _cachedWallet!;
+      _cachedWallet = await _remoteDataSource.getWalletBalance();
+      return _cachedWallet!;
+    });
+  }
+
   Future<List<AddressModel>> addAddress(AddressModel address) {
     return _guard(() async {
       await _remoteDataSource.addAddress(address);
@@ -77,6 +87,7 @@ class ProfileRepository {
   void clearCache() {
     _cachedProfile = null;
     _cachedAddresses = null;
+    _cachedWallet = null;
   }
 
   Future<T> _guard<T>(Future<T> Function() action) async {

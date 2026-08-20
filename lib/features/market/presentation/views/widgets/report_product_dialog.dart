@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:foodloop/core/utils/app_colors.dart';
 import 'package:foodloop/core/utils/app_strings.dart';
 import 'package:foodloop/core/utils/constants.dart';
@@ -22,6 +24,8 @@ class ReportProductDialog extends StatefulWidget {
 class _ReportProductDialogState extends State<ReportProductDialog> {
   final _detailsController = TextEditingController();
   String? _selectedReason;
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
 
   final List<String> _reasonOptions = [
     'MisleadingInfo',
@@ -36,12 +40,30 @@ class _ReportProductDialogState extends State<ReportProductDialog> {
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
   void _submitReport() {
-    if (_selectedReason == null) return;
+    if (_selectedReason == null || _selectedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppStrings.reportMissingImageError),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
     context.read<ReportProductCubit>().reportProduct(
           productId: widget.productId,
           reason: _selectedReason!,
           details: _detailsController.text.trim(),
+          imagePath: _selectedImage!.path,
         );
   }
 
@@ -122,6 +144,35 @@ class _ReportProductDialogState extends State<ReportProductDialog> {
                   label: AppStrings.reportDetailsLabel,
                   hint: AppStrings.reportDetailsHint,
                   maxLines: 4,
+                ),
+                SizedBox(height: AppConstants.paddingM.h),
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: Container(
+                    width: double.infinity,
+                    height: 120.h,
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      border: Border.all(color: AppColors.outlineVariant),
+                      borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
+                    ),
+                    child: _selectedImage != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(AppConstants.radiusM.r),
+                            child: Image.file(_selectedImage!, fit: BoxFit.cover),
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.image, color: AppColors.neutral, size: 32.sp),
+                              SizedBox(height: AppConstants.paddingS.h),
+                              Text(
+                                AppStrings.reportImageLabel,
+                                style: TextStyle(color: AppColors.neutral, fontSize: 14.sp),
+                              ),
+                            ],
+                          ),
+                  ),
                 ),
                 SizedBox(height: AppConstants.paddingXL.h),
                 CustomButton(

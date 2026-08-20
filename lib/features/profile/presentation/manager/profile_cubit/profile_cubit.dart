@@ -16,7 +16,9 @@ class ProfileCubit extends Cubit<ProfileState> {
           await _profileRepository.getProfile(forceRefresh: forceRefresh);
       final addresses =
           await _profileRepository.getAddresses(forceRefresh: forceRefresh);
-      emit(ProfileLoaded(profile: profile, addresses: addresses));
+      final wallet =
+          await _profileRepository.getWalletBalance(forceRefresh: forceRefresh);
+      emit(ProfileLoaded(profile: profile, addresses: addresses, wallet: wallet));
     } on Errors catch (e) {
       emit(ProfileFail(message: e.errMessage));
     } catch (e) {

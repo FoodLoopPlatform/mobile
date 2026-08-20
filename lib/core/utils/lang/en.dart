@@ -507,7 +507,8 @@ final Map<String, String> enStrings = {
   'reportReasonHint': 'Select a reason',
   'reportDetailsLabel': 'Additional Details',
   'reportDetailsHint': 'Please provide more details about the issue...',
+  'reportMissingImageError': 'Please upload an image for your report.',
+  'reportImageLabel': 'Add evidence',
   'reportSubmit': 'Submit Report',
   'reportSuccess': 'Product reported successfully. We will review it shortly.',
 };
-

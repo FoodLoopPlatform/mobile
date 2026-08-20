@@ -11,6 +11,7 @@ class ReportProductCubit extends Cubit<ReportProductState> {
     required String productId,
     required String reason,
     required String details,
+    required String imagePath,
   }) async {
     emit(ReportProductLoading());
     try {
@@ -18,6 +19,7 @@ class ReportProductCubit extends Cubit<ReportProductState> {
         productId: productId,
         reason: reason,
         details: details,
+        imagePath: imagePath,
       );
       emit(ReportProductSuccess());
     } catch (e) {

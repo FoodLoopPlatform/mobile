@@ -647,4 +647,6 @@ abstract class AppStrings {
   static String get reportDetailsHint => _getString('reportDetailsHint');
   static String get reportSubmit => _getString('reportSubmit');
   static String get reportSuccess => _getString('reportSuccess');
+  static String get reportMissingImageError => _getString('reportMissingImageError');
+  static String get reportImageLabel => _getString('reportImageLabel');
 }

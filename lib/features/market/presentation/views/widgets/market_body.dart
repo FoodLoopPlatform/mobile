@@ -51,9 +51,9 @@ class _MarketBodyState extends State<MarketBody> {
 
   void _load() {
     context.read<ProductsCubit>().loadProducts(
-          pageSize: _homePageSize,
-          categoryId: _selectedCategory,
-        );
+      pageSize: _homePageSize,
+      categoryId: _selectedCategory,
+    );
   }
 
   void _openProduct(BuildContext context, ProductModel product) {
@@ -89,11 +89,11 @@ class _MarketBodyState extends State<MarketBody> {
           ),
           children: [
             // --- Active order ---
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontal),
-              child: const MarketActiveOrderBar(),
-            ),
-            SizedBox(height: AppConstants.paddingM.h),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: horizontal),
+            //   child: const MarketActiveOrderBar(),
+            // ),
+            // SizedBox(height: AppConstants.paddingM.h),
 
             // --- Categories ---
             MarketCategoryChips(
@@ -227,29 +227,33 @@ class _MarketSections {
     // Only use the first 20 items (page 1) to determine Recommended and Deals
     // This ensures these sections are stable and don't reorganize when we load page 2+.
     final firstPage = items.take(20).toList();
-    
+
     final recommended = firstPage.take(6).toList();
     final firstPageRemainder = firstPage.skip(recommended.length).toList();
 
     // Cap deals to a reasonable number so it doesn't consume all remaining items
     // (especially in this app where most items might be discounted).
-    var deals = firstPageRemainder.where((p) => p.discountPercent != null).take(6).toList();
+    var deals = firstPageRemainder
+        .where((p) => p.discountPercent != null)
+        .take(6)
+        .toList();
     if (deals.isEmpty) {
       deals = firstPageRemainder.take(4).toList();
     }
-    
+
     // Trending is everything else from the ENTIRE list of items
     final Set<String> topSectionIds = {
       ...recommended.map((e) => e.id),
       ...deals.map((e) => e.id),
     };
-    
+
     final trending = items.where((p) => !topSectionIds.contains(p.id)).toList();
 
     return _MarketSections(
       recommended: recommended,
       deals: deals,
-      trending: trending, // Removed the fallback that was causing duplicate/disappearing items
+      trending:
+          trending, // Removed the fallback that was causing duplicate/disappearing items
     );
   }
 }

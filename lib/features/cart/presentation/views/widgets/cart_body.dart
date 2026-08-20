@@ -11,6 +11,7 @@ import 'package:foodloop/features/cart/presentation/views/checkout_success_view.
 import 'package:foodloop/features/orders/presentation/manager/payment_cubit/payment_cubit.dart';
 import 'package:foodloop/features/orders/presentation/manager/payment_cubit/payment_state.dart';
 import 'package:foodloop/features/orders/presentation/views/paymob_webview_view.dart';
+import 'package:foodloop/features/orders/presentation/views/widgets/payment_method_bottom_sheet.dart';
 
 class CartBody extends StatefulWidget {
   const CartBody({super.key});
@@ -20,7 +21,7 @@ class CartBody extends StatefulWidget {
 }
 
 class _CartBodyState extends State<CartBody> {
-  bool _isDelivery = true;
+  double _lastGrandTotal = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +32,26 @@ class _CartBodyState extends State<CartBody> {
             if (state is CartOrderSuccess) {
               final orderId = state.response.orderReference ?? '';
               if (orderId.isNotEmpty) {
-                context.read<PaymentCubit>().getCheckoutUrl(orderId);
+                showModalBottomSheet<String>(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) => PaymentMethodBottomSheet(totalAmount: _lastGrandTotal),
+                ).then((selectedMethod) {
+                  if (selectedMethod == 'wallet') {
+                    context.read<PaymentCubit>().payWithWallet(orderId);
+                  } else if (selectedMethod == 'card') {
+                    context.read<PaymentCubit>().getCheckoutUrl(orderId);
+                  } else {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => CheckoutSuccessView(response: state.response),
+                      ),
+                    );
+                  }
+                });
               } else {
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => CheckoutSuccessView(response: state.response),
                   ),
@@ -61,7 +79,7 @@ class _CartBodyState extends State<CartBody> {
               if (isSuccess == true) {
                 final cartState = context.read<CartCubit>().state;
                 if (cartState is CartOrderSuccess) {
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (_) => CheckoutSuccessView(response: cartState.response),
                     ),
@@ -72,6 +90,15 @@ class _CartBodyState extends State<CartBody> {
                   const SnackBar(
                     content: Text('Payment cancelled or failed'),
                     backgroundColor: AppColors.error,
+                  ),
+                );
+              }
+            } else if (state is PaymentWalletSuccess) {
+              final cartState = context.read<CartCubit>().state;
+              if (cartState is CartOrderSuccess) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => CheckoutSuccessView(response: cartState.response),
                   ),
                 );
               }
@@ -103,6 +130,9 @@ class _CartBodyState extends State<CartBody> {
                   }
 
                   if (state is CartLoaded) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) _lastGrandTotal = state.grandTotal;
+                    });
                     return _buildCheckout(context, state);
                   }
 
@@ -178,18 +208,6 @@ class _CartBodyState extends State<CartBody> {
               children: [
                 SizedBox(height: 16.h),
 
-                // ── Fulfillment toggle ────────────────────────────────────
-                _buildSectionLabel(AppStrings.fulfillment),
-                SizedBox(height: 12.h),
-                _buildFulfillmentToggle(),
-                SizedBox(height: 16.h),
-
-                // ── Address card ──────────────────────────────────────────
-                if (_isDelivery) ...[
-                  _buildAddressCard(),
-                  SizedBox(height: 24.h),
-                ],
-
                 // ── Order Review header ───────────────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -261,146 +279,6 @@ class _CartBodyState extends State<CartBody> {
     );
   }
 
-  // ── Sub-widgets ────────────────────────────────────────────────────────────
-
-  Widget _buildSectionLabel(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontFamily: 'PlayfairDisplay',
-        fontSize: 20.sp,
-        fontWeight: FontWeight.w700,
-        color: AppColors.primary,
-      ),
-    );
-  }
-
-  Widget _buildFulfillmentToggle() {
-    return Container(
-      height: 44.h,
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppConstants.radiusFull.r),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Row(
-        children: [
-          _buildToggleOption(
-            label: AppStrings.delivery,
-            selected: _isDelivery,
-            onTap: () => setState(() => _isDelivery = true),
-          ),
-          _buildToggleOption(
-            label: AppStrings.pickup,
-            selected: !_isDelivery,
-            onTap: () => setState(() => _isDelivery = false),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildToggleOption({
-    required String label,
-    required bool selected,
-    required VoidCallback onTap,
-  }) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: AppConstants.animationFast,
-          decoration: BoxDecoration(
-            color: selected ? AppColors.primary : Colors.transparent,
-            borderRadius: BorderRadius.circular(AppConstants.radiusFull.r),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            label,
-            style: TextStyle(
-              fontFamily: 'DmSans',
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: selected ? AppColors.textOnPrimary : AppColors.neutral,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddressCard() {
-    return Container(
-      padding: EdgeInsets.all(AppConstants.paddingM.r),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppConstants.radiusL.r),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.location_on_outlined,
-            color: AppColors.primary,
-            size: 20.r,
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppStrings.shippingTo,
-                  style: TextStyle(
-                    fontFamily: 'JetBrainsMono',
-                    fontSize: 10.sp,
-                    color: AppColors.neutral,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  'Home: Maadi, Road 9...',
-                  style: TextStyle(
-                    fontFamily: 'DmSans',
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                Text(
-                  'Building 42, Apartment 4',
-                  style: TextStyle(
-                    fontFamily: 'DmSans',
-                    fontSize: 12.sp,
-                    color: AppColors.neutral,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: Text(
-              AppStrings.change,
-              style: TextStyle(
-                fontFamily: 'DmSans',
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w600,
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildSummaryCard(CartLoaded state) {
     return Container(
       padding: EdgeInsets.all(AppConstants.paddingM.r),
@@ -425,11 +303,6 @@ class _CartBodyState extends State<CartBody> {
           _buildSummaryRow(
             '${AppStrings.subtotal} (${state.items.fold(0, (s, i) => s + i.quantity)} ${AppStrings.items.toLowerCase()})',
             'EGP ${state.subtotal.toStringAsFixed(2)}',
-          ),
-          SizedBox(height: 8.h),
-          _buildSummaryRow(
-            AppStrings.deliveryFee,
-            'EGP ${state.deliveryFee.toStringAsFixed(2)}',
           ),
           if (state.discount > 0) ...[
             SizedBox(height: 8.h),

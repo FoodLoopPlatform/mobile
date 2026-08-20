@@ -45,7 +45,7 @@ final Map<String, String> arStrings = {
   'forgotPassword': 'نسيت كلمة المرور؟',
   'loginButton': 'تسجيل الدخول',
   'noAccountPrefix': 'ليس لديك حساب؟ ',
-  'joinFoodloop': 'انضم إلى فودلوب.',
+  'joinFoodloop': 'انضم إلى Foodloop.',
   'forgotPasswordTitle': 'نسيت كلمة المرور؟',
   'forgotPasswordSubtitle':
       'أدخل بريدك الإلكتروني المسجل، وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.',
@@ -502,4 +502,6 @@ final Map<String, String> arStrings = {
   'reportDetailsHint': 'يرجى تقديم المزيد من التفاصيل حول المشكلة...',
   'reportSubmit': 'إرسال البلاغ',
   'reportSuccess': 'تم الإبلاغ عن المنتج بنجاح. سنقوم بمراجعته قريباً.',
+  'reportMissingImageError': 'يرجى إرفاق صورة للتقرير.',
+  'reportImageLabel': 'اضغط لإرفاق صورة',
 };

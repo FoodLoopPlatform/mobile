@@ -21,4 +21,18 @@ class PaymentCubit extends Cubit<PaymentState> {
       }
     }
   }
+
+  Future<void> payWithWallet(String orderId) async {
+    emit(PaymentLoading());
+    try {
+      await _paymentRepository.walletCheckout(orderId);
+      emit(PaymentWalletSuccess());
+    } catch (e) {
+      if (e is ServerError) {
+        emit(PaymentError(e.errMessage));
+      } else {
+        emit(PaymentError(e.toString()));
+      }
+    }
+  }
 }

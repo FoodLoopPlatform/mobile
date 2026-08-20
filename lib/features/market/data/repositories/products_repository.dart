@@ -46,12 +46,14 @@ class ProductsRepository {
     required String productId,
     required String reason,
     required String details,
+    required String imagePath,
   }) async {
     try {
       await _remoteDataSource.reportProduct(
         productId: productId,
         reason: reason,
         details: details,
+        imagePath: imagePath,
       );
     } on DioException catch (e) {
       throw ServerError.fromDioError(e);

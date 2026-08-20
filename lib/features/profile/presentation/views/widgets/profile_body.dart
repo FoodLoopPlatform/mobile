@@ -8,6 +8,7 @@ import 'package:foodloop/features/profile/presentation/manager/profile_cubit/pro
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_logout_button.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_personal_info_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_preferences_card.dart';
+import 'package:foodloop/features/profile/presentation/views/widgets/profile_wallet_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_saved_addresses_card.dart';
 import 'package:foodloop/features/profile/presentation/views/widgets/profile_support_card.dart';
 import 'package:foodloop/features/localization/presentation/manager/localization_cubit/localization_cubit.dart';
@@ -65,6 +66,10 @@ class _ProfileBodyState extends State<ProfileBody> {
                 child: Column(
                   children: [
                     ProfilePersonalInfoCard(profile: state.profile),
+                    if (state.wallet != null) ...[
+                      SizedBox(height: AppConstants.paddingM.h),
+                      ProfileWalletCard(balance: state.wallet!.walletBalance),
+                    ],
                     SizedBox(height: AppConstants.paddingM.h),
                     ProfilePreferencesCard(),
                     SizedBox(height: AppConstants.paddingM.h),

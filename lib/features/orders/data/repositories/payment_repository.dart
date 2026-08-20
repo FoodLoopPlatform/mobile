@@ -41,4 +41,15 @@ class PaymentRepository {
       throw ServerError(AppStrings.errorUnknown);
     }
   }
+
+  Future<void> walletCheckout(String orderId) async {
+    try {
+      await _apiManager.post(ApiConstants.walletCheckoutEndpoint(orderId), {});
+    } on DioException catch (e) {
+      throw ServerError.fromDioError(e);
+    } catch (e) {
+      if (e is Errors) rethrow;
+      throw ServerError(AppStrings.errorUnknown);
+    }
+  }
 }

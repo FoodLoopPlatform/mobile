@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:foodloop/features/profile/data/models/address_model.dart';
 import 'package:foodloop/features/profile/data/models/profile_model.dart';
+import 'package:foodloop/features/profile/data/models/wallet_model.dart';
 
 abstract class ProfileState extends Equatable {
   const ProfileState();
@@ -20,6 +21,7 @@ class ProfileLoading extends ProfileState {
 class ProfileLoaded extends ProfileState {
   final ProfileModel profile;
   final List<AddressModel> addresses;
+  final WalletModel? wallet;
 
   /// True while a write is in flight — the screen stays visible, so show a
   /// small inline indicator rather than replacing the whole body.
@@ -31,6 +33,7 @@ class ProfileLoaded extends ProfileState {
   const ProfileLoaded({
     required this.profile,
     required this.addresses,
+    this.wallet,
     this.isUpdating = false,
     this.actionError,
   });
@@ -38,6 +41,7 @@ class ProfileLoaded extends ProfileState {
   ProfileLoaded copyWith({
     ProfileModel? profile,
     List<AddressModel>? addresses,
+    WalletModel? wallet,
     bool? isUpdating,
     String? actionError,
     bool clearActionError = false,
@@ -45,13 +49,14 @@ class ProfileLoaded extends ProfileState {
     return ProfileLoaded(
       profile: profile ?? this.profile,
       addresses: addresses ?? this.addresses,
+      wallet: wallet ?? this.wallet,
       isUpdating: isUpdating ?? this.isUpdating,
       actionError: clearActionError ? null : actionError ?? this.actionError,
     );
   }
 
   @override
-  List<Object?> get props => [profile, addresses, isUpdating, actionError];
+  List<Object?> get props => [profile, addresses, wallet, isUpdating, actionError];
 }
 
 /// Only for a failed initial load — write failures surface through

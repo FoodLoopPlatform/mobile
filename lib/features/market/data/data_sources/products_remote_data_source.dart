@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:foodloop/core/api_helper/api_constants.dart';
 import 'package:foodloop/core/api_helper/api_manager.dart';
 import 'package:foodloop/core/errors/errors.dart';
@@ -50,11 +51,14 @@ class ProductsRemoteDataSource {
     required String productId,
     required String reason,
     required String details,
+    required String imagePath,
   }) async {
-    await _apiManager.post(ApiConstants.reportProductEndpoint(productId), {
-      'reason': reason,
-      'details': details,
+    final formData = FormData.fromMap({
+      'Reason': reason,
+      'Details': details,
+      'Image': await MultipartFile.fromFile(imagePath),
     });
+    await _apiManager.post(ApiConstants.reportProductEndpoint(productId), formData);
   }
 
   /// The envelope isn't documented, so a bare array, `{data: [...]}` and

@@ -15,20 +15,18 @@ class CartInitial extends CartState {
 class CartLoaded extends CartState {
   final List<CartItemModel> items;
   final double subtotal;
-  final double deliveryFee;
   final double discount;
 
   const CartLoaded({
     required this.items,
     required this.subtotal,
-    this.deliveryFee = 25.0,
     this.discount = 0.0,
   });
 
-  double get grandTotal => subtotal + deliveryFee - discount;
+  double get grandTotal => subtotal - discount;
 
   @override
-  List<Object?> get props => [items, subtotal, deliveryFee, discount];
+  List<Object?> get props => [items, subtotal, discount];
 }
 
 class CartLoading extends CartState {

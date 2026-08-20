@@ -44,5 +44,9 @@ class OrdersRemoteDataSource {
     await _apiManager.patch(ApiConstants.storeOrderStatusEndpoint(orderId),
         data: {'status': status});
   }
+
+  Future<void> walletCheckout(String orderId) async {
+    await _apiManager.post(ApiConstants.walletCheckoutEndpoint(orderId), {});
+  }
 }
 

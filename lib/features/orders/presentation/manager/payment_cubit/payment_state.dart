@@ -28,3 +28,5 @@ class PaymentError extends PaymentState {
   @override
   List<Object> get props => [errorMessage];
 }
+
+class PaymentWalletSuccess extends PaymentState {}
